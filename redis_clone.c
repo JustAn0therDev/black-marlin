@@ -12,14 +12,12 @@ typedef struct {
     char* value;
 } Pair;
 
-int pairsLength = 0;
-
 // Prototypes
 Pair GetValue(char* key);
 void SetValue(char* key, char* value);
 void DeleteValue(char* key);
 
-Pair pairs[MAXPAIRS];
+Pair pairs[MAXPAIRS - 1];
 
 int main(void) {
     char* command = (char*)malloc(sizeof(MAXCOMMANDSIZE));
@@ -41,10 +39,10 @@ int main(void) {
 
             pair = GetValue(key);
 
-            if (strcmp(pair.key, key) != 0) {
-                printf("Could not get value.");
+            if (pair.value == NULL) {
+                printf("Value not found.\n");
             } else {
-                printf("Key: %s, Value: %s\n", pair.key, pair.value);
+                printf("%s\n", pair.value);
             }
 
         } else if (strcmp(command, "SET") == 0) {
@@ -64,11 +62,17 @@ int main(void) {
             scanf("%s", key);
 
             DeleteValue(key);
+            printf("OK\n");
         } else {
             printf("Unknown command.\n");
         }
 
-        // command = (char*)realloc(command, sizeof(MAXCOMMANDSIZE));
+        command = (char*)realloc(command, sizeof(MAXCOMMANDSIZE));
+
+        if (command == NULL) {
+            printf("Could not realocate memory.\n");
+            exit(1);
+        }
     }
 
     free(command);
@@ -79,8 +83,8 @@ int main(void) {
 Pair GetValue(char* key) {
     Pair emptyPair;
 
-    for (int i = 0; i < pairsLength; i++) {
-        if (strcmp(pairs[i].key, key) == 0) {
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
             return pairs[i];
         } 
     }
@@ -89,37 +93,40 @@ Pair GetValue(char* key) {
 }
 
 void SetValue(char* key, char* value) {
-    int foundKey = 0;
-
-    for (int i = 0; i < pairsLength; i++) {
-        if (strcmp(pairs[i].key, key) == 0) {
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
             strcpy(pairs[i].value, value);
-            foundKey = 1;
             break;
         }
-    }
 
-    if (foundKey == 0) {
-        if (pairsLength > 0) {
-            strcpy(pairs[pairsLength - 1].key, key);
-            strcpy(pairs[pairsLength - 1].value, value);
-        } else {
-            pairs[0].key = (char*)malloc(sizeof(char) * MAXKEYSIZE);
-            strcpy(pairs[0].key, key);
-            
-            pairs[0].value = (char*)malloc(sizeof(char) * MAXVALUESIZE);
-            strcpy(pairs[0].value, value);
+        // Writes to the first spot available in the memory array.
+        if (pairs[i].value == NULL) {
+            pairs[i].key = (char*)malloc(sizeof(char) * MAXKEYSIZE);
+
+            if (pairs[i].key == NULL) {
+                printf("Could not allocate memory.\n");
+                exit(1);
+            }
+
+            pairs[i].value = (char*)malloc(sizeof(char) * MAXVALUESIZE);
+
+            if (pairs[i].value == NULL) {
+                printf("Could not allocate memory.\n");
+                exit(1);
+            }
+
+            strcpy(pairs[i].key, key);
+            strcpy(pairs[i].value, value);
         }
-        pairsLength++;
     }
 }
 
 void DeleteValue(char* key) {
-    for (int i = 0; i < pairsLength; i++) {
-        if (strcmp(pairs[i].key, key) == 0) {
-            strcpy(pairs[i].key, " ");
-            strcpy(pairs[i].value, " ");
-            pairsLength--;
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
+            // Makes the deleted space available for another item again
+            pairs[i].key = (char*)realloc(pairs[i].key, sizeof(char) * MAXKEYSIZE);
+            pairs[i].value = (char*)realloc(pairs[i].value, sizeof(char) * MAXVALUESIZE);
             break;
         }
     }
