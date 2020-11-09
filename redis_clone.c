@@ -14,6 +14,7 @@ typedef struct {
 
 // Prototypes
 Pair GetValue(char* key);
+void GetAll();
 void SetValue(char* key, char* value);
 void DeleteValue(char* key);
 
@@ -63,6 +64,8 @@ int main(void) {
 
             DeleteValue(key);
             printf("OK\n");
+        } else if (strcmp(command, "ALL") == 0) {
+            GetAll();
         } else {
             printf("Unknown command.\n");
         }
@@ -92,6 +95,12 @@ Pair GetValue(char* key) {
     return emptyPair;
 }
 
+void GetAll() {
+    for (int i = 0; i < MAXPAIRS; i++) { 
+        printf("%i [%s]: Value: %s\n", i + 1, pairs[i].key, pairs[i].value);
+    }
+}
+
 void SetValue(char* key, char* value) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
@@ -99,7 +108,7 @@ void SetValue(char* key, char* value) {
             break;
         }
 
-        // Writes to the first spot available in the memory array.
+        // Writes to the first spot available in the array.
         if (pairs[i].value == NULL) {
             pairs[i].key = (char*)malloc(sizeof(char) * MAXKEYSIZE);
 
@@ -117,6 +126,7 @@ void SetValue(char* key, char* value) {
 
             strcpy(pairs[i].key, key);
             strcpy(pairs[i].value, value);
+            break;
         }
     }
 }
@@ -125,8 +135,13 @@ void DeleteValue(char* key) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
             // Makes the deleted space available for another item again
-            pairs[i].key = (char*)realloc(pairs[i].key, sizeof(char) * MAXKEYSIZE);
-            pairs[i].value = (char*)realloc(pairs[i].value, sizeof(char) * MAXVALUESIZE);
+            // Only freeing the memory in the desired space does not work because of
+            // how strings work in C.
+
+            //TODO: Try to free all characters inside array.
+
+            memset(pairs[i].key, 0, sizeof(char) * MAXKEYSIZE);
+            memset(pairs[i].value, 0, sizeof(char) * MAXVALUESIZE);
             break;
         }
     }
