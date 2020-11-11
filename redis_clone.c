@@ -134,14 +134,18 @@ void SetValue(char* key, char* value) {
 void DeleteValue(char* key) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
-            // Makes the deleted space available for another item again
+            // Makes the deleted space available for another item
             // Only freeing the memory in the desired space does not work because of
             // how strings work in C.
-
-            //TODO: Try to free all characters inside array.
+            // TODO: Use a cache file and delete a line in it, e.g.: "key|value". In-memory array 
+            // is a bad idea because of lost access in a char* (like just losing access to some 
+            // allocated memory but not really freeing it).
 
             memset(pairs[i].key, 0, sizeof(char) * MAXKEYSIZE);
             memset(pairs[i].value, 0, sizeof(char) * MAXVALUESIZE);
+            free(pairs[i].key);
+            free(pairs[i].value);
+
             break;
         }
     }
