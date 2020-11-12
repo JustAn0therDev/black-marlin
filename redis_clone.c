@@ -5,14 +5,15 @@
 #define MAXCOMMANDSIZE 3
 #define MAXKEYSIZE 100
 #define MAXVALUESIZE 10000
-#define MAXPAIRS 100
+#define MAXPAIRS 1000
 
 typedef struct {
-    char* key;
-    char* value;
+    char key[MAXKEYSIZE];
+    char value[MAXVALUESIZE];
 } Pair;
 
 // Prototypes
+void InitializeEveryFirstByteToZero();
 Pair GetValue(char* key);
 void GetAll();
 void SetValue(char* key, char* value);
@@ -28,8 +29,11 @@ int main(void) {
         exit(1);
     }
 
+    InitializeEveryFirstByteToZero();
+
     // main loop waiting for user command.
     while (1) {
+        printf("Insert a command: ");
         scanf("%s", command); 
 
         if (strcmp(command, "GET") == 0) {
@@ -40,7 +44,7 @@ int main(void) {
 
             pair = GetValue(key);
 
-            if (pair.value == NULL) {
+            if (pair.value[0] == 0) {
                 printf("Value not found.\n");
             } else {
                 printf("%s\n", pair.value);
@@ -83,11 +87,18 @@ int main(void) {
     return 0;
 }
 
+void InitializeEveryFirstByteToZero() {
+    for (int i = 0; i < MAXPAIRS; i++) {
+        pairs[i].key[0] = 0;
+        pairs[i].value[0] = 0;
+    }
+}
+
 Pair GetValue(char* key) {
     Pair emptyPair;
 
     for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
+        if (strcmp(pairs[i].key, key) == 0) {
             return pairs[i];
         } 
     }
@@ -96,34 +107,22 @@ Pair GetValue(char* key) {
 }
 
 void GetAll() {
-    for (int i = 0; i < MAXPAIRS; i++) { 
-        printf("%i [%s]: Value: %s\n", i + 1, pairs[i].key, pairs[i].value);
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key[0] != 0) {
+            printf("[%s]: Value: %s\n", pairs[i].key, pairs[i].value);
+        }
     }
 }
 
 void SetValue(char* key, char* value) {
     for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
+        if (strcmp(pairs[i].key, key) == 0) {
             strcpy(pairs[i].value, value);
             break;
         }
 
         // Writes to the first spot available in the array.
-        if (pairs[i].value == NULL) {
-            pairs[i].key = (char*)malloc(sizeof(char) * MAXKEYSIZE);
-
-            if (pairs[i].key == NULL) {
-                printf("Could not allocate memory.\n");
-                exit(1);
-            }
-
-            pairs[i].value = (char*)malloc(sizeof(char) * MAXVALUESIZE);
-
-            if (pairs[i].value == NULL) {
-                printf("Could not allocate memory.\n");
-                exit(1);
-            }
-
+        if (pairs[i].value[0] == 0) {
             strcpy(pairs[i].key, key);
             strcpy(pairs[i].value, value);
             break;
@@ -133,20 +132,12 @@ void SetValue(char* key, char* value) {
 
 void DeleteValue(char* key) {
     for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i].key != NULL && strcmp(pairs[i].key, key) == 0) {
-            // Makes the deleted space available for another item
-            // Only freeing the memory in the desired space does not work because of
-            // how strings work in C.
-            // TODO: Use a cache file and delete a line in it, e.g.: "key|value". In-memory array 
-            // is a bad idea because of lost access in a char* (like just losing access to some 
-            // allocated memory but not really freeing it).
-
+        if (strcmp(pairs[i].key, key) == 0) {
             memset(pairs[i].key, 0, sizeof(char) * MAXKEYSIZE);
             memset(pairs[i].value, 0, sizeof(char) * MAXVALUESIZE);
-            free(pairs[i].key);
-            free(pairs[i].value);
-
-            break;
+            return;
         }
     }
+
+    printf("No key found.\n");
 }
