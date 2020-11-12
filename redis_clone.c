@@ -12,12 +12,17 @@ typedef struct {
     char value[MAXVALUESIZE];
 } Pair;
 
+const char* OK = "OK\n";
+const char* NOK = "NOK\n";
+
 // Prototypes
 void InitializeEveryFirstByteToZero();
 Pair GetValue(char* key);
-void GetAll();
 void SetValue(char* key, char* value);
 void DeleteValue(char* key);
+void GetAll();
+void Exists(char* key);
+void Count();
 
 Pair pairs[MAXPAIRS - 1];
 
@@ -67,9 +72,15 @@ int main(void) {
             scanf("%s", key);
 
             DeleteValue(key);
-            printf("OK\n");
         } else if (strcmp(command, "ALL") == 0) {
             GetAll();
+        } else if (strcmp(command, "CNT") == 0) {
+            Count();
+        } else if (strcmp(command, "EXS") == 0) {
+            char key[MAXKEYSIZE];
+            printf("Insert a key: ");
+            scanf("%s", key);
+            Exists(key);
         } else {
             printf("Unknown command.\n");
         }
@@ -96,22 +107,12 @@ void InitializeEveryFirstByteToZero() {
 
 Pair GetValue(char* key) {
     Pair emptyPair;
-
     for (int i = 0; i < MAXPAIRS; i++) {
         if (strcmp(pairs[i].key, key) == 0) {
             return pairs[i];
         } 
     }
-
     return emptyPair;
-}
-
-void GetAll() {
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i].key[0] != 0) {
-            printf("[%s]: Value: %s\n", pairs[i].key, pairs[i].value);
-        }
-    }
 }
 
 void SetValue(char* key, char* value) {
@@ -135,9 +136,38 @@ void DeleteValue(char* key) {
         if (strcmp(pairs[i].key, key) == 0) {
             memset(pairs[i].key, 0, sizeof(char) * MAXKEYSIZE);
             memset(pairs[i].value, 0, sizeof(char) * MAXVALUESIZE);
+            printf("%s", OK);
             return;
         }
     }
 
     printf("No key found.\n");
+}
+
+void GetAll() {
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key[0] != 0) {
+            printf("[%s]: Value: %s\n", pairs[i].key, pairs[i].value);
+        }
+    }
+}
+
+void Exists(char *key) {
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (strcmp(pairs[i].key, key) == 0) {
+            printf("%s", OK);
+            return;
+        }
+    }
+    printf("%s", NOK);
+}
+
+void Count() {
+    int counter = 0;
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key[0] != 0) {
+            counter++;
+        }
+    }
+    printf("%i\n", counter);
 }
