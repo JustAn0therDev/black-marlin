@@ -147,7 +147,7 @@ void DeleteValue(char* key) {
 void GetAll() {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i].key[0] != 0) {
-            printf("[%s]: Value: %s\n", pairs[i].key, pairs[i].value);
+            printf("[%s]: %s\n", pairs[i].key, pairs[i].value);
         }
     }
 }
