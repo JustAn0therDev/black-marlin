@@ -83,7 +83,7 @@ int main(void) {
             scanf("%s", key);
             Exists(key);
         } else if (strcmp(command, "FLUSH") == 0) {
-            FlushDB();
+            Flush();
         } else {
             printf("Unknown command.\n");
         }
@@ -175,7 +175,7 @@ void Count() {
     printf("%i\n", counter);
 }
 
-void FlushDB() {
+void Flush() {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i].key[0] != 0) {
             memset(pairs[i].key, 0, sizeof(char) * MAXKEYSIZE);
