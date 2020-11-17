@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAXCOMMANDSIZE 3
+#define MAXCOMMANDSIZE 6
 #define MAXKEYSIZE 100
 #define MAXVALUESIZE 10000
 #define MAXPAIRS 1000
@@ -23,6 +23,7 @@ void DeleteValue(char* key);
 void GetAll();
 void Exists(char* key);
 void Count();
+void FlushDB();
 
 Pair pairs[MAXPAIRS - 1];
 
@@ -66,21 +67,23 @@ int main(void) {
             scanf("%s", value);
 
             SetValue(key, value);
-        } else if (strcmp(command, "DEL") == 0) {
+        } else if (strcmp(command, "DELETE") == 0) {
             char key[MAXKEYSIZE];
             printf("Insert a key: ");
             scanf("%s", key);
 
             DeleteValue(key);
-        } else if (strcmp(command, "ALL") == 0) {
+        } else if (strcmp(command, "GETALL") == 0) {
             GetAll();
-        } else if (strcmp(command, "CNT") == 0) {
+        } else if (strcmp(command, "COUNT") == 0) {
             Count();
-        } else if (strcmp(command, "EXS") == 0) {
+        } else if (strcmp(command, "EXISTS") == 0) {
             char key[MAXKEYSIZE];
             printf("Insert a key: ");
             scanf("%s", key);
             Exists(key);
+        } else if (strcmp(command, "FLUSH") == 0) {
+            FlushDB();
         } else {
             printf("Unknown command.\n");
         }
@@ -170,4 +173,13 @@ void Count() {
         }
     }
     printf("%i\n", counter);
+}
+
+void FlushDB() {
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key[0] != 0) {
+            memset(pairs[i].key, 0, sizeof(char) * MAXKEYSIZE);
+            memset(pairs[i].value, 0, sizeof(char) * MAXVALUESIZE);
+        }
+    }
 }
