@@ -23,27 +23,28 @@ void DeleteValue(char* key);
 void GetAll();
 void Exists(char* key);
 void Count();
-void FlushDB();
+void Flush();
+void Strlen(char* key);
 
 Pair pairs[MAXPAIRS - 1];
 
 int main(void) {
     char* command = (char*)malloc(sizeof(MAXCOMMANDSIZE));
+    char* key = (char*)malloc(sizeof(MAXKEYSIZE));
 
-    if (command == NULL) {
+    if (command == NULL || key == NULL) {
         printf("ERROR: Could not allocate memory\n");
         exit(1);
     }
 
     InitializeEveryFirstByteToZero();
 
-    // main loop waiting for user command.
+    // Main loop waiting for user command.
     while (1) {
         printf("Insert a command: ");
         scanf("%s", command); 
 
         if (strcmp(command, "GET") == 0) {
-            char key[MAXKEYSIZE];
             printf("Insert a key: ");
             scanf("%s", key);
             Pair pair; 
@@ -57,7 +58,6 @@ int main(void) {
             }
 
         } else if (strcmp(command, "SET") == 0) {
-            char key[MAXKEYSIZE];
             char value[MAXVALUESIZE];
 
             printf("Insert a key: ");
@@ -68,7 +68,6 @@ int main(void) {
 
             SetValue(key, value);
         } else if (strcmp(command, "DELETE") == 0) {
-            char key[MAXKEYSIZE];
             printf("Insert a key: ");
             scanf("%s", key);
 
@@ -78,20 +77,24 @@ int main(void) {
         } else if (strcmp(command, "COUNT") == 0) {
             Count();
         } else if (strcmp(command, "EXISTS") == 0) {
-            char key[MAXKEYSIZE];
             printf("Insert a key: ");
             scanf("%s", key);
             Exists(key);
         } else if (strcmp(command, "FLUSH") == 0) {
             Flush();
+        } else if (strcmp(command, "STRLEN") == 0) {
+            printf("Insert a key: ");
+            scanf("%s", key);
+            Strlen(key);
         } else {
             printf("Unknown command.\n");
         }
 
         command = (char*)realloc(command, sizeof(MAXCOMMANDSIZE));
+        key = (char*)realloc(key, sizeof(char) * MAXKEYSIZE);
 
-        if (command == NULL) {
-            printf("Could not realocate memory.\n");
+        if (command == NULL || key == NULL) {
+            printf("Could not reallocate memory.\n");
             exit(1);
         }
     }
@@ -180,6 +183,15 @@ void Flush() {
         if (pairs[i].key[0] != 0) {
             memset(pairs[i].key, 0, sizeof(char) * MAXKEYSIZE);
             memset(pairs[i].value, 0, sizeof(char) * MAXVALUESIZE);
+        }
+    }
+}
+
+void Strlen(char* key) {
+    for (int i = 0; i < MAXPAIRS; i++) {
+        if (pairs[i].key[0] != 0) {
+            printf("%lu\n", strlen(pairs[i].value));            
+            break;
         }
     }
 }
