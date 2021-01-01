@@ -1,32 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-#define MAXCOMMANDSIZE 6
-#define MAXKEYSIZE 100
-#define MAXVALUESIZE 10000
-#define MAXPAIRS 1000
-
-typedef struct {
-    char key[MAXKEYSIZE];
-    char value[MAXVALUESIZE];
-} Pair;
+#include "operations.h"
+#include "constants.h"
 
 const char* OK = "OK\n";
 const char* NOK = "NOK\n";
 
-// Prototypes
-void InitializeEveryFirstByteToZero();
-Pair GetValue(char* key);
-void SetValue(char* key, char* value);
-void DeleteValue(char* key);
-void GetAll();
-void Exists(char* key);
-void Count();
-void Flush();
-void Strlen(char* key);
-
-Pair pairs[MAXPAIRS - 1];
+Pair pairs[MAXPAIRS];
 
 int main(void) {
     char* command = (char*)malloc(sizeof(MAXCOMMANDSIZE));
@@ -39,7 +20,6 @@ int main(void) {
 
     InitializeEveryFirstByteToZero();
 
-    // Main loop waiting for user command.
     while (1) {
         printf("Insert a command: ");
         scanf("%s", command); 
@@ -128,7 +108,6 @@ void SetValue(char* key, char* value) {
             break;
         }
 
-        // Writes to the first spot available in the array.
         if (pairs[i].value[0] == 0) {
             strcpy(pairs[i].key, key);
             strcpy(pairs[i].value, value);
@@ -185,11 +164,12 @@ void Flush() {
             memset(pairs[i].value, 0, sizeof(char) * MAXVALUESIZE);
         }
     }
+    printf("%s", OK);
 }
 
 void Strlen(char* key) {
     for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i].key[0] != 0) {
+        if (strcmp(key, pairs[i].key) == 0) {
             printf("%lu\n", strlen(pairs[i].value));            
             break;
         }
