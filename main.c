@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "operations.h"
 #include "constants.h"
+#include "operations.h"
 
 const char* OK = "OK\n";
 const char* NOK = "NOK\n";
@@ -10,6 +10,8 @@ const char* NOK = "NOK\n";
 Pair pairs[MAXPAIRS];
 
 int main(void) {
+    int keepRunningRepl = 1;
+    
     char* command = (char*)malloc(sizeof(MAXCOMMANDSIZE));
     char* key = (char*)malloc(sizeof(MAXKEYSIZE));
 
@@ -20,7 +22,7 @@ int main(void) {
 
     InitializeEveryFirstByteToZero();
 
-    while (1) {
+    while (keepRunningRepl) {
         printf("Insert a command: ");
         scanf("%s", command); 
 
