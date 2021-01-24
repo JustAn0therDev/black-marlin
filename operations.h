@@ -1,12 +1,11 @@
 #include "constants.h"
 
 typedef struct {
-    char key[MAXKEYSIZE];
-    char value[MAXVALUESIZE];
+    char* key;
+    char* value;
 } Pair;
 
-void InitializeEveryFirstByteToZero();
-Pair GetValue(char* key);
+void GetValue(char* key);
 void SetValue(char* key, char* value);
 void DeleteValue(char* key);
 void GetAll();
