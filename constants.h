@@ -1,4 +1,6 @@
-#define MAXCOMMANDSIZE 6
-#define MAXKEYSIZE 100
-#define MAXVALUESIZE 10000
+#define MAXCOMMANDSIZE 7
+#define MAXKEYSIZE 101
+#define MAXVALUESIZE 10001
 #define MAXPAIRS 1000
+#define OK "OK\n"
+#define NOK "NOK\n"
