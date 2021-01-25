@@ -63,6 +63,14 @@ void main(void) {
     free(key);
 }
 
+void AllocateMemoryForPair(Pair** pairInArray) {
+    Pair* pair = malloc(sizeof(Pair));
+    pair->key = malloc(sizeof(char) * MAXKEYSIZE);
+    pair->value = malloc(sizeof(char) * MAXVALUESIZE);
+
+    *pairInArray = pair;
+}
+
 void GetValue(char* key) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i] != NULL && strcmp(pairs[i]->key, key) == 0) {
@@ -80,14 +88,14 @@ void SetValue(char* key, char* value) {
             free(pairs[i]->value);
             pairs[i]->value = malloc(sizeof(char) * MAXVALUESIZE);
             strcpy(pairs[i]->value, value);
+
             break;
         } else if (pairs[i] == NULL) {
-            pairs[i] = malloc(sizeof(Pair));
-            pairs[i]->key = malloc(sizeof(char) * MAXKEYSIZE);
-            pairs[i]->value = malloc(sizeof(char) * MAXVALUESIZE);
+            AllocateMemoryForPair(&pairs[i]);
 
             strcpy(pairs[i]->key, key);
             strcpy(pairs[i]->value, value);
+
             break;
         }
     }
@@ -111,7 +119,7 @@ void DeleteValue(char* key) {
     printf("%s", NOK);
 }
 
-void GetAll() {
+void GetAll(void) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i] != NULL) {
             printf("[%s]: %s\n", pairs[i]->key, pairs[i]->value);
@@ -130,7 +138,7 @@ void Exists(char *key) {
     printf("%s", NOK);
 }
 
-void Count() {
+void Count(void) {
     int numberOfAllocatedItemsInPairArray = 0;
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i] != NULL) {
@@ -142,7 +150,7 @@ void Count() {
     printf("%s", OK);
 }
 
-void Flush() {
+void Flush(void) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i] != NULL) {
             free(pairs[i]->key);
