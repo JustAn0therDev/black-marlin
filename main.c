@@ -70,13 +70,15 @@ void GetValue(char* key) {
             return;
         }
     }
+    
     printf("%s", NOK);
 }
 
 void SetValue(char* key, char* value) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i] != NULL && strcmp(pairs[i]->key, key) == 0) {
-            pairs[i]->value = (char*)realloc(pairs[i]->value, sizeof(char) * MAXVALUESIZE);
+            free(pairs[i]->value);
+            pairs[i]->value = malloc(sizeof(char) * MAXVALUESIZE);
             strcpy(pairs[i]->value, value);
             break;
         } else if (pairs[i] == NULL) {
@@ -98,16 +100,14 @@ void DeleteValue(char* key) {
             free(pairs[i]->value);
             free(pairs[i]);
 
-            /* 
-             * Setting the current pointer position to NULL so we know that
-             * this position doesn't have anything in it anymore. 
-            */
+            // Since anything could be found inside a "freed pointer", we set it to point to NULL
             pairs[i] = NULL;
 
             printf("%s", OK);
             return;
         }
     }
+    
     printf("%s", NOK);
 }
 
@@ -126,6 +126,7 @@ void Exists(char *key) {
             return;
         }
     }
+    
     printf("%s", NOK);
 }
 
@@ -136,15 +137,22 @@ void Count() {
             numberOfAllocatedItemsInPairArray++;
         }
     }
+    
     printf("%i\n", numberOfAllocatedItemsInPairArray);
 }
 
 void Flush() {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i] != NULL) {
+            free(pairs[i]->key);
+            free(pairs[i]->value);
             free(pairs[i]);
+
+            // Since anything could be found inside a "freed pointer", we set it to point to NULL
+            pairs[i] = NULL;
         }
     }
+    
     printf("%s", OK);
 }
 
@@ -152,8 +160,10 @@ void Strlen(char* key) {
     for (int i = 0; i < MAXPAIRS; i++) {
         if (pairs[i] != NULL && strcmp(key, pairs[i]->key) == 0) {
             printf("%lu\n", strlen(pairs[i]->value));
-            break;
+            printf("%s", OK);
+            return;
         }
     }
+    
     printf("%s", NOK);
 }
