@@ -2,3 +2,7 @@
 
 This project was made to test my knowledge of C by creating a clone of something I use a lot. 
 I might keep optimizing and implementing features to it as time goes on. Anyone can do so as well by forking or opening up a Pull Request.
+
+## New release
+
+The current state of this C application is **free of memory leaks and uses pointers with mostly heap allocations**. 
