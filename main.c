@@ -100,7 +100,7 @@ void DeleteValue(char* key) {
             free(pairs[i]->value);
             free(pairs[i]);
 
-            // Since anything could be found inside a "freed pointer", we set it to point to NULL
+            // Since a "freed pointer" can be pointing to anything, we set it to point to NULL
             pairs[i] = NULL;
 
             printf("%s", OK);
@@ -137,8 +137,9 @@ void Count() {
             numberOfAllocatedItemsInPairArray++;
         }
     }
-    
+
     printf("%i\n", numberOfAllocatedItemsInPairArray);
+    printf("%s", OK);
 }
 
 void Flush() {
@@ -148,7 +149,7 @@ void Flush() {
             free(pairs[i]->value);
             free(pairs[i]);
 
-            // Since anything could be found inside a "freed pointer", we set it to point to NULL
+            // Since a "freed pointer" can be pointing to anything, we set it to point to NULL
             pairs[i] = NULL;
         }
     }
