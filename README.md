@@ -5,4 +5,4 @@ I might keep optimizing and implementing features to it as time goes on.
 
 ## New release
 
-The current state of this application is **reasonable for production use**.
+The current state of this application is **reasonable for production use and cross-platform (Windows and Unix)**.
