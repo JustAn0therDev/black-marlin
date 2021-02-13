@@ -1,18 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h> 
 #include <string.h>
-#include <stdlib.h>
+#include "commands.h"
 #include "constants.h"
-#include "operations.h"
 
-Pair* pairs[MAXPAIRS];
-
-void main(void) {
+int main() {
     char* command;
     char* key;
 
+    Pair* pairs = malloc(sizeof(Pair) * MAXPAIRS);
+
+    for (int i = 0; i < MAXPAIRS; i++) {
+        (pairs+i)->key     = malloc(sizeof(char) * 2);
+        (pairs+i)->value   = malloc(sizeof(char) * 2);
+        strcpy((pairs+i)->key, EMPTYSTRING);
+        strcpy((pairs+i)->value, EMPTYSTRING);
+    }
+
     while (1) {
+        key     = malloc(sizeof(char) * MAXKEYSIZE);
         command = malloc(sizeof(char) * MAXCOMMANDSIZE); 
-        key = malloc(sizeof(char) * MAXKEYSIZE);
 
         printf("Insert a command: ");
         scanf("%s", command); 
@@ -20,35 +27,36 @@ void main(void) {
         if (strcmp(command, "GET") == 0) {
             printf("Insert a key: ");
             scanf("%s", key);
-            GetValue(key);
+            GetValue(&pairs, &key);
         } else if (strcmp(command, "SET") == 0) {
+            char* value = malloc(sizeof(char) * MAXVALUESIZE);
+
             printf("Insert a key: ");
             scanf("%s", key);
 
             printf("Insert a value: ");
-            char* value = malloc(sizeof(char) * MAXVALUESIZE);
             scanf("%s", value);
 
-            SetValue(key, value);
+            SetValue(&pairs, &key, &value);
             free(value);
         } else if (strcmp(command, "DELETE") == 0) {
             printf("Insert a key: ");
             scanf("%s", key);
-            DeleteValue(key);
+            DeleteValue(&pairs, &key);
         } else if (strcmp(command, "GETALL") == 0) {
-            GetAll();
+            GetAll(&pairs);
         } else if (strcmp(command, "COUNT") == 0) {
-            Count();
+            Count(&pairs);
         } else if (strcmp(command, "EXISTS") == 0) {
             printf("Insert a key: ");
             scanf("%s", key);
-            Exists(key);
+            Exists(&pairs, &key);
         } else if (strcmp(command, "FLUSH") == 0) {
-            Flush();
+            Flush(&pairs);
         } else if (strcmp(command, "STRLEN") == 0) { 
             printf("Insert a key: ");
             scanf("%s", key);
-            Strlen(key);
+            Strlen(&pairs, &key);
         } else if (strcmp(command, "QUIT") == 0) {
             break;
         } else {
@@ -61,118 +69,13 @@ void main(void) {
 
     free(command);
     free(key);
-}
 
-void AllocateMemoryForPair(Pair** pairInArray) {
-    Pair* pair = malloc(sizeof(Pair));
-    pair->key = malloc(sizeof(char) * MAXKEYSIZE);
-    pair->value = malloc(sizeof(char) * MAXVALUESIZE);
-
-    *pairInArray = pair;
-}
-
-void GetValue(char* key) {
     for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL && strcmp(pairs[i]->key, key) == 0) {
-            printf("%s\n", pairs[i]->value);
-            return;
-        }
-    }
-    
-    printf("%s", NOK);
-}
-
-void SetValue(char* key, char* value) {
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL && strcmp(pairs[i]->key, key) == 0) {
-            free(pairs[i]->value);
-            pairs[i]->value = malloc(sizeof(char) * MAXVALUESIZE);
-            strcpy(pairs[i]->value, value);
-
-            break;
-        } else if (pairs[i] == NULL) {
-            AllocateMemoryForPair(&pairs[i]);
-
-            strcpy(pairs[i]->key, key);
-            strcpy(pairs[i]->value, value);
-
-            break;
-        }
-    }
-}
-
-void DeleteValue(char* key) {
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL && strcmp(pairs[i]->key, key) == 0) {
-            free(pairs[i]->key);
-            free(pairs[i]->value);
-            free(pairs[i]);
-
-            // Since a "freed pointer" can be pointing to anything, we set it to point to NULL
-            pairs[i] = NULL;
-
-            printf("%s", OK);
-            return;
-        }
-    }
-    
-    printf("%s", NOK);
-}
-
-void GetAll(void) {
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL) {
-            printf("[%s]: %s\n", pairs[i]->key, pairs[i]->value);
-        }  
-    }
-}
-
-void Exists(char *key) {
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL && strcmp(pairs[i]->key, key) == 0) {
-            printf("%s", OK);
-            return;
-        }
-    }
-    
-    printf("%s", NOK);
-}
-
-void Count(void) {
-    int numberOfAllocatedItemsInPairArray = 0;
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL) {
-            numberOfAllocatedItemsInPairArray++;
-        }
+        free((pairs+i)->key);
+        free((pairs+i)->value);
     }
 
-    printf("%i\n", numberOfAllocatedItemsInPairArray);
-    printf("%s", OK);
-}
+    free(pairs);
 
-void Flush(void) {
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL) {
-            free(pairs[i]->key);
-            free(pairs[i]->value);
-            free(pairs[i]);
-
-            // Since a "freed pointer" can be pointing to anything, we set it to point to NULL
-            pairs[i] = NULL;
-        }
-    }
-    
-    printf("%s", OK);
-}
-
-void Strlen(char* key) {
-    for (int i = 0; i < MAXPAIRS; i++) {
-        if (pairs[i] != NULL && strcmp(key, pairs[i]->key) == 0) {
-            printf("%lu\n", strlen(pairs[i]->value));
-            printf("%s", OK);
-            return;
-        }
-    }
-    
-    printf("%s", NOK);
+    return EXIT_SUCCESS;
 }

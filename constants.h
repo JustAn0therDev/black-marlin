@@ -4,3 +4,4 @@
 #define MAXPAIRS 1000
 #define OK "OK\n"
 #define NOK "NOK\n"
+#define EMPTYSTRING ""
