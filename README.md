@@ -3,6 +3,4 @@
 This project was made to test my knowledge of C by creating a clone of something I use a lot. 
 I might keep optimizing and implementing features to it as time goes on.
 
-## New release
-
-The current state of this application is **reasonable for production use and cross-platform (Windows and Unix)**.
+The current state of this application is actually **reasonable for production use and cross-platform (Windows and Unix)**.
