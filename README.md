@@ -1,6 +1,15 @@
-## A Redis database clone made using C to challenge myself to learn more about the language
+## Black Marlin: An in-memory database based on Redis. Made using C.
+Black Marlin is an in-memory database made for fast **read/write caching**.
 
-This project was made to test my knowledge of C by creating a clone of something I use a lot. 
-I might keep optimizing and implementing features to it as time goes on.
 
-The current state of this application is actually **reasonable for production use and cross-platform (Windows and Unix)**.
+### CURRENT ROADMAP:
+- Library for usage with C# (development coming soon);
+- Support for multiple clients having access to the same memory location, being able to read, overwrite and delete the same keys written by other processes;
+- I don't know how it deals with UTF-8/UTF-16 bytes/strings, so it will be tested in the near future along with the library and new, updated versions will be released.
+
+
+### SIDENOTES:
+- If you want a lot of memory space to "tinker with", do NOT run it in a device that has limited or close to no memory. Keep in mind that this application does not have a system for compression and decompression of information and comes and goes. Memory space usage optimization is not the main concern of this application;
+
+
+The current state of this application is **reasonable for cross-platform (Windows and Unix) production use. If you or your team/organization have found problems with the application, please open up an issue so I can look into it**.
