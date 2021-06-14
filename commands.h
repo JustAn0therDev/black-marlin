@@ -1,6 +1,6 @@
 typedef struct {
-    char* key;
-    char* value;
+  char* key;
+  char* value;
 } Pair;
 
 void GetValue(Pair** pairArray, char** key);
