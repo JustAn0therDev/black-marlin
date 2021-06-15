@@ -11,7 +11,6 @@ TEST_CASE("Black Marlin Get and Set Tests", "[Get and Set]")
 	std::string sampleKey = "get and set test";
   std::string anotherSampleKey = "get and set test two";
 
-	std::string* sampleValue = new std::string(sampleKey);
 	std::string& sampleReference = sampleKey;
 
 	blackMarlin.Set(sampleKey, new std::string(sampleKey));

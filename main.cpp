@@ -3,6 +3,10 @@
 #include <string.h>
 #include "black_marlin.hpp"
 
+/* TODO: next up,
+ * port the main program to C++. Initially, it will stay the same as a REPL
+ * but will become an HTTP Server as soon as I figure out how to write it the thing using Boost.
+ */
 int main() {
 	char* command;
 	char* key;
@@ -10,10 +14,8 @@ int main() {
 	Pair* pairs = malloc(sizeof(Pair) * MAXPAIRS);
 
 	for (int i = 0; i < MAXPAIRS; i++) {
-		(pairs + i)->key = malloc(sizeof(char) * 2);
-		(pairs + i)->value = malloc(sizeof(char) * 2);
-		strcpy((pairs + i)->key, EMPTYSTRING);
-		strcpy((pairs + i)->value, EMPTYSTRING);
+		(pairs + i)->key = NULL;
+		(pairs + i)->value = NULL;
 	}
 
 	while (1) {
