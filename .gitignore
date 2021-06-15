@@ -3,3 +3,4 @@ redis_clone
 /.vscode
 .*
 *~
+unittests/unittests

@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h>
-#include "commands.h"
-#include "macros.h"
+#include "black_marlin.hpp"
 
 int main() {
 	char* command;
