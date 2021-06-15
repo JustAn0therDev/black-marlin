@@ -7,69 +7,75 @@ BlackMarlin::BlackMarlin()
 
 BlackMarlin::~BlackMarlin()
 {
-	/* 
-	 * If just a reference is intended, the unary operator "&" should be used next to it and no need for dereferencing as well. 
-	 */
-	for (auto& key : this->dict)
-	{
-		delete this->dict[key];
-	}
+	this->ClearDict();
 }
 
-std::string* BlackMarlin::Get(std::string& key)
+std::string BlackMarlin::Get(std::string& key)
 {
-	try
-	{
-		return this->dict[key];
-	}
-	catch (std::string& key)
-	{
-		// TODO: I got no idea what to do with this std::string& key.
-		return nullptr;
-	}
+    // I understand WHY it works, but not sure why the other one didn't with try-catching.
+    auto it = this->dict.find(key);
+
+    if (it != this->dict.end())
+    {
+        return *this->dict[key];
+    }
+
+    return "";
 }
 
 void BlackMarlin::Set(std::string key, std::string* value)
 {
-	this->dict[key] = value;
-}
-
-void BlackMarlin::Overwrite(std::string key, std::string* newValue)
-{
-	if (this->dict.find(key))
-	{
-		delete this->dict[key];
-		this->dict[key] = newValue;
-	}
+	this->dict[key] = value; // If the key exists, it is overwritten; Otherwise creates a new key.
 }
 
 void BlackMarlin::Delete(std::string& key)
 {
-	if (this->dict.find(key))
+	auto it = this->dict.find(key);
+
+	if (it != this->dict.end())
 	{
-		delete this->dict[key]; // TODO: should this make the std::unordered_map size smaller or just make the key have a nullptr value?
+		delete this->dict[key];
 	}
+
+	this->dict.erase(it);
 }
 
 bool BlackMarlin::Exists(std::string& key)
 {
-	return this->dict.find(key) ? true : false;
+	auto it = this->dict.find(key);
+
+	if (it != this->dict.end())
+	{
+		return true;
+	}
+
+	return false;
 }
 
-unsigned int BlackMarlin::Count()
+size_t BlackMarlin::Count()
 {
 	return this->dict.size();
 }
 
 void BlackMarlin::Flush()
 {
-	for (auto& key : this->dict)
-	{
-		this->dict.erase(key);
-	}
+	this->ClearDict();
 }
 
-std::string BlackMarlin::Strlen(std::string& key)
+size_t BlackMarlin::Strlen(std::string& key)
 {
-	return std::string();
+	return this->dict[key]->size();
+}
+
+void BlackMarlin::ClearDict()
+{
+	/* 
+	* If just a reference is intended, the unary operator "&" should be used next to it and there is no need for dereferencing.
+	*/
+	for (auto& keyValuePair : this->dict)
+	{
+		delete keyValuePair.second;
+	}
+
+	this->dict.erase(this->dict.begin(), this->dict.end());
 }
