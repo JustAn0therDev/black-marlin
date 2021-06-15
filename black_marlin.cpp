@@ -7,7 +7,7 @@ BlackMarlin::BlackMarlin()
 
 BlackMarlin::~BlackMarlin()
 {
-	this->ClearDict();
+	this->Flush();
 }
 
 std::string BlackMarlin::Get(std::string& key)
@@ -17,7 +17,7 @@ std::string BlackMarlin::Get(std::string& key)
 
     if (it != this->dict.end())
     {
-        return *this->dict[key];
+      return *this->dict[key];
     }
 
     return "";
@@ -25,7 +25,7 @@ std::string BlackMarlin::Get(std::string& key)
 
 void BlackMarlin::Set(std::string key, std::string* value)
 {
-	this->dict[key] = value; // If the key exists, it is overwritten; Otherwise creates a new key.
+	this->dict[key] = value; // If the key exists, it is overwritten; otherwise creates a new one.
 }
 
 void BlackMarlin::Delete(std::string& key)
