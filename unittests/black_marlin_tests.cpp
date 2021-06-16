@@ -9,14 +9,14 @@ TEST_CASE("Black Marlin Get and Set Tests", "[Get and Set]")
 	std::cout << "Running Get and Set" << std::endl;
 
 	std::string sampleKey = "get and set test";
-  std::string anotherSampleKey = "get and set test two";
+    std::string anotherSampleKey = "get and set test two";
 
 	std::string& sampleReference = sampleKey;
 
 	blackMarlin.Set(sampleKey, new std::string(sampleKey));
 	REQUIRE(blackMarlin.Count() == 1);
 
-  blackMarlin.Set(anotherSampleKey, new std::string(anotherSampleKey));
+    blackMarlin.Set(anotherSampleKey, new std::string(anotherSampleKey));
 
 	std::string value = blackMarlin.Get(sampleKey);
 	REQUIRE(value != "");
@@ -27,7 +27,7 @@ TEST_CASE("Exists Tests", "[Exists]")
 {
 	std::cout << "Running Exists" << std::endl;
 
-  std::string key = "get and set test";
+    std::string key = "get and set test";
 	std::string& ref = key;
 	REQUIRE(blackMarlin.Exists(key));
 }
@@ -36,11 +36,11 @@ TEST_CASE("Delete Tests", "[Delete]")
 {
 	std::cout << "Running Delete" << std::endl;
 
-  std::string key = "get and set test";
+    std::string key = "get and set test";
 	std::string& ref = key;
-  blackMarlin.Delete(ref);
+    blackMarlin.Delete(ref);
 
-  REQUIRE(blackMarlin.Count() == 1);
+    REQUIRE(blackMarlin.Count() == 1);
 }
 
 TEST_CASE("Count Test", "[Count]")
@@ -50,19 +50,10 @@ TEST_CASE("Count Test", "[Count]")
 	REQUIRE(blackMarlin.Count() == 1);
 }
 
-TEST_CASE("Strlen Test", "[Strlen]")
-{
-	std::cout << "Running Strlen" << std::endl;
-
-  std::string key = "get and set test two";
-	std::string& keyRef = key;
-  REQUIRE(blackMarlin.Strlen(keyRef) == 20);
-}
-
 TEST_CASE("Flush Test", "[Flush]")
 {
 	std::cout << "Running Flush" << std::endl;
 
-  blackMarlin.Flush();
-  REQUIRE(blackMarlin.Count() == 0);
+    blackMarlin.Flush();
+    REQUIRE(blackMarlin.Count() == 0);
 }

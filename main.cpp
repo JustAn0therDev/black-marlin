@@ -1,91 +1,74 @@
-#include <stdio.h>
-#include <stdlib.h> 
-#include <string.h>
+#include <iostream>
+#include <memory>
+#include <string>
 #include "black_marlin.hpp"
 
-/* TODO: next up,
- * port the main program to C++. Initially, it will stay the same as a REPL
- * but will become an HTTP Server as soon as I figure out how to write it the thing using Boost.
- */
+template<typename T>
+void printLine(T value) {
+    std::cout << value << std::endl;
+}
+
+template<typename T>
+void printVector(T vector) {
+    for (auto& current : vector) {
+        std::cout << current << std::endl;
+    }
+}
+
 int main() {
-	char* command;
-	char* key;
+    std::string command;
+    std::string key;
 
-	Pair* pairs = malloc(sizeof(Pair) * MAXPAIRS);
+    auto blackMarlin = std::make_unique<BlackMarlin>();
 
-	for (int i = 0; i < MAXPAIRS; i++) {
-		(pairs + i)->key = NULL;
-		(pairs + i)->value = NULL;
-	}
+    std::cout << "BLACK MARLIN v1.0" << std::endl;
 
-	while (1) {
-		key = malloc(sizeof(char) * MAXKEYSIZE);
-		command = malloc(sizeof(char) * MAXCOMMANDSIZE);
+    while (1) {
+        std::getline(std::cin, command);
 
-		printf("Insert a command: ");
-		scanf("%s", command);
+        if (command == "GET") {
+            printLine("Insert a key: ");
 
-		if (strcmp(command, "GET") == 0) {
-			printf("Insert a key: ");
-			scanf("%s", key);
-			GetValue(&pairs, &key);
-		}
-		else if (strcmp(command, "SET") == 0) {
-			char* value = malloc(sizeof(char) * MAXVALUESIZE);
+            std::getline(std::cin, key);
+            std::string& keyRef = key;
+            
+            printLine(blackMarlin->Get(keyRef));
+        } else if (command == "SET") {
+            // ok. A NEW POINTER should be created everytime a SET command is read.
+            std::string* valuePtr = new std::string();
 
-			printf("Insert a key: ");
-			scanf("%s", key);
+            printLine("Insert a key: ");
+            std::getline(std::cin, key);
+            
+            printLine("Insert a value: ");
+            // does getline accept a ptr (it should since a string is jjust a char*)? 
+            std::getline(std::cin, *valuePtr);
 
-			printf("Insert a value: ");
-			scanf("%s", value);
+            blackMarlin->Set(key, valuePtr);
 
-			SetValue(&pairs, &key, &value);
-			free(value);
-		}
-		else if (strcmp(command, "DELETE") == 0) {
-			printf("Insert a key: ");
-			scanf("%s", key);
-			DeleteValue(&pairs, &key);
-		}
-		else if (strcmp(command, "GETALL") == 0) {
-			GetAll(&pairs);
-		}
-		else if (strcmp(command, "COUNT") == 0) {
-			Count(&pairs);
-		}
-		else if (strcmp(command, "EXISTS") == 0) {
-			printf("Insert a key: ");
-			scanf("%s", key);
-			Exists(&pairs, &key);
-		}
-		else if (strcmp(command, "FLUSH") == 0) {
-			Flush(&pairs);
-		}
-		else if (strcmp(command, "STRLEN") == 0) {
-			printf("Insert a key: ");
-			scanf("%s", key);
-			Strlen(&pairs, &key);
-		}
-		else if (strcmp(command, "QUIT") == 0) {
-			break;
-		}
-		else {
-			printf("Unknown command.\n");
-		}
+            printLine("OK");
+            
+        } else if (command == "DELETE") {
+            printLine("Insert a key: ");
+            std::getline(std::cin, key);
 
-		free(command);
-		free(key);
-	}
-
-	free(command);
-	free(key);
-
-	for (int i = 0; i < MAXPAIRS; i++) {
-		free((pairs + i)->key);
-		free((pairs + i)->value);
-	}
-
-	free(pairs);
-
-	return EXIT_SUCCESS;
+            std::string& keyRef = key;
+            blackMarlin->Delete(keyRef);
+            
+            printLine("OK");
+        } else if (command == "FLUSH") {
+            blackMarlin->Flush();
+            printLine("OK");
+        } else if (command == "COUNT") {
+            printLine(blackMarlin->Count());
+        } else if (command == "GETALL") {
+            printVector(blackMarlin->GetAll());
+        } else if (command == "QUIT") {
+            break;
+        } else {
+            std::cout << "Command not found" << std::endl;
+        }
+    }
+    
+    return 0;
 }
