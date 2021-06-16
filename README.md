@@ -1,5 +1,5 @@
 ## Black Marlin: An in-memory, HTTP Web Server database based on Redis. Made using C++.
-Black Marlin is an in-memory database made for fast **read/write caching**. It displays an interface for communication with HTTP methods for easier use in Web architectures.
+Black Marlin is an in-memory database made for fast **read/write caching**. It will have an interface for communication with HTTP methods for easier use in Web architectures with requests and responses. No plans for web sockets implementation.
 
 ### FEATURES:
 - Unit testing code coverage;
