@@ -35,7 +35,7 @@ int main() {
             printLine(blackMarlin->Get(keyRef));
         } else if (command == "SET") {
             // ok. A NEW POINTER should be created everytime a SET command is read.
-            std::string* valuePtr = new std::string();
+            auto* valuePtr = new std::string();
 
             printLine("Insert a key: ");
             std::getline(std::cin, key);

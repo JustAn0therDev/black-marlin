@@ -31,7 +31,7 @@ void BlackMarlin::Delete(std::string& key) {
         delete this->dict[key];
     }
     
-	this->dict.erase(key); // this should work. It doesn't work when using raw pointers.
+	this->dict.erase(key); // this should work. It doesn't work when not using raw pointers.
 }
 
 bool BlackMarlin::Exists(std::string& key) {
