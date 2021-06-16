@@ -4,3 +4,6 @@ redis_clone
 .*
 *~
 unittests/unittests
+*.gch
+*.out
+black_marlin 
