@@ -7,5 +7,8 @@ Black Marlin is an in-memory database made for fast **read/write caching**. It w
 - Integration tests (coming soon);
 - Use of C++ optimization and constant checking for memory leaks.
 
+### USAGE:
+**CURRENTLY IN DEVELOPMENT**
+
 ### SIDENOTE:
 - If you want a lot of memory space to "tinker with", do NOT run it in a device that has limited or close to no memory. Keep in mind that this application does not have a system for compression and decompression of information that comes and goes. **Space usage optimization is not the main concern of this application**, but reading/writing as fast as possible.
