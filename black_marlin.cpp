@@ -10,7 +10,6 @@ BlackMarlin::~BlackMarlin() {
 }
 
 std::string BlackMarlin::Get(std::string& key) {
-    // I understand WHY it works, but not sure why the other one didn't work (using a try catch).
     auto it = this->dict.find(key);
 
     if (it != this->dict.end()) {
@@ -21,7 +20,7 @@ std::string BlackMarlin::Get(std::string& key) {
 }
 
 void BlackMarlin::Set(std::string key, std::string* value) {
-	this->dict[key] = value; // If the key exists, it is overwritten; otherwise creates a new one.
+	this->dict[key] = value;
 }
 
 void BlackMarlin::Delete(std::string& key) {
@@ -31,7 +30,7 @@ void BlackMarlin::Delete(std::string& key) {
         delete this->dict[key];
     }
     
-	this->dict.erase(key); // this should work. It doesn't work when not using raw pointers.
+	this->dict.erase(key);
 }
 
 bool BlackMarlin::Exists(std::string& key) {
@@ -58,12 +57,8 @@ void BlackMarlin::ClearDict() {
         delete it->second;
     }
 
-    // cleaning up buckets themselves.
+    // cleaning up the buckets.
     this->dict.erase(this->dict.begin(), this->dict.end());
-    
-    // The problem here is that I delete the value and read it again,
-    // when iterating. This is wrong, the deletion should not occur like this, rather
-    // clean the std::string pointers first and then erasing the buckets.    
 }
 
 std::vector<std::string> BlackMarlin::GetAll() {
