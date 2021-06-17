@@ -92,6 +92,11 @@ int main() {
 		res.set_content("", "*/*");
 	});
 
+	server.Delete("/flush", [&blackMarlin](const httplib::Request&, httplib::Response& res) {
+		blackMarlin->Flush();
+		res.set_content("", "*/*");
+	});
+
 	server.Get("/exists", [&blackMarlin](const httplib::Request& req, httplib::Response& res) {
 		if (req.has_param("key")) {
 			std::string& keyRef = req.get_param_value("key");
