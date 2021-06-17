@@ -113,11 +113,6 @@ int main() {
 		res.set_content(std::to_string(blackMarlin->Count()), "*/*");
 	});
 
-	server.Get("/kill", [&blackMarlin](const httplib::Request&, httplib::Response& res) {
-		delete blackMarlin;
-		exit(0);
-	});
-
 	const char* address = "127.0.0.1";
 	int port = 6969;
 
