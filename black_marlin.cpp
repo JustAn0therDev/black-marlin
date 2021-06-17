@@ -1,5 +1,6 @@
 #include "black_marlin.hpp"
 #include <vector>
+#include <iostream>
 
 BlackMarlin::BlackMarlin() {
 	this->dict = std::unordered_map<std::string, std::string*>();
@@ -9,7 +10,7 @@ BlackMarlin::~BlackMarlin() {
 	this->Flush();
 }
 
-std::string BlackMarlin::Get(std::string& key) {
+std::string BlackMarlin::Get(std::string key) {
     auto it = this->dict.find(key);
 
     if (it != this->dict.end()) {
@@ -59,15 +60,4 @@ void BlackMarlin::ClearDict() {
 
     // cleaning up the buckets.
     this->dict.erase(this->dict.begin(), this->dict.end());
-}
-
-std::vector<std::string> BlackMarlin::GetAll() {
-    std::vector<std::string> vectToReturn = std::vector<std::string>();
-
-    for (auto& pair : this->dict)
-    {
-        vectToReturn.push_back(pair.first + " " + *pair.second);
-    }
-
-    return vectToReturn;
 }

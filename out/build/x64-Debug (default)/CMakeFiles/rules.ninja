@@ -47,7 +47,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\highl\source\repos\black_marlin_vs\black_marlin -B"C:\Users\highl\source\repos\black_marlin_vs\black_marlin\out\build\x64-Debug (default)"
+  command = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\highl\source\repos\black_marlin -B"C:\Users\highl\source\repos\black_marlin\out\build\x64-Debug (default)"
   description = Re-running CMake...
   generator = 1
 
