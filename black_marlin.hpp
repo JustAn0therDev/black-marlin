@@ -13,7 +13,7 @@ public:
     // BlackMarlin's destructor.
 	~BlackMarlin();
     // Returns the value of a key if it exists. If it does not exist, returns an empty string.
-	std::string Get(std::string& key);
+	std::string Get(std::string key);
     // Sets the key and the value in the map. If the key already exists, the value is overwritten.
 	void Set(std::string key, std::string* value);
     // Deletes the pointer to the string and the "bucket" in the map.
@@ -24,10 +24,6 @@ public:
 	size_t Count();
     // Frees all pointers and buckets in the map.
 	void Flush();
-    /*
-     * Returns all items in the map. This route won't be available in the final version with an HTTP Web Server interface.
-    */
-    std::vector<std::string> GetAll();
 private:
     // The main std::unordered_map for storing the values (string to string pointer).
 	std::unordered_map<std::string, std::string*> dict;

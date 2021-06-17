@@ -82,7 +82,7 @@ build black_marlin.exe: CXX_EXECUTABLE_LINKER__black_marlin_Debug CMakeFiles\bla
 # Utility command for rebuild_cache
 
 build CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\highl\source\repos\black_marlin_vs\black_marlin\out\build\x64-Debug (default)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\highl\source\repos\black_marlin_vs\black_marlin -B"C:\Users\highl\source\repos\black_marlin_vs\black_marlin\out\build\x64-Debug (default)""
+  COMMAND = cmd.exe /C "cd /D "C:\Users\highl\source\repos\black_marlin\out\build\x64-Debug (default)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\highl\source\repos\black_marlin -B"C:\Users\highl\source\repos\black_marlin\out\build\x64-Debug (default)""
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -94,7 +94,7 @@ build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 # Utility command for test
 
 build CMakeFiles\test.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\highl\source\repos\black_marlin_vs\black_marlin\out\build\x64-Debug (default)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\ctest.exe" --force-new-ctest-process "
+  COMMAND = cmd.exe /C "cd /D "C:\Users\highl\source\repos\black_marlin\out\build\x64-Debug (default)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\ctest.exe" --force-new-ctest-process "
   DESC = Running tests...
   pool = console
   restat = 1
@@ -106,7 +106,7 @@ build test: phony CMakeFiles\test.util
 # Utility command for edit_cache
 
 build CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\highl\source\repos\black_marlin_vs\black_marlin\out\build\x64-Debug (default)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D "C:\Users\highl\source\repos\black_marlin\out\build\x64-Debug (default)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -123,7 +123,7 @@ build black_marlin: phony black_marlin.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/highl/source/repos/black_marlin_vs/black_marlin/out/build/x64-Debug (default)
+# Folder: C:/Users/highl/source/repos/black_marlin/out/build/x64-Debug (default)
 
 build all: phony black_marlin.exe
 
