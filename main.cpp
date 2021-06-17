@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include "httplib.h"
 #include "black_marlin.hpp"
 
 template<typename T>
@@ -22,51 +23,35 @@ int main() {
     auto blackMarlin = std::make_unique<BlackMarlin>();
 
     std::cout << "BLACK MARLIN v1.0" << std::endl;
+    std::cout << std::endl;
 
-    while (1) {
-        std::getline(std::cin, command);
+    httplib::Server server;
+    const char* address = "127.0.0.1";
+    int port = 6969;
 
-        if (command == "GET") {
-            printLine("Insert a key: ");
+    /*
+    * THE MAIN COMMANDS WILL USE THE MAIN ROUTE "/"
+        GET -> GET
+        POST, PATCH, PUT -> SET
+        DELETE -> DELETE
+        COUNT -> GET "/count"
+        EXISTS -> GET "/exists"
+    */
 
-            std::getline(std::cin, key);
-            std::string& keyRef = key;
-            
-            printLine(blackMarlin->Get(keyRef));
-        } else if (command == "SET") {
-            auto* valuePtr = new std::string();
+    key = "some value";
+    // testing json values formatting.
+    std::string jsonValue = R"({"message": "Hello", "time": "02:11"})";
+    std::string* value = &jsonValue;
 
-            printLine("Insert a key: ");
-            std::getline(std::cin, key);
-            
-            printLine("Insert a value: ");
-            std::getline(std::cin, *valuePtr);
+    blackMarlin->Set(key, value);
 
-            blackMarlin->Set(key, valuePtr);
+    server.Get("/", [&blackMarlin, &key](const httplib::Request&, httplib::Response &res) {
+        auto& keyRef = key;
+        res.set_content(blackMarlin->Get(keyRef), "text/plain");
+    });
 
-            printLine("OK");
-            
-        } else if (command == "DELETE") {
-            printLine("Insert a key: ");
-            std::getline(std::cin, key);
-
-            std::string& keyRef = key;
-            blackMarlin->Delete(keyRef);
-            
-            printLine("OK");
-        } else if (command == "FLUSH") {
-            blackMarlin->Flush();
-            printLine("OK");
-        } else if (command == "COUNT") {
-            printLine(blackMarlin->Count());
-        } else if (command == "GETALL") {
-            printVector(blackMarlin->GetAll());
-        } else if (command == "QUIT") {
-            break;
-        } else {
-            std::cout << "Command not found" << std::endl;
-        }
-    }
+    std::cout << "Listening at: " << address << ":" << port << std::endl;
+    server.listen(address, port);
     
     return 0;
 }
