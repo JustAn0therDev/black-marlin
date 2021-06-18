@@ -43,6 +43,13 @@ include CMakeFiles\rules.ninja
 
 build cmake_object_order_depends_target_black_marlin: phony || CMakeFiles\black_marlin.dir
 
+build CMakeFiles\black_marlin.dir\main.cpp.obj: CXX_COMPILER__black_marlin_Debug ..\..\..\main.cpp || cmake_object_order_depends_target_black_marlin
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = CMakeFiles\black_marlin.dir
+  OBJECT_FILE_DIR = CMakeFiles\black_marlin.dir
+  TARGET_COMPILE_PDB = CMakeFiles\black_marlin.dir\
+  TARGET_PDB = black_marlin.pdb
+
 build CMakeFiles\black_marlin.dir\black_marlin.cpp.obj: CXX_COMPILER__black_marlin_Debug ..\..\..\black_marlin.cpp || cmake_object_order_depends_target_black_marlin
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   OBJECT_DIR = CMakeFiles\black_marlin.dir
@@ -50,7 +57,7 @@ build CMakeFiles\black_marlin.dir\black_marlin.cpp.obj: CXX_COMPILER__black_marl
   TARGET_COMPILE_PDB = CMakeFiles\black_marlin.dir\
   TARGET_PDB = black_marlin.pdb
 
-build CMakeFiles\black_marlin.dir\main.cpp.obj: CXX_COMPILER__black_marlin_Debug ..\..\..\main.cpp || cmake_object_order_depends_target_black_marlin
+build CMakeFiles\black_marlin.dir\http_request_handler.cpp.obj: CXX_COMPILER__black_marlin_Debug ..\..\..\http_request_handler.cpp || cmake_object_order_depends_target_black_marlin
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   OBJECT_DIR = CMakeFiles\black_marlin.dir
   OBJECT_FILE_DIR = CMakeFiles\black_marlin.dir
@@ -65,7 +72,7 @@ build CMakeFiles\black_marlin.dir\main.cpp.obj: CXX_COMPILER__black_marlin_Debug
 #############################################
 # Link the executable black_marlin.exe
 
-build black_marlin.exe: CXX_EXECUTABLE_LINKER__black_marlin_Debug CMakeFiles\black_marlin.dir\black_marlin.cpp.obj CMakeFiles\black_marlin.dir\main.cpp.obj
+build black_marlin.exe: CXX_EXECUTABLE_LINKER__black_marlin_Debug CMakeFiles\black_marlin.dir\main.cpp.obj CMakeFiles\black_marlin.dir\black_marlin.cpp.obj CMakeFiles\black_marlin.dir\http_request_handler.cpp.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

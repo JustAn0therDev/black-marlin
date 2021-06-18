@@ -5,117 +5,47 @@
 #include "httplib.h"
 #include "black_marlin.hpp"
 #include "status_codes.hpp"
+#include "http_request_handler.hpp"
 
 int main() {
 	httplib::Server server;
 
-	auto blackMarlin = new BlackMarlin();
+	auto black_marlin = new BlackMarlin();
+	HttpRequestHandler http_request_handler;
 
 	std::cout << "BLACK MARLIN v1.0" << std::endl;
 	std::cout << std::endl;
 
-	server.Get("/", [&blackMarlin](const httplib::Request& req, httplib::Response& res) {
-		std::string value;
-
-		if (req.has_param("key")) {
-			value = blackMarlin->Get(req.get_param_value("key"));
-
-			if (std::empty(value)) {
-				res.status = (int)StatusCodes::NOT_FOUND;
-			}
-		}
-		else {
-			res.status = (int)StatusCodes::BAD_REQUEST;
-		}
-
-		res.set_content(value, "*/*");
+	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
+		http_request_handler.HandleGet(black_marlin, req, res);
 	});
 
-	server.Post("/", [&blackMarlin](const httplib::Request& req, httplib::Response& res) {
-		if (req.has_param("key")) {
-			std::string key = req.get_param_value("key");
-			std::string* body = new std::string(req.body);
-			std::string& keyRef = key;
-
-			blackMarlin->Set(keyRef, body);
-			res.status = (int)StatusCodes::CREATED;
-		}
-		else {
-			res.status = (int)StatusCodes::BAD_REQUEST;
-		}
-
-		res.set_content("", "*/*");
+	server.Post("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
+		http_request_handler.HandlePost(black_marlin, req, res);
 	});
 
-	server.Put("/", [&blackMarlin](const httplib::Request& req, httplib::Response& res) {
-		if (req.has_param("key")) {
-			std::string key = req.get_param_value("key");
-			std::string* body = new std::string(req.body);
-			std::string& keyRef = key;
-
-			blackMarlin->Set(keyRef, body);
-			res.status = (int)StatusCodes::CREATED;
-		}
-		else {
-			res.status = (int)StatusCodes::BAD_REQUEST;
-		}
-
-		res.set_content("", "*/*");
+	server.Put("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
+		http_request_handler.HandlePutAndPatch(black_marlin, req, res);
 	});
 
-	server.Patch("/", [&blackMarlin](const httplib::Request& req, httplib::Response& res) {
-		if (req.has_param("key")) {
-			std::string key = req.get_param_value("key");
-			std::string* body = new std::string(req.body);
-			std::string& keyRef = key;
-
-			blackMarlin->Set(keyRef, body);
-			res.status = (int)StatusCodes::CREATED;
-		}
-		else {
-			res.status = (int)StatusCodes::BAD_REQUEST;
-		}
-
-		res.set_content("", "*/*");
+	server.Patch("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
+		http_request_handler.HandlePutAndPatch(black_marlin, req, res);
 	});
 
-	server.Delete("/", [&blackMarlin](const httplib::Request& req, httplib::Response& res) {
-		if (req.has_param("key")) {
-			std::string& keyRef = req.get_param_value("key");
-
-			blackMarlin->Delete(keyRef);
-		}
-		else {
-			res.status = (int)StatusCodes::BAD_REQUEST;
-		}
-
-		res.set_content("", "*/*");
+	server.Delete("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
+		http_request_handler.HandleDelete(black_marlin, req, res);
 	});
 
-	server.Delete("/flush", [&blackMarlin](const httplib::Request&, httplib::Response& res) {
-		blackMarlin->Flush();
-		res.set_content("", "*/*");
+	server.Delete("/flush", [&black_marlin, &http_request_handler](const httplib::Request&, httplib::Response& res) {
+		http_request_handler.HandleDeleteFlush(black_marlin, res);
 	});
 
-	server.Get("/exists", [&blackMarlin](const httplib::Request& req, httplib::Response& res) {
-		if (req.has_param("key")) {
-			std::string& keyRef = req.get_param_value("key");
-
-			bool exists = blackMarlin->Exists(keyRef);
-
-			if (!exists) {
-				res.status = (int)StatusCodes::NOT_FOUND;
-			}
-		}
-		else {
-			res.status = (int)StatusCodes::BAD_REQUEST;
-		}
-
-		res.set_content("", "*/*");
+	server.Get("/exists", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
+		http_request_handler.HandleGetExists(black_marlin, req, res);
 	});
 
-	server.Get("/count", [&blackMarlin](const httplib::Request&, httplib::Response& res) {
-		res.set_content(std::to_string(blackMarlin->Count()), "*/*");
+	server.Get("/count", [&black_marlin, &http_request_handler](const httplib::Request&, httplib::Response& res) {
+		http_request_handler.HandleGetCount(black_marlin, res);
 	});
 
 	const char* address = "127.0.0.1";
