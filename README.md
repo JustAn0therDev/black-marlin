@@ -3,10 +3,10 @@
 
 
 ## Why does it have a REST API interface?
-The interface was created with easy development in mind, instead of having to use some sort of third-party library or framework. Meaning your own libary can be written by hand
-easily and in no-time, no different from connecting to any other external REST API in your application.
-So any other language or implementation can use the program for caching its data without having to worry about maintaining connections or reading the standard output of other processes.
-This also allows servers in an architeture that uses Load Balancing to share keys as they want with a fast, easy access to the same cache.
+The interface was created with easy development in mind, instead of having to use some sort of third-party library or framework; meaning its no different from making requests to a REST API in your program.
+
+Any other program can cache its data without having to worry about its own available space in memory (if running on another host), maintaining connections or manually reading the output of other processes.
+This also allows servers in an architecture that uses Load Balancing to share keys as they want with a fast, easy access to the same cache.
 
 
 ## Features:
@@ -58,3 +58,6 @@ The only thing you have to do to integrate with your application is make HTTP re
 
 ## Sidenotes:
 - Currently, this application is not intended to have any sort of security implementation, so it should run inside your organization/project's infraestructure. This decision was made to avoid any kind of overhead.
+
+## Contributions:
+Feel free to open issues, fork and make pull requests as you feel like it. I'll be happy to help.
