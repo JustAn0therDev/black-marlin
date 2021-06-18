@@ -1,14 +1,60 @@
-## Black Marlin: An in-memory, HTTP Web Server database based on Redis. Made using C++.
-Black Marlin is an in-memory database made for fast **read/write caching**. It will have an interface for communication with HTTP methods for easier use in Web architectures with requests and responses. No plans for web sockets implementation.
+# Black Marlin: An in-memory database based on Redis with a REST API interface for easy development and integration.
+**Black Marlin** is an in-memory database for fast reading, writing and deleting cached data. Made using C++. Light, fast and easy to use.
 
-### FEATURES:
-- Unit testing code coverage;
-- HTTP Web Server implementation for HTTP methods and usage by any other machine as a client (in development);
-- Integration tests (coming soon);
-- Use of C++ optimization and constant checking for memory leaks.
 
-### USAGE:
-**CURRENTLY IN DEVELOPMENT**
+## Why does it have a REST API interface?
+The interface was created with easy development in mind, instead of having to use some sort of third-party library or framework. Meaning your own libary can be written by hand
+easily and in no-time, no different from connecting to any other external REST API in your application.
+So any other language or implementation can use the program for caching its data without having to worry about maintaining connections or reading the standard output of other processes.
+This also allows servers in an architeture that uses Load Balancing to share keys as they want with a fast, easy access to the same cache.
 
-### SIDENOTE:
-- If you want a lot of memory space to "tinker with", do NOT run it in a device that has limited or close to no memory. Keep in mind that this application does not have a system for compression and decompression of information that comes and goes. **Space usage optimization is not the main concern of this application**, but reading/writing as fast as possible.
+
+## Features:
+- Uses a `std::unordered_map` with a key `std::string` and a `std::string*` value. Long story short, its a hash table that allows fast lookup time (O(1) for keys and worst case O(N) for values, N being the size of a bucket);
+- The main library has tests covered by unit tests with [catchv2](https://github.com/catchorg/Catch2);
+- REST API interface for HTTP methods written on top of the main library. Meaning this is a **raw web server using the awesome [cpp-httplib](https://github.com/yhirose/cpp-httplib)**;
+- Integration tests validating every possible response and request;
+- Performance profiling and memory leak checks are made with VS Diagnostic Tools and Valgrind.
+
+## Usage:
+Currently, the application runs on port **7000**. You can access it by making a GET request to http://127.0.0.1:7000/count with your program running, for example.
+The only thing you have to do to integrate with your application is make HTTP requests and handle the responses.
+
+### For each route and method:
+**Any failed operation will return an HTTP Status Code of `500 - Internal Server Error`**.
+
+
+"/":
+- `GET` accepts a `key` query parameter: http://127.0.0.1:7000/?key=
+	- Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key is found and `204 - No Content` if a key is provided but wasn't found.
+
+- `POST` accepts a `key` query parameter (http://127.0.0.1:7000/?key=) and a **body**. The body can be sent in any format.
+	- Returns: `400 - Bad Request` if no key or body was sent in the request and `201 - Created` if the key-value pair was created successfully.
+
+- `PUT and PATCH`: accepts a `key` query parameter (http://127.0.0.1:7000/?key=) and a **body**. The body can be sent in any format.
+	- Returns: `400 - Bad Request` if no key or body was sent in the request and `200 - OK` if the key-value pair was updated successfully.
+
+- `DELETE` accepts a `key` query parameter: http://127.0.0.1:7000/?key=
+	- Returns: `400 - Bad Request` if no key is sent and `200 - OK` if a key was provided. **Even if the hash table does not have the provided key, no specific HTTP Status Code will return**.
+
+
+"/count":
+- `GET` takes no parameters: http://127.0.0.1:7000/count
+	- Returns: `200 - OK` with a body containing a single number. This number is a `size_t` value, so it can get as big as the max value of an `unsigned long long`.
+
+"/exists":
+- `GET` accepts a `key` query parameter: http://127.0.0.1:7000/exists?key=
+	- Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key is found and `204 - No Content` if a key provided wasn't found.
+
+"/flush":
+- `DELETE` takes no parameters: http://127.0.0.1:7000/flush
+	- Returns: `200 - OK` if everything went well.
+
+
+## Current roadmap:
+- Configurable headers and port through a file in the same directory as the main program;
+- Possible compression of response payload.
+
+
+## Sidenotes:
+- Currently, this application is not intended to have any sort of security implementation, so it should run inside your organization/project's infraestructure. This decision was made to avoid any kind of overhead.

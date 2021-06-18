@@ -1,4 +1,4 @@
-enum class StatusCodes {
+enum class StatusCode {
 	kCreated = 201,
 	kNoContent = 204,
 	kBadRequest = 400,

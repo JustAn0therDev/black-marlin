@@ -4,17 +4,13 @@
 #include <stdlib.h>
 #include "httplib.h"
 #include "black_marlin.hpp"
-#include "status_codes.hpp"
 #include "http_request_handler.hpp"
 
 int main() {
 	httplib::Server server;
 
-	auto black_marlin = new BlackMarlin();
+	auto black_marlin = BlackMarlin();
 	HttpRequestHandler http_request_handler;
-
-	std::cout << "BLACK MARLIN v1.0" << std::endl;
-	std::cout << std::endl;
 
 	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
 		http_request_handler.HandleGet(black_marlin, req, res);
@@ -49,10 +45,12 @@ int main() {
 	});
 
 	const char* address = "127.0.0.1";
-	int port = 6969;
+	int port = 7000;
 
 	std::cout << "Listening at: " << address << ":" << port << std::endl;
 	server.listen(address, port);
+
+	black_marlin.~BlackMarlin();
 
 	return EXIT_SUCCESS;
 }
