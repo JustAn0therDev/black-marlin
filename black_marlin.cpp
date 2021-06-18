@@ -34,8 +34,8 @@ void BlackMarlin::Delete(std::string& p_key) {
 	this->m_dict.erase(p_key);
 }
 
-bool BlackMarlin::Exists(std::string& key) {
-	auto it = this->m_dict.find(key);
+bool BlackMarlin::Exists(std::string& p_key) {
+	auto it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end()) {
 		return true;
