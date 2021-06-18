@@ -11,8 +11,10 @@ public:
 	~BlackMarlin();
     // Returns the value of a key if it exists. If it does not exist, returns an empty string.
 	std::string Get(std::string p_key);
-    // Sets the key and the value in the map. If the key already exists, the value is overwritten.
+    // Sets the key and the value in the map. If the key already exists and the intention was to overwrite the value, the method Overwrite should be used instead.
 	void Set(std::string p_key, std::string* p_value);
+	// Overwrites the value to the key. If the key does not exist, nothing happens.
+	void Overwrite(std::string p_key, std::string* p_value);
     // Deletes the pointer to the string and the "bucket" in the map.
 	void Delete(std::string& p_key);
     // Returns true if the key exists in the map; false otherwise.

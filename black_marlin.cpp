@@ -21,7 +21,20 @@ std::string BlackMarlin::Get(std::string p_key) {
 }
 
 void BlackMarlin::Set(std::string p_key, std::string* p_value) {
-	this->m_dict[p_key] = p_value;
+    auto it = this->m_dict.find(p_key);
+
+    if (it == this->m_dict.end()) {
+        this->m_dict[p_key] = p_value;
+    }
+}
+
+void BlackMarlin::Overwrite(std::string p_key, std::string* p_value) {
+    auto it = this->m_dict.find(p_key);
+
+    if (it != this->m_dict.end()) {
+        delete this->m_dict[p_key];
+        this->m_dict[p_key] = p_value;
+    }
 }
 
 void BlackMarlin::Delete(std::string& p_key) {
@@ -58,6 +71,6 @@ void BlackMarlin::ClearDict() {
         delete it->second;
     }
 
-    // cleaning up the buckets.
+    // cleaning up the buckets if there are any.
     this->m_dict.erase(this->m_dict.begin(), this->m_dict.end());
 }
