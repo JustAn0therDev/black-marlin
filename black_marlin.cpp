@@ -3,41 +3,41 @@
 #include <iostream>
 
 BlackMarlin::BlackMarlin() {
-	this->dict = std::unordered_map<std::string, std::string*>();
+	this->m_dict = std::unordered_map<std::string, std::string*>();
 }
 
 BlackMarlin::~BlackMarlin() {
 	this->Flush();
 }
 
-std::string BlackMarlin::Get(std::string key) {
-    auto it = this->dict.find(key);
+std::string BlackMarlin::Get(std::string p_key) {
+    auto it = this->m_dict.find(p_key);
 
-    if (it != this->dict.end()) {
-        return *this->dict[key];
+    if (it != this->m_dict.end()) {
+        return *this->m_dict[p_key];
     }
 
     return "";
 }
 
-void BlackMarlin::Set(std::string key, std::string* value) {
-	this->dict[key] = value;
+void BlackMarlin::Set(std::string p_key, std::string* p_value) {
+	this->m_dict[p_key] = p_value;
 }
 
-void BlackMarlin::Delete(std::string& key) {
-    auto it = this->dict.find(key);
+void BlackMarlin::Delete(std::string& p_key) {
+    auto it = this->m_dict.find(p_key);
 
-    if (it != this->dict.end()) {
-        delete this->dict[key];
+    if (it != this->m_dict.end()) {
+        delete this->m_dict[p_key];
     }
     
-	this->dict.erase(key);
+	this->m_dict.erase(p_key);
 }
 
 bool BlackMarlin::Exists(std::string& key) {
-	auto it = this->dict.find(key);
+	auto it = this->m_dict.find(key);
 
-	if (it != this->dict.end()) {
+	if (it != this->m_dict.end()) {
 		return true;
 	}
 
@@ -45,7 +45,7 @@ bool BlackMarlin::Exists(std::string& key) {
 }
 
 size_t BlackMarlin::Count() {
-	return this->dict.size();
+	return this->m_dict.size();
 }
 
 void BlackMarlin::Flush() {
@@ -54,10 +54,10 @@ void BlackMarlin::Flush() {
 
 void BlackMarlin::ClearDict() {
     // cleaning up pointers in buckets.
-    for (auto it = this->dict.begin(); it != this->dict.end(); ++it) {
+    for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it) {
         delete it->second;
     }
 
     // cleaning up the buckets.
-    this->dict.erase(this->dict.begin(), this->dict.end());
+    this->m_dict.erase(this->m_dict.begin(), this->m_dict.end());
 }
