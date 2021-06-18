@@ -402,3 +402,4 @@ FodyWeavers.xsd
 .idea/
 *.sln.iml
 /out/build/x64-Release
+/unittests/unittests.exe
