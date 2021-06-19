@@ -1,3 +1,4 @@
+#include <string>
 #include "http_request_handler.hpp"
 #include "httplib.h"
 #include "black_marlin.hpp"
@@ -32,9 +33,10 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 		return;
 	}
 
-	std::string* req_body_ptr = new std::string(p_req.body);
-	p_black_marlin.Set(key, req_body_ptr);
-	p_res.status = (int)StatusCode::kCreated;
+    std::string* req_body_ptr = new std::string(p_req.body);
+
+    p_black_marlin.Set(key, req_body_ptr);
+    p_res.status = (int)StatusCode::kCreated;
 }
 
 void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {
@@ -44,15 +46,14 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
 	}
 
 	const auto& key = p_req.get_param_value("key");
-	auto* body = new std::string(p_req.body);
 
 	if (!p_black_marlin.Exists(key)) {
 		p_res.status = (int)StatusCode::kBadRequest;
 		return;
 	}
 
-	p_black_marlin.Overwrite(key, body);
-	p_res.set_content("", this->m_content_type);
+    std::string* req_body_ptr = new std::string(p_req.body);
+    p_black_marlin.Overwrite(key, req_body_ptr);
 }
 
 void HttpRequestHandler::HandleDelete(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {

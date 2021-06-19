@@ -32,8 +32,8 @@ void BlackMarlin::Overwrite(std::string p_key, std::string* p_value) {
     auto it = this->m_dict.find(p_key);
 
     if (it != this->m_dict.end()) {
-        delete it->second;
-        it->second = p_value; // TESTING: is this going to work?
+        delete this->m_dict[p_key];
+        this->m_dict[p_key] = p_value;
     }
 }
 
@@ -42,7 +42,7 @@ void BlackMarlin::Delete(const std::string& p_key) {
 
     if (it == this->m_dict.end()) return;
 
-    delete it->second;
+    delete this->m_dict[p_key];
     
 	this->m_dict.erase(p_key);
 }
@@ -66,11 +66,15 @@ void BlackMarlin::Flush() {
 }
 
 void BlackMarlin::ClearDict() {
-    // cleaning up pointers in buckets.
     for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it) {
-        delete it->second;
+        delete this->m_dict[it->first];
+        /*
+         * At this point, "this->m_dict[it->first]" has to point to NULL so that it won't throw a heap corruption error. 
+         * This happens because the iterator might call its value or check for a value in the key. This ends up as an invalid read.
+         * Since the read checks for NULL first, the pointers must be set to NULL before any further operation, indicating that a pointer is not pointing to a valid memory region anymore.
+        */
+        this->m_dict[it->first] = NULL;
     }
 
-    // cleaning up the buckets if there are any.
-    this->m_dict.erase(this->m_dict.begin(), this->m_dict.end());
+    this->m_dict.clear();
 }
