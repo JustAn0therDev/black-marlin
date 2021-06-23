@@ -62,12 +62,13 @@ The only thing you have to do to integrate with your application is make HTTP re
 ## Contributions:
 
 ### General:
-Feel free to open issues, fork and make pull requests as you feel like it. I'll be happy to help.
+Feel free to open issues and fork as you feel like it. I'll be happy to help in any case.
 
 ### How to compile:
 To compile the program on Windows, use Visual Studio 2019 and build the program from the CMakeLists.txt file in the root directory of the repo.
-To compile the program on Linux, do as you please as long as the compiler supports C++17 as standard and the `-lpthread` option,since the `cpphttplib` uses threading.
+
+To compile the program on Linux, do as you please as long as the compiler supports C++17 as standard and the `-lpthread` option, since the `cpphttplib` uses `thread`.
 
 ### Guidelines
-- Any files that are not required to compile the program and/or are not part of the usage at all, **should not be included in the version control system. This will be evaluated when reviewing code in pull requests**.
-- Please follow the same pattern of when you found the code; Keep the code looking the same makes it easier to change stuff, find bugs and points where it can be made better.
+- Any files that are not required to compile the program and/or are not part of the usage at all, **should not be included in the version control system. This will be reviewed in any pull request**.
+- Please follow the code's pattern; keeping the code looking the same everywhere in the program makes it easier to change stuff.
