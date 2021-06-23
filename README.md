@@ -60,4 +60,14 @@ The only thing you have to do to integrate with your application is make HTTP re
 - Currently, this application is not intended to have any sort of security implementation, so it should run inside your organization/project's infraestructure. This decision was made to avoid any kind of overhead.
 
 ## Contributions:
+
+### General:
 Feel free to open issues, fork and make pull requests as you feel like it. I'll be happy to help.
+
+### How to compile:
+To compile the program on Windows, use Visual Studio 2019 and build the program from the CMakeLists.txt file in the root directory of the repo.
+To compile the program on Linux, do as you please as long as the compiler supports C++17 as standard and the `-lpthread` option,since the `cpphttplib` uses threading.
+
+### Guidelines
+- Any files that are not required to compile the program and/or are not part of the usage at all, **should not be included in the version control system. This will be evaluated when reviewing code in pull requests**.
+- Please follow the same pattern of when you found the code; Keep the code looking the same makes it easier to change stuff, find bugs and points where it can be made better.
