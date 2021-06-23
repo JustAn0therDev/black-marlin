@@ -70,5 +70,5 @@ To compile the program on Windows, use Visual Studio (2015, 2017 or 2019) and bu
 To compile the program on Linux, do as you please as long as the compiler supports C++17 as standard and the `-lpthread` option, since the `cpphttplib` uses `thread`.
 
 ### Guidelines:
-- Any files that are not required to compile the program and/or are not part of the usage at all, **should not be included in the version control system. This will be reviewed in any pull request**.
+- Any files that are not required to compile the program and/or are not part of the usage at all, **should not be included in the version control system. This will be reviewed in any pull request**;
 - Please follow the code's pattern; keeping the code looking the same everywhere in the program makes it easier to change stuff.
