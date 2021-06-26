@@ -47,10 +47,8 @@ int main() {
 	const char* address = "127.0.0.1";
 	int port = 7000;
 
-	std::cout << "Listening at: " << address << ":" << port << std::endl;
-	server.listen(address, port);
-
-	black_marlin.~BlackMarlin();
+	std::cout << "Listening at: " << address << ":" << port << "\n";
+    server.listen(address, port);
 
 	return EXIT_SUCCESS;
 }
