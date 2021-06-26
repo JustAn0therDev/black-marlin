@@ -1,8 +1,9 @@
 #include <string>
-#include "http_request_handler.hpp"
+#include "util.hpp"
 #include "httplib.h"
-#include "black_marlin.hpp"
 #include "status_code.hpp"
+#include "black_marlin.hpp"
+#include "http_request_handler.hpp"
 
 void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) const {
 	if (!p_req.has_param("key")) {
@@ -12,12 +13,12 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 
 	auto value = p_black_marlin.Get(p_req.get_param_value("key"));
 
-	if (std::empty(value)) {
+	if (value == nullptr || std::empty(*value)) {
 		p_res.status = (int)StatusCode::kNoContent;
 		return;
 	}
 
-	p_res.set_content(value, this->m_content_type);
+	p_res.set_content(*value, this->m_content_type);
 }
 
 void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {
@@ -35,7 +36,21 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 
     std::string* req_body_ptr = new std::string(p_req.body);
 
-    p_black_marlin.Set(key, req_body_ptr);
+	if (p_req.has_param("s")) {
+		const int seconds = Util::TryConvertStringToInt(p_req.get_param_value("s"));
+
+		if (seconds == 0) {
+			p_res.status = (int)StatusCode::kBadRequest;
+			delete req_body_ptr;
+			return;
+		}
+
+		p_black_marlin.SetWithTimer(key, req_body_ptr, seconds);
+	} 
+	else {
+		p_black_marlin.Set(key, req_body_ptr);
+	}
+
     p_res.status = (int)StatusCode::kCreated;
 }
 
