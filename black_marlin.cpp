@@ -29,19 +29,20 @@ void BlackMarlin::Set(std::string p_key, std::string*& p_value) {
 	}
 }
 
-void BlackMarlin::SetWithTimer(std::string p_key, std::string*& p_value, const int& p_seconds) {
+void BlackMarlin::SetWithTimer(std::string p_key, std::string*& p_value, const uint16_t& p_seconds) {
 	auto& p_dict = this->m_dict;
 
 	auto it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end()) {
 		this->m_dict[p_key] = p_value;
-		std::thread timer_thread(&BlackMarlin::DeleteIn, this, p_key, p_seconds);
-		timer_thread.detach();
+
+		std::thread timer_daemon(&BlackMarlin::DeleteIn, this, p_key, p_seconds);
+		timer_daemon.detach();
 	}
 }
 
-void BlackMarlin::DeleteIn(const std::string& p_key, const int& p_seconds) {
+void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds) {
 	std::this_thread::sleep_for(std::chrono::seconds(p_seconds));
 	this->Delete(p_key);
 }
@@ -60,7 +61,9 @@ void BlackMarlin::Delete(const std::string& p_key) {
 
 	if (it == this->m_dict.end()) return;
 
-	delete this->m_dict[p_key];
+	auto& current = this->m_dict[p_key];
+
+	delete current;
 
 	this->m_dict.erase(p_key);
 }
@@ -80,21 +83,10 @@ size_t BlackMarlin::Count() const {
 }
 
 void BlackMarlin::Flush() {
-	this->ClearDict();
-}
-
-void BlackMarlin::ClearDict() {
 	for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it) {
-		auto& current_key = this->m_dict[it->first];
-
-		delete current_key;
-
-		/*
-		 * At this point, "this->m_dict[it->first]" has to point to nullptr so that it won't throw a heap corruption error.
-		 * This happens because the iterator might call its value or check for a value in the key. This ends up as an invalid read.
-		 * Since the read checks for nullptr first, the pointers must be set to nullptr before any further operation, indicating that a pointer is not pointing to a valid memory region anymore.
-		 */
-		current_key = nullptr;
+		auto& current = this->m_dict[it->first];
+		delete current;
+		current = nullptr;
 	}
 
 	this->m_dict.clear();
