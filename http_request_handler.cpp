@@ -34,7 +34,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 		return;
 	}
 
-    std::string* req_body_ptr = new std::string(p_req.body);
+	std::string* req_body_ptr = new std::string(p_req.body);
 
 	if (p_req.has_param("expiresin")) {
 		std::string expires_in_seconds = p_req.get_param_value("expiresin");
@@ -48,12 +48,12 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 		const auto& seconds = Util::TryCastStringToInt(expires_in_seconds);
 
 		p_black_marlin.SetToDeleteLater(key, req_body_ptr, seconds);
-	} 
+	}
 	else {
 		p_black_marlin.Set(key, req_body_ptr);
 	}
 
-    p_res.status = (int)StatusCode::kCreated;
+	p_res.status = (int)StatusCode::kCreated;
 }
 
 bool HttpRequestHandler::IsValidSecondsParam(std::string p_expires_in_seconds_param) {
@@ -79,8 +79,8 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
 		return;
 	}
 
-    std::string* req_body_ptr = new std::string(p_req.body);
-    p_black_marlin.Overwrite(key, req_body_ptr);
+	std::string* req_body_ptr = new std::string(p_req.body);
+	p_black_marlin.Overwrite(key, req_body_ptr);
 }
 
 void HttpRequestHandler::HandleDelete(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {
