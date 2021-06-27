@@ -1,8 +1,8 @@
-#pragma once
-
 #include "httplib.h"
 #include "black_marlin.hpp"
 
+#ifndef HTTPREQUESTHANDLERCPP
+#define HTTPREQUESTHANDLERCPP
 class HttpRequestHandler {
 public:
     // Handles a Get request.
@@ -24,3 +24,4 @@ private:
     const char* m_content_type = "*/*; charset=utf-8";
     bool IsValidSecondsParam(std::string p_seconds_param);
 };
+#endif

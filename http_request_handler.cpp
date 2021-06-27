@@ -37,7 +37,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
     std::string* req_body_ptr = new std::string(p_req.body);
 
 	if (p_req.has_param("expiresin")) {
-		std::string& expires_in_seconds = p_req.get_param_value("expiresin");
+		std::string expires_in_seconds = p_req.get_param_value("expiresin");
 
 		if (!this->IsValidSecondsParam(expires_in_seconds)) {
 			p_res.status = (int)StatusCode::kBadRequest;
@@ -45,9 +45,9 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 			return;
 		}
 
-		const uint16_t& seconds = Util::TryCastStringToUnsignedShortInt(expires_in_seconds);
+		const auto& seconds = Util::TryCastStringToInt(expires_in_seconds);
 
-		p_black_marlin.SetWithTimer(key, req_body_ptr, seconds);
+		p_black_marlin.SetToDeleteLater(key, req_body_ptr, seconds);
 	} 
 	else {
 		p_black_marlin.Set(key, req_body_ptr);

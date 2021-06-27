@@ -21,7 +21,7 @@ std::string* BlackMarlin::Get(const std::string& p_key) const {
 	return nullptr;
 }
 
-void BlackMarlin::Set(std::string p_key, std::string*& p_value) {
+void BlackMarlin::Set(std::string p_key, std::string* p_value) {
 	auto it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end()) {
@@ -29,7 +29,7 @@ void BlackMarlin::Set(std::string p_key, std::string*& p_value) {
 	}
 }
 
-void BlackMarlin::SetWithTimer(std::string p_key, std::string*& p_value, const uint16_t& p_seconds) {
+void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, const uint16_t& p_seconds) {
 	auto& p_dict = this->m_dict;
 
 	auto it = this->m_dict.find(p_key);
@@ -47,12 +47,15 @@ void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds) 
 	this->Delete(p_key);
 }
 
-void BlackMarlin::Overwrite(std::string p_key, std::string*& p_value) {
+void BlackMarlin::Overwrite(std::string p_key, std::string* p_value) {
 	auto it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end()) {
-		delete m_dict[p_key];
-		m_dict[p_key] = p_value;
+		auto& current = m_dict[p_key];
+
+		delete current;
+
+		current = p_value;
 	}
 }
 
