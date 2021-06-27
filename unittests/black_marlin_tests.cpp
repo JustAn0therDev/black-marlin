@@ -5,16 +5,14 @@
 
 auto black_marlin = BlackMarlin();
 
-std::string* deletable_val = new std::string("get and set test");
-std::string* sample_key = new std::string("get and set test");
-std::string* val = new std::string("get and set test two");
-
 TEST_CASE("Black Marlin Get and Set Tests", "[Get and Set]")
 {
 	std::cout << "Running Get and Set - Set should create a key-value pair in the map and get should return the value associated to the key.\n";
 
-	black_marlin.Set(*sample_key, deletable_val);
-	std::string* value = black_marlin.Get(*sample_key);
+	std::string* deletable_val = new std::string("get and set test");
+	std::string sample_key = "get and set test";
+	black_marlin.Set(sample_key, deletable_val);
+	std::string* value = black_marlin.Get(sample_key);
 
 	REQUIRE(*value != "");
 	REQUIRE(*value == "get and set test");
@@ -28,7 +26,7 @@ TEST_CASE("Set with timer tests", "[Set with timer]")
 	std::string key = "get and set with timer test";
 	std::string* value = new std::string("get and set with timer test");
 
-	black_marlin.SetToDeleteLater(*sample_key, value, seconds);
+	black_marlin.SetToDeleteLater(key, value, seconds);
 
 	std::this_thread::sleep_for(std::chrono::seconds(6));
 
@@ -39,10 +37,12 @@ TEST_CASE("Set with timer tests", "[Set with timer]")
 TEST_CASE("Overwrite tests", "[Overwrite]")
 {
 	std::cout << "Running Overwrite - Should overwrite the value associated to the key.\n";
+	
+	std::string sample_key = "get and set test";
+	std::string* val = new std::string("get and set test two");
+	black_marlin.Overwrite(sample_key, val);
 
-	black_marlin.Overwrite(*sample_key, val);
-
-	std::string* value = black_marlin.Get(*sample_key);
+	std::string* value = black_marlin.Get(sample_key);
 
 	REQUIRE(*value == "get and set test two");
 }
@@ -70,7 +70,9 @@ TEST_CASE("Count Test", "[Count]")
 {
 	std::cout << "Running Count - Should return 1 after inserting a key.\n";
 
-	black_marlin.Set(*sample_key, sample_key);
+	std::string sample_key = "get and set test";
+	std::string* value = new std::string("test value");
+	black_marlin.Set(sample_key, value);
 
 	REQUIRE(black_marlin.Count() == 1);
 }
@@ -83,3 +85,4 @@ TEST_CASE("Flush Test", "[Flush]")
 
 	REQUIRE(black_marlin.Count() == 0);
 }
+
