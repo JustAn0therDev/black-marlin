@@ -37,13 +37,15 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
     std::string* req_body_ptr = new std::string(p_req.body);
 
 	if (p_req.has_param("s")) {
-		const int seconds = Util::TryConvertStringToInt(p_req.get_param_value("s"));
+		std::string& seconds_string = p_req.get_param_value("s");
 
-		if (seconds == 0) {
+		if (!this->IsValidSecondsParam(seconds_string)) {
 			p_res.status = (int)StatusCode::kBadRequest;
 			delete req_body_ptr;
 			return;
 		}
+
+		const uint16_t& seconds = Util::TryCastStringToUnsignedShortInt(p_req.get_param_value("s"));
 
 		p_black_marlin.SetWithTimer(key, req_body_ptr, seconds);
 	} 
@@ -52,6 +54,17 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 	}
 
     p_res.status = (int)StatusCode::kCreated;
+}
+
+bool HttpRequestHandler::IsValidSecondsParam(std::string p_seconds_param) {
+	const uint16_t maxOfUint16 = 65535;
+	const int seconds = Util::TryCastStringToInt(p_seconds_param);
+
+	if (seconds <= 0 || seconds > maxOfUint16) {
+		return false;
+	}
+
+	return true;
 }
 
 void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {

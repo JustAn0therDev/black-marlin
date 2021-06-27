@@ -22,4 +22,5 @@ public:
 private:
     // Content-Type header value if needed.
     const char* m_content_type = "*/*; charset=utf-8";
+    bool IsValidSecondsParam(std::string p_seconds_param);
 };
