@@ -1,6 +1,6 @@
 #include <string>
-#include "util.hpp"
 #include <iostream>
+#include "util.hpp"
 
 int Util::TryCastStringToInt(std::string& p_str) {
 	try {
