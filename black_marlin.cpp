@@ -3,11 +3,6 @@
 #include <iostream>
 #include <thread>
 
-void BlackMarlin::DeleteIn(const std::string& p_key, const int& p_seconds) {
-	std::this_thread::sleep_for(std::chrono::seconds(p_seconds));
-	this->Delete(p_key);
-}
-
 BlackMarlin::BlackMarlin() {
 	this->m_dict = std::unordered_map<std::string, std::string*>();
 }
@@ -41,9 +36,14 @@ void BlackMarlin::SetWithTimer(std::string p_key, std::string*& p_value, const i
 
 	if (it == this->m_dict.end()) {
 		this->m_dict[p_key] = p_value;
-		std::thread new_timer_thread(&BlackMarlin::DeleteIn, this, p_key, p_seconds);
-		new_timer_thread.detach();
+		std::thread timer_thread(&BlackMarlin::DeleteIn, this, p_key, p_seconds);
+		timer_thread.detach();
 	}
+}
+
+void BlackMarlin::DeleteIn(const std::string& p_key, const int& p_seconds) {
+	std::this_thread::sleep_for(std::chrono::seconds(p_seconds));
+	this->Delete(p_key);
 }
 
 void BlackMarlin::Overwrite(std::string p_key, std::string*& p_value) {
