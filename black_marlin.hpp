@@ -14,13 +14,13 @@ public:
     // Sets the key and the value in the map. If the key already exists and the intention was to overwrite the value, the method Overwrite should be used instead.
 	void Set(std::string p_key, std::string*& p_value);
 	// Sets the key and the value in the map to be deleted in the specified seconds.
-	void SetWithTimer(std::string p_key, std::string*& p_value, const int& seconds);
+	void SetWithTimer(std::string p_key, std::string*& p_value, const int& p_seconds);
 	// Overwrites the value to the key. If the key does not exist, nothing happens.
 	void Overwrite(std::string p_key, std::string*& p_value);
     // Deletes the pointer to the string and the "bucket" in the map.
 	void Delete(const std::string& p_key);
-	// Deletes the pointer in the specified time in milliseconds.
-	void DeleteIn(const std::string& p_key, const int& milliseconds);
+	// Deletes the pointer in the specified time in seconds.
+	void DeleteIn(const std::string& p_key, const int& p_seconds);
     // Returns true if the key exists in the map; false otherwise.
 	bool Exists(const std::string& p_key) const;
     // Returns the number of items in the map.

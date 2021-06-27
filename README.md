@@ -20,6 +20,12 @@ This also allows servers in an architecture that uses Load Balancing to share ke
 Currently, the application runs on port **7000**. You can access it by making a GET request to http://127.0.0.1:7000/count with your program running, for example.
 The only thing you have to do to integrate with your application is make HTTP requests and handle the responses.
 
+# TODO:
+- Explain how to use the POST route with the "s" query parameter;
+- The "s" query parameter cannot be 0 (zero) or it will return a `400 - Bad Request`. If you want a key that cannot expire unless manually deleted, call `POST` without "s";
+- An expiring key can be deleted like any other using `Delete` or `Flush`;
+- Edit the "how to compile" section to add that the compiler must support `<thread>` since the `cpphttplib` and the main `black_marlin` library use it.
+
 ### For each route and method:
 **Any failed operation will return an HTTP Status Code of `500 - Internal Server Error`**.
 
