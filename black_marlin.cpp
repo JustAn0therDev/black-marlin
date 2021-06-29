@@ -11,7 +11,7 @@ BlackMarlin::~BlackMarlin() {
 	this->Flush();
 }
 
-std::string* BlackMarlin::Get(const std::string& p_key) const {
+const std::string* BlackMarlin::Get(const std::string& p_key) const {
 	auto it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end()) {
@@ -71,7 +71,7 @@ void BlackMarlin::Delete(const std::string& p_key) {
 	this->m_dict.erase(p_key);
 }
 
-bool BlackMarlin::Exists(const std::string& p_key) const {
+const bool BlackMarlin::Exists(const std::string& p_key) const {
 	auto it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end()) {
@@ -81,7 +81,7 @@ bool BlackMarlin::Exists(const std::string& p_key) const {
 	return false;
 }
 
-size_t BlackMarlin::Count() const {
+const size_t BlackMarlin::Count() const {
 	return this->m_dict.size();
 }
 

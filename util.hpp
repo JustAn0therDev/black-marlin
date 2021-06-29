@@ -3,8 +3,7 @@
 
 #ifndef UTILCPP
 #define UTILCPP
-class Util {
-public:
+struct Util {
 	// Tries casting a string to int. If not successful, returns 0.
 	static int TryCastStringToInt(std::string& p_str);
 	// Tries casting a string to an uint16_t. If not successful, returns 0.

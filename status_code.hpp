@@ -1,6 +1,9 @@
+// Enum class with HTTP Status Codes.
 enum class StatusCode {
+	// Resource created in the server.
 	kCreated = 201,
+	// Nothing returned in the response body but the headers might be useful (or not).
 	kNoContent = 204,
-	kBadRequest = 400,
-	kNotFound = 404
+	// Client sent a request with bad syntax.
+	kBadRequest = 400
 };
