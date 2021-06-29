@@ -12,7 +12,8 @@ TEST_CASE("Black Marlin Get and Set Tests", "[Get and Set]")
 	std::string* deletable_val = new std::string("get and set test");
 	std::string sample_key = "get and set test";
 	black_marlin.Set(sample_key, deletable_val);
-	std::string* value = black_marlin.Get(sample_key);
+
+	const std::string* value = black_marlin.Get(sample_key);
 
 	REQUIRE(*value != "");
 	REQUIRE(*value == "get and set test");
@@ -42,7 +43,7 @@ TEST_CASE("Overwrite tests", "[Overwrite]")
 	std::string* val = new std::string("get and set test two");
 	black_marlin.Overwrite(sample_key, val);
 
-	std::string* value = black_marlin.Get(sample_key);
+	const std::string* value = black_marlin.Get(sample_key);
 
 	REQUIRE(*value == "get and set test two");
 }
@@ -85,4 +86,3 @@ TEST_CASE("Flush Test", "[Flush]")
 
 	REQUIRE(black_marlin.Count() == 0);
 }
-

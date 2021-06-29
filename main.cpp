@@ -44,11 +44,8 @@ int main() {
 		http_request_handler.HandleGetCount(black_marlin, res);
 	});
 
-	const char* address = "127.0.0.1";
-	int port = 7000;
-
-	std::cout << "Listening at: " << address << ":" << port << "\n";
-    server.listen(address, port);
+	std::cout << "Listening at: " << http_request_handler.m_ip_address << ":" << http_request_handler.m_port << "\n";
+    server.listen(http_request_handler.m_ip_address, http_request_handler.m_port);
 
 	return EXIT_SUCCESS;
 }

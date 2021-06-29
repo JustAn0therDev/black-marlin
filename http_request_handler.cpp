@@ -11,7 +11,7 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 		return;
 	}
 
-	auto value = p_black_marlin.Get(p_req.get_param_value("key"));
+	const auto& value = p_black_marlin.Get(p_req.get_param_value("key"));
 
 	if (value == nullptr || std::empty(*value)) {
 		p_res.status = (int)StatusCode::kNoContent;
@@ -45,9 +45,9 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 			return;
 		}
 
-		const auto& seconds = Util::TryCastStringToInt(expires_in_seconds);
+		const auto& seconds_to_expire = Util::TryCastStringToUnsignedShortInt(expires_in_seconds);
 
-		p_black_marlin.SetToDeleteLater(key, req_body_ptr, seconds);
+		p_black_marlin.SetToDeleteLater(key, req_body_ptr, seconds_to_expire);
 	}
 	else {
 		p_black_marlin.Set(key, req_body_ptr);
