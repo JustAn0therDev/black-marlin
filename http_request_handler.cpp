@@ -7,14 +7,14 @@
 
 void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) const {
 	if (!p_req.has_param("key")) {
-		p_res.status = (int)StatusCode::kBadRequest;
+		p_res.status = static_cast<int>(StatusCode::kBadRequest);
 		return;
 	}
 
 	const auto& value = p_black_marlin.Get(p_req.get_param_value("key"));
 
 	if (value == nullptr || std::empty(*value)) {
-		p_res.status = (int)StatusCode::kNoContent;
+		p_res.status = static_cast<int>(StatusCode::kNoContent);
 		return;
 	}
 
@@ -23,14 +23,14 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 
 void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {
 	if (!p_req.has_param("key") || p_req.body == "") {
-		p_res.status = (int)StatusCode::kBadRequest;
+		p_res.status = static_cast<int>(StatusCode::kBadRequest);
 		return;
 	}
 
 	const auto& key = p_req.get_param_value("key");
 
 	if (p_black_marlin.Exists(key)) {
-		p_res.status = (int)StatusCode::kBadRequest;
+		p_res.status = static_cast<int>(StatusCode::kBadRequest);
 		return;
 	}
 
@@ -40,7 +40,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 		std::string expires_in_seconds = p_req.get_param_value("expiresin");
 
 		if (!this->IsValidSecondsParam(expires_in_seconds)) {
-			p_res.status = (int)StatusCode::kBadRequest;
+			p_res.status = static_cast<int>(StatusCode::kBadRequest);
 			delete req_body_ptr;
 			return;
 		}
@@ -53,7 +53,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 		p_black_marlin.Set(key, req_body_ptr);
 	}
 
-	p_res.status = (int)StatusCode::kCreated;
+	p_res.status = static_cast<int>(StatusCode::kCreated);
 }
 
 bool HttpRequestHandler::IsValidSecondsParam(std::string p_expires_in_seconds_param) {
@@ -68,14 +68,14 @@ bool HttpRequestHandler::IsValidSecondsParam(std::string p_expires_in_seconds_pa
 
 void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {
 	if (!p_req.has_param("key") || p_req.body == "") {
-		p_res.status = (int)StatusCode::kBadRequest;
+		p_res.status = static_cast<int>(StatusCode::kBadRequest);
 		return;
 	}
 
 	const auto& key = p_req.get_param_value("key");
 
 	if (!p_black_marlin.Exists(key)) {
-		p_res.status = (int)StatusCode::kBadRequest;
+		p_res.status = static_cast<int>(StatusCode::kBadRequest);
 		return;
 	}
 
@@ -85,7 +85,7 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
 
 void HttpRequestHandler::HandleDelete(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) {
 	if (!p_req.has_param("key")) {
-		p_res.status = (int)StatusCode::kBadRequest;
+		p_res.status = static_cast<int>(StatusCode::kBadRequest);
 		return;
 	}
 
@@ -98,12 +98,12 @@ void HttpRequestHandler::HandleDeleteFlush(BlackMarlin& p_black_marlin, httplib:
 
 void HttpRequestHandler::HandleGetExists(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) const {
 	if (!p_req.has_param("key")) {
-		p_res.status = (int)StatusCode::kBadRequest;
+		p_res.status = static_cast<int>(StatusCode::kBadRequest);
 		return;
 	}
 
 	if (!p_black_marlin.Exists(p_req.get_param_value("key"))) {
-		p_res.status = (int)StatusCode::kNoContent;
+		p_res.status = static_cast<int>(StatusCode::kNoContent);
 	}
 }
 

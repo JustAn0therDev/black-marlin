@@ -2,29 +2,23 @@
 #include <iostream>
 #include "util.hpp"
 
-int Util::TryCastStringToInt(std::string& p_str) {
+int Util::TryCastStringToInt(const std::string& p_str) {
 	try {
 		return std::stoi(p_str);
 	}
-	catch (std::exception ex) {
-		std::cout << "Tried convertion of invalid std::string to int. Exception message: " << ex.what() << "\n";
-	}
 	catch (...) {
-		std::cout << "Tried convertion of invalid std::string to int. No std::exception thrown. " << "\n";
+		std::cout << "Tried convertion of invalid std::string to int. Tried converting the following data: " << p_str << "\n";
 	}
 
 	return 0;
 }
 
-uint16_t Util::TryCastStringToUnsignedShortInt(std::string& p_str) {
+uint16_t Util::TryCastStringToUnsignedShortInt(const std::string& p_str) {
 	try {
-		return std::stoi(p_str);
-	}
-	catch (std::exception ex) {
-		std::cout << "Tried convertion of invalid std::string to uint16_t. Exception message: " << ex.what() << "\n";
+		return static_cast<uint16_t>(std::stoi(p_str));
 	}
 	catch (...) {
-		std::cout << "Tried convertion of invalid std::string to uint16_t. No std::exception thrown. " << "\n";
+		std::cout << "Tried convertion of invalid std::string to uint16_t. Tried converting the following data: " << p_str << "\n";
 	}
 
 	return 0;
