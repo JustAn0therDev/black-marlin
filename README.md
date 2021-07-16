@@ -1,5 +1,5 @@
 # Black Marlin: An in-memory database based on Redis with a REST API interface for easy development and integration.
-**Black Marlin** is an in-memory database for fast reading, writing and deleting cached data. Made using C++. Light, fast and easy to use.
+**Black Marlin** is an in-memory database for fast reading, writing and deleting cached data. Light, fast and easy to use with no need for third-party libraries.
 
 
 ## Why does it have a REST API interface?
@@ -61,10 +61,10 @@ The only thing you have to do to integrate with your application is make HTTP re
 
 
 ## Current roadmap:
-- Logging to file. Any exception is currently being written to `STDOUT`;
+- Logging to file. Any exception or information that should be logged is currently being written to `STDOUT`;
 
 ## Sidenotes:
-- Currently, this application is not intended to have any sort of security implementation, so it should run inside your organization/project's infraestructure. This decision was made to avoid any kind of overhead.
+- Currently, this application is not intended to have any sort of security implementation, so it should run inside your organization/project's infraestructure. This decision was made to avoid **any** kind of overhead.
 
 ## Contributions:
 
