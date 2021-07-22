@@ -10,7 +10,7 @@ int main() {
 	httplib::Server server;
 
 	auto black_marlin = BlackMarlin();
-	HttpRequestHandler http_request_handler;
+	HttpRequestHandler http_request_handler = HttpRequestHandler();
 
 	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
 		http_request_handler.HandleGet(black_marlin, req, res);
