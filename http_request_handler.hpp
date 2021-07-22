@@ -1,10 +1,13 @@
 #include "httplib.h"
 #include "black_marlin.hpp"
+#include "server_configs.hpp"
 
 #ifndef HTTPREQUESTHANDLERCPP
 #define HTTPREQUESTHANDLERCPP
 class HttpRequestHandler {
 public:
+	// The object's constructor.
+	HttpRequestHandler();
 	// The program's address.
 	const char* m_ip_address = "127.0.0.1";
 	// The program's running port.
@@ -27,5 +30,6 @@ private:
 	// Content-Type header value if needed.
 	const char* m_content_type = "*/*; charset=utf-8";
 	bool IsValidSecondsParam(std::string p_seconds_param);
+	ServerConfigs m_server_configs;
 };
 #endif

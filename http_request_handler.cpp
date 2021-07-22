@@ -4,6 +4,12 @@
 #include "status_code.hpp"
 #include "black_marlin.hpp"
 #include "http_request_handler.hpp"
+#include "server_configs.hpp"
+
+HttpRequestHandler::HttpRequestHandler() {
+	this->m_server_configs = ServerConfigs();
+	this->m_server_configs.LoadHeadersFromConfigFile();
+}
 
 void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) const {
 	if (!p_req.has_param("key")) {
