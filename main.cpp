@@ -6,13 +6,52 @@
 #include "black_marlin.hpp"
 #include "http_request_handler.hpp"
 
-int main() 
+constexpr short DEFAULT_PORT = 7000;
+
+struct portip {
+	int port;
+	std::string ip;
+} typedef Connection;
+
+Connection GetIPAndPortFromArgs(int& argc, char **argv);
+void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler);
+
+int main(int argc, char **argv)
 {
 	httplib::Server server;
+	BlackMarlin black_marlin;
+	HttpRequestHandler http_request_handler;
 
-	auto black_marlin = BlackMarlin();
-	auto http_request_handler = HttpRequestHandler();
+	Connection conn = GetIPAndPortFromArgs(argc, argv);
+	
+	SetRoutes(server, black_marlin, http_request_handler);
 
+	std::cout << "Listening at: " << conn.ip << ":" << conn.port << "\n";
+    server.listen(conn.ip.c_str(), conn.port);
+
+	return EXIT_SUCCESS;
+}
+
+Connection GetIPAndPortFromArgs(int& argc, char **argv)
+{
+	Connection conn = Connection{};
+
+	if (argc != 2)
+	{
+		conn.port = DEFAULT_PORT;
+	}
+	else
+	{
+		conn.port = std::atoi(argv[1]);
+	}
+
+    conn.ip = "127.0.0.1";
+
+	return conn;
+}
+
+void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler)
+{
 	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleGet(black_marlin, req, res);
@@ -52,9 +91,4 @@ int main()
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleGetCount(black_marlin, res);
 	});
-
-	std::cout << "Listening at: " << http_request_handler.m_ip_address << ":" << http_request_handler.m_port << "\n";
-    server.listen(http_request_handler.m_ip_address, http_request_handler.m_port);
-
-	return EXIT_SUCCESS;
 }
