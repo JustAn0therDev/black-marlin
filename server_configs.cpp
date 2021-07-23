@@ -43,13 +43,13 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 
 	response_headers_config_file.close();
 
-	std::cout << "Debugging below!!!" << "\n";
-	auto& it = this->m_configs.begin();
+	//std::cout << "Debugging below!!!" << "\n";
+	//auto& it = this->m_configs.begin();
 
-	for (it; it != this->m_configs.end(); ++it)
-	{
-		std::cout << it->first << " = " << it->second << "\n";
-	}
+	//for (it; it != this->m_configs.end(); ++it)
+	//{
+	//	std::cout << it->first << " = " << it->second << "\n";
+	//}
 }
 
 const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() const
