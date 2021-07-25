@@ -2,6 +2,6 @@
 
 project ("black_marlin")
 
-add_executable (black_marlin "main.cpp" "black_marlin.cpp" "black_marlin.hpp" "httplib.h" "status_code.hpp" "http_request_handler.cpp" "http_request_handler.hpp" "util.cpp" "util.hpp" "server_configs.cpp" "server_configs.hpp" "windows_pathfinder.cpp" "server_connection_info.hpp")
+add_executable (black_marlin "main.cpp" "BlackMarlin/black_marlin.cpp" "BlackMarlin/black_marlin.hpp" "HTTP/httplib.h" "HTTP/status_code.hpp" "HTTP/http_request_handler.cpp" "HTTP/http_request_handler.hpp" "Util/util.cpp" "Util/util.hpp" "ServerConfigs/server_configs.cpp" "ServerConfigs/server_configs.hpp" "ServerConfigs/windows_pathfinder.cpp" "HTTP/server_connection_info.hpp")
 
 enable_testing()
