@@ -1,3 +1,4 @@
+#include <string>
 #ifndef SERVERCONNECTIONINFO
 #define SERVERCONNECTIONINFO
 struct connection {
