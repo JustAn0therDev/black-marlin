@@ -52,16 +52,10 @@ Connection GetIPAndPortFromArgs(int& argc, char **argv)
 
 void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler)
 {
-	server.Get("/exit", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
-		exit(1);
-	});
-
-	/* 
 	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleGet(black_marlin, req, res);
 	});
-	*/
 
 	server.Post("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) {
 		http_request_handler.SetResponseHeadersFromConfig(res);
