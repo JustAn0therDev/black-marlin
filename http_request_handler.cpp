@@ -144,7 +144,6 @@ void HttpRequestHandler::SetResponseHeadersFromConfig(httplib::Response& p_res) 
 
 	auto it = configs.begin();
 
-	// TODO: Make the keys in the hashmap "const char *" instead of "std::string".
 	while (it != configs.end())
 	{
 		p_res.set_header(it->first.c_str(), it->second);
