@@ -23,7 +23,7 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 {
 	std::string file_content, line_content;
 
-	char split_by = ' ';
+	const char split_by = ' ';
 
 	const std::string full_path = this->GetThisExecutingBinaryFullPath();
 
@@ -80,7 +80,7 @@ const std::string ServerConfigs::GetThisExecutingBinaryFullPath() {
 	return full_path + this->m_filename;
 }
 
-const std::pair<std::string, std::string> ServerConfigs::GetHeaderPairFromConfigFile(std::istringstream& p_iss, char& p_split_by)
+const std::pair<std::string, std::string> ServerConfigs::GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by)
 {
 	std::string line_content, header_key, header_value = "";
 
@@ -92,9 +92,10 @@ const std::pair<std::string, std::string> ServerConfigs::GetHeaderPairFromConfig
 		}
 		else
 		{
-			header_value += line_content + ' ';
+			header_value += line_content + p_split_by;
 		}
 	}
 
-	return std::make_pair(header_key, header_value);
+	// Removing the trailing whitespace character.
+	return std::make_pair(header_key, header_value.erase(header_value.size() - 1, 1));
 }

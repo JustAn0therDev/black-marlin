@@ -27,6 +27,6 @@ private:
 	// Gets the correct path for the config file.
 	const std::string GetThisExecutingBinaryFullPath();
 	// Returns the header information (being it key and value) from the config file's current line.
-	const std::pair<std::string, std::string> GetHeaderPairFromConfigFile(std::istringstream& p_iss, char& p_split_by);
+	const std::pair<std::string, std::string> GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by);
 };
 #endif /* SERVERCONFIGSCPP */
