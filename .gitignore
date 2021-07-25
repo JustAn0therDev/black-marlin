@@ -8,6 +8,7 @@ unittests/unittests
 *.out
 black_marlin
 black_marlin.exe
+black_marlin.file
 out/
 /out/build/x64-Release
 /unittests/unittests.exe
