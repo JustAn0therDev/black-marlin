@@ -28,7 +28,9 @@ public:
 private:
 	// Content-Type header value if needed.
 	const char* m_content_type = "*/*; charset=utf-8";
+	// Validates if the param value is valid.
 	bool IsValidSecondsParam(std::string p_seconds_param);
+	// Internal ServerConfigs object.
 	ServerConfigs m_server_configs;
 };
 #endif

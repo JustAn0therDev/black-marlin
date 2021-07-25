@@ -5,8 +5,8 @@
 
 #if _WIN32
 #define PATH_DELIMETER '\\'
-#else 
-#define PATH_DELIMETER '\'
+#else
+#define PATH_DELIMETER '/'
 #endif
 
 #ifndef SERVERCONFIGSCPP
@@ -17,7 +17,7 @@ public:
 	ServerConfigs();
 	// Loads the internal hashtable with the configs file's content.
 	void LoadHeadersFromConfigFile();
-	// Returns a const reference to the hashtable
+	// Returns a const reference to the hashtable.
 	const std::unordered_map<std::string, std::string>& GetConfigs() const;
 private:
 	// This object's internal hashtable.

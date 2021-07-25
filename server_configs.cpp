@@ -4,9 +4,14 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <Windows.h>
-#include <minwindef.h>
 #include <utility>
+#include <stdlib.h>
+
+#if _WIN32 || _WIN64
+#include "windows_pathfinder.hpp"
+#else
+#include "posix_pathfinder.hpp"
+#endif
 
 ServerConfigs::ServerConfigs()
 {
@@ -18,11 +23,6 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 {
 	std::string file_content, line_content;
 
-	// TODO: Read Unix-based file paths. Currently this type of configuration is Windows-only.
-	// A preprocessor should be here to check the current running OS.
-
-	// the .txt name for configuring MUST BE "bm_response_headers.txt" and that the file
-	// must be in the same directory as the running black_marlin binary.)
 	char split_by = ' ';
 
 	const std::string full_path = this->GetThisExecutingBinaryFullPath();
@@ -42,14 +42,6 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 	}
 
 	response_headers_config_file.close();
-
-	//std::cout << "Debugging below!!!" << "\n";
-	//auto& it = this->m_configs.begin();
-
-	//for (it; it != this->m_configs.end(); ++it)
-	//{
-	//	std::cout << it->first << " = " << it->second << "\n";
-	//}
 }
 
 const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() const
@@ -59,11 +51,15 @@ const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() 
 
 const std::string ServerConfigs::GetThisExecutingBinaryFullPath() {
 	bool found_binary = false;
-	std::string full_path, path_part;
+	std::string full_path, path_part, path_buffer, filename_part_to_look_for;
 
-	char path_buffer[MAX_PATH];
-
-	GetModuleFileName(NULL, path_buffer, MAX_PATH);
+#if _WIN32 || _WIN64
+	path_buffer = GetCurrentlyExecutingBinaryPathWindows();
+    filename_part_to_look_for = "black_marlin.exe";
+#else
+	path_buffer = GetCurrentlyExecutingBinaryPathPosix();
+    filename_part_to_look_for = "black_marlin.file";
+#endif
 
 	while (!found_binary)
 	{
@@ -71,7 +67,7 @@ const std::string ServerConfigs::GetThisExecutingBinaryFullPath() {
 
 		while (std::getline(iss, path_part, PATH_DELIMETER))
 		{
-			if (path_part.find(".exe") != std::string::npos)
+			if (path_part.find(filename_part_to_look_for) != std::string::npos)
 			{
 				found_binary = true;
 				break;
