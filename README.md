@@ -110,7 +110,7 @@ Since there are some specific things in Windows and POSIX, there are some files 
 obvious and can be found in the `.sh` scripts.
 
 ### How to test:
-`cd` to `unittests` directory and run `run_unittests.sh`. **Any other files that should be tested by the unit tests have to be added to the script.**
+`cd` to `unittests` directory and run `run_unittests.sh` (or `run_unittests_linux.sh` depending on your operating system). **Any other files that should be tested by the unit tests have to be added to the script.**
 
 ### Guidelines:
 - Any files that are not required to compile the program and/or are not part of the usage at all, **should not be included in the version control system. This will be reviewed in any pull request**;
