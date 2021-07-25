@@ -1,10 +1,10 @@
 #include <string>
-#include "util.hpp"
+#include "../Util/util.hpp"
 #include "httplib.h"
 #include "status_code.hpp"
-#include "black_marlin.hpp"
+#include "../BlackMarlin/black_marlin.hpp"
 #include "http_request_handler.hpp"
-#include "server_configs.hpp"
+#include "../ServerConfigs/server_configs.hpp"
 
 HttpRequestHandler::HttpRequestHandler()
 {

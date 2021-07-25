@@ -1,6 +1,6 @@
 #include "httplib.h"
-#include "black_marlin.hpp"
-#include "server_configs.hpp"
+#include "../BlackMarlin/black_marlin.hpp"
+#include "../ServerConfigs/server_configs.hpp"
 
 #ifndef HTTPREQUESTHANDLERCPP
 #define HTTPREQUESTHANDLERCPP

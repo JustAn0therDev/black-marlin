@@ -3,10 +3,10 @@
 #include <string>
 #include <regex>
 #include <stdlib.h>
-#include "httplib.h"
-#include "black_marlin.hpp"
-#include "http_request_handler.hpp"
-#include "server_connection_info.hpp"
+#include "HTTP/httplib.h"
+#include "BlackMarlin/black_marlin.hpp"
+#include "HTTP/http_request_handler.hpp"
+#include "HTTP/server_connection_info.hpp"
 
 constexpr short DEFAULT_PORT = 7000;
 
