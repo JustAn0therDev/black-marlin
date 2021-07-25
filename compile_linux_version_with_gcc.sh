@@ -1,0 +1,2 @@
+#!/bin/bash
+g++ -pthread -std=c++17 black_marlin.cpp black_marlin.hpp httplib.h main.cpp http_request_handler.cpp http_request_handler.hpp server_configs.hpp server_configs.cpp posix_pathfinder.hpp posix_pathfinder.cpp util.hpp util.cpp -o black_marlin.file
