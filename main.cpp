@@ -7,6 +7,7 @@
 #include "BlackMarlin/black_marlin.hpp"
 #include "HTTP/http_request_handler.hpp"
 #include "HTTP/server_connection_info.hpp"
+#include "Util/util.hpp"
 
 constexpr short DEFAULT_PORT = 7000;
 
@@ -48,10 +49,15 @@ ServerConnectionInfo GetIPAndPortFromArgs(int& argc, char** argv)
 		}
 		else
 		{
-			std::cout << "Expected only numbers for port argument. Got: " << port_arg << "\n";
+            Util::Panic("Expected only numbers for port argument. Got: " + std::string(port_arg) + "\n");
 			exit(1);
 		}
 	}
+
+    if (conn.port > USHRT_MAX)
+    {
+        Util::Panic("The port argument exceeds the range of valid ports.");
+    }
 
 	conn.ip = "127.0.0.1";
 

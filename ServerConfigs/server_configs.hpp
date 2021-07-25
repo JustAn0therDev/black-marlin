@@ -11,7 +11,7 @@
 
 #ifndef SERVERCONFIGSCPP
 #define SERVERCONFIGSCPP
-class ServerConfigs 
+class ServerConfigs
 {
 public:
 	ServerConfigs();
