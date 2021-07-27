@@ -13,4 +13,4 @@ public:
 private:
     static const std::string GetLogFileFullPath();
 };
-#endif
+#endif /* LOGGERCPP */

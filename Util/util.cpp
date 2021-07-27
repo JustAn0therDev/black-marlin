@@ -9,7 +9,7 @@ int Util::TryCastStringToInt(const std::string& p_str)
 		return std::stoi(p_str);
 	}
 	catch (...) {
-        Logger::LogInfo("Tried convertion of invalid std::string to int. Tried converting the following data: " + p_str + "\n");
+        Logger::LogInfo("Tried conversion of invalid std::string to int. Data: " + p_str);
 	}
 
 	return 0;
@@ -21,7 +21,7 @@ uint16_t Util::TryCastStringToUnsignedShortInt(const std::string& p_str)
 		return static_cast<uint16_t>(std::stoi(p_str));
 	}
 	catch (...) {
-		std::cout << "Tried convertion of invalid std::string to uint16_t. Tried converting the following data: " << p_str << "\n";
+        Logger::LogError("Tried conversion of invalid std::string to uint16_t. Data: " + p_str);
 	}
 
 	return 0;

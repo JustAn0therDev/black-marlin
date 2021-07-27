@@ -3,12 +3,16 @@
 #include <sstream>
 
 #if _WIN32 || _WIN64
+
 #include <Windows.h>
 #define PATH_DELIMETER '\\'
+
 #else
+
 #include <unistd.h>
 #include <linux/limits.h>
 #define PATH_DELIMETER '/'
+
 #endif
 
 const std::string PathHandler::GetThisExecutingBinaryFullPath()
