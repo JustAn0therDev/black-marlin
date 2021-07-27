@@ -1,4 +1,5 @@
 #include "server_configs.hpp"
+#include "../PathHandler/path_handler.hpp"
 #include <unordered_map>
 #include <string>
 #include <fstream>
@@ -6,12 +7,6 @@
 #include <iostream>
 #include <utility>
 #include <stdlib.h>
-
-#if _WIN32 || _WIN64
-#include "windows_pathfinder.hpp"
-#else
-#include "posix_pathfinder.hpp"
-#endif
 
 ServerConfigs::ServerConfigs()
 {
@@ -25,7 +20,7 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 
 	const char split_by = ' ';
 
-	const std::string full_path = this->GetThisExecutingBinaryFullPath();
+	const std::string full_path = PathHandler::GetThisExecutingBinaryFullPath() + this->m_filename;
 
 	std::ifstream response_headers_config_file(full_path, std::ios::in);
 
@@ -47,37 +42,6 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() const
 {
 	return this->m_configs;
-}
-
-const std::string ServerConfigs::GetThisExecutingBinaryFullPath() {
-	bool found_binary = false;
-	std::string full_path, path_part, path_buffer, filename_part_to_look_for;
-
-#if _WIN32 || _WIN64
-	path_buffer = GetCurrentlyExecutingBinaryPathWindows();
-    filename_part_to_look_for = "black_marlin.exe";
-#else
-	path_buffer = GetCurrentlyExecutingBinaryPathPosix();
-    filename_part_to_look_for = "black_marlin.file";
-#endif
-
-	while (!found_binary)
-	{
-		std::istringstream iss(path_buffer);
-
-		while (std::getline(iss, path_part, PATH_DELIMETER))
-		{
-			if (path_part.find(filename_part_to_look_for) != std::string::npos)
-			{
-				found_binary = true;
-				break;
-			}
-
-			full_path += path_part + PATH_DELIMETER;
-		}
-	}
-
-	return full_path + this->m_filename;
 }
 
 const std::pair<std::string, std::string> ServerConfigs::GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by)

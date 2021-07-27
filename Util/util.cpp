@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include "util.hpp"
+#include "../Logger/logger.hpp"
 
 int Util::TryCastStringToInt(const std::string& p_str)
 {
@@ -8,7 +9,7 @@ int Util::TryCastStringToInt(const std::string& p_str)
 		return std::stoi(p_str);
 	}
 	catch (...) {
-		std::cout << "Tried convertion of invalid std::string to int. Tried converting the following data: " << p_str << "\n";
+        Logger::LogInfo("Tried convertion of invalid std::string to int. Tried converting the following data: " + p_str + "\n");
 	}
 
 	return 0;
