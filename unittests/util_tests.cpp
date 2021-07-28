@@ -1,8 +1,8 @@
 #include "catch2.hpp"
-#include "../util.hpp"
+#include "../Util/util.hpp"
 #include <iostream>
 
-TEST_CASE("Util TryConvertStringToInt should return different from zero", "[TryConvertStringToInt]")
+TEST_CASE("TryConvertStringToInt should return different from zero", "[TryConvertStringToInt]")
 {
 	std::string test = "234";
 	REQUIRE(Util::TryCastStringToInt(test) == 234);
@@ -14,14 +14,30 @@ TEST_CASE("TryConvertStringToUnsignedShortInt should return different from zero"
 	REQUIRE(Util::TryCastStringToUnsignedShortInt(test) == 234);
 }
 
-TEST_CASE("Util TryConvertStringToInt test should return zero", "[TryConvertStringToInt]")
+TEST_CASE("TryConvertStringToInt test should throw exception", "[TryConvertStringToInt]")
 {
-	std::string test = "ASDF";
-	REQUIRE(Util::TryCastStringToInt(test) == 0);
+    try
+    {
+        std::string test = "ASDF";
+        Util::TryCastStringToInt(test);
+        REQUIRE(false);
+    }
+    catch (...)
+    {
+        REQUIRE(true);
+    }
 }
 
-TEST_CASE("Util TryConvertStringToUnsignedShortInt test should return zero", "[TryConvertStringToUnsignedShortInt]")
+TEST_CASE("TryConvertStringToUnsignedShortInt test should throw exception", "[TryConvertStringToUnsignedShortInt]")
 {
-	std::string test = "ASDFDFSFS";
-	REQUIRE(Util::TryCastStringToUnsignedShortInt(test) == 0);
+    try
+    {
+        std::string test = "ASDFDFSFS";
+        Util::TryCastStringToUnsignedShortInt(test);
+        REQUIRE(false);
+    }
+    catch (...)
+    {
+        REQUIRE(true);
+    }
 }

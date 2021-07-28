@@ -2,6 +2,7 @@
 #include "path_handler.hpp"
 #include <sstream>
 #include <cassert>
+#include <cstring>
 
 #if _WIN32 || _WIN64
 
@@ -16,7 +17,7 @@
 
 #endif
 
-const std::string PathHandler::GetThisExecutingBinaryFullPath() throw(...)
+const std::string PathHandler::GetThisExecutingBinaryFullPath()
 {
 	constexpr unsigned long long SAFE_MAX_PATH = 4096;
 	bool found_binary = false;

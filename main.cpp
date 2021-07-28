@@ -12,8 +12,8 @@
 
 constexpr short DEFAULT_PORT = 7000;
 
-short GetPortFromArgs(int& argc, char** argv);
-void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler);
+short GetPortFromArgs(int& argc, char** argv) noexcept;
+void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
 
 int main(int argc, char** argv)
 {
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	return EXIT_SUCCESS;
 }
 
-short GetPortFromArgs(int& argc, char** argv)
+short GetPortFromArgs(int& argc, char** argv) noexcept
 {
 	if (argc != 2)
 		return DEFAULT_PORT;
@@ -39,7 +39,7 @@ short GetPortFromArgs(int& argc, char** argv)
 	return ArgParser::GetPortFromArg(argv[1]);
 }
 
-void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler)
+void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept
 {
 	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) 
 	{

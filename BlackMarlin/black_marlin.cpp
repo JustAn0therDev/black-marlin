@@ -13,7 +13,7 @@ BlackMarlin::~BlackMarlin() noexcept
 	this->Flush();
 }
 
-const std::string* BlackMarlin::Get(const std::string& p_key) const throw(...)
+const std::string* BlackMarlin::Get(const std::string& p_key) const
 {
 	auto it = this->m_dict.find(p_key);
 
@@ -25,7 +25,7 @@ const std::string* BlackMarlin::Get(const std::string& p_key) const throw(...)
 	return nullptr;
 }
 
-void BlackMarlin::Set(std::string p_key, std::string* p_value) throw(...)
+void BlackMarlin::Set(std::string p_key, std::string* p_value)
 {
 	auto it = this->m_dict.find(p_key);
 
@@ -35,7 +35,7 @@ void BlackMarlin::Set(std::string p_key, std::string* p_value) throw(...)
 	}
 }
 
-void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, const uint16_t& p_seconds) throw(...)
+void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, const uint16_t& p_seconds)
 {
 	auto& p_dict = this->m_dict;
 
@@ -50,13 +50,13 @@ void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, cons
 	}
 }
 
-void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds) throw(...)
+void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds)
 {
 	std::this_thread::sleep_for(std::chrono::seconds(p_seconds));
 	this->Delete(p_key);
 }
 
-void BlackMarlin::Overwrite(std::string p_key, std::string* p_value) throw(...)
+void BlackMarlin::Overwrite(std::string p_key, std::string* p_value)
 {
 	auto it = this->m_dict.find(p_key);
 
@@ -70,7 +70,7 @@ void BlackMarlin::Overwrite(std::string p_key, std::string* p_value) throw(...)
 	}
 }
 
-void BlackMarlin::Delete(const std::string& p_key) throw(...)
+void BlackMarlin::Delete(const std::string& p_key)
 {
 	auto it = this->m_dict.find(p_key);
 
@@ -83,7 +83,7 @@ void BlackMarlin::Delete(const std::string& p_key) throw(...)
 	this->m_dict.erase(p_key);
 }
 
-const bool BlackMarlin::Exists(const std::string& p_key) const throw(...)
+const bool BlackMarlin::Exists(const std::string& p_key) const
 {
 	auto it = this->m_dict.find(p_key);
 
@@ -100,7 +100,7 @@ const size_t BlackMarlin::Count() const noexcept
 	return this->m_dict.size();
 }
 
-void BlackMarlin::Flush() throw(...)
+void BlackMarlin::Flush()
 {
 	for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it)
 	{

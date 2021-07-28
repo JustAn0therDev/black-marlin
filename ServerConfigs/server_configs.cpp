@@ -8,9 +8,9 @@
 #include <utility>
 #include <stdlib.h>
 
-static constexpr char* BM_RESPONSE_HEADERS_FILENAME = "bm_response_headers.txt";
+static constexpr char BM_RESPONSE_HEADERS_FILENAME[24] = "bm_response_headers.txt";
 
-ServerConfigs::ServerConfigs()
+ServerConfigs::ServerConfigs() noexcept
 {
 	this->m_configs = std::unordered_map<std::string, std::string>();
 }
@@ -40,7 +40,7 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 	response_headers_config_file.close();
 }
 
-const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() const
+const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() const noexcept
 {
 	return this->m_configs;
 }

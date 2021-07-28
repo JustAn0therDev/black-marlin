@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch2.hpp"
-#include "../black_marlin.hpp"
+#include "../BlackMarlin/black_marlin.hpp"
 #include <thread>
 
 auto black_marlin = BlackMarlin();
