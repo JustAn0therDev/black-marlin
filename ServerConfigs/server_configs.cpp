@@ -8,10 +8,11 @@
 #include <utility>
 #include <stdlib.h>
 
+static constexpr char* BM_RESPONSE_HEADERS_FILENAME = "bm_response_headers.txt";
+
 ServerConfigs::ServerConfigs()
 {
 	this->m_configs = std::unordered_map<std::string, std::string>();
-	this->m_filename = "bm_response_headers.txt";
 }
 
 void ServerConfigs::LoadHeadersFromConfigFile()
@@ -20,7 +21,7 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 
 	const char split_by = ' ';
 
-	const std::string full_path = PathHandler::GetThisExecutingBinaryFullPath() + this->m_filename;
+	const std::string full_path = PathHandler::GetThisExecutingBinaryFullPath() + BM_RESPONSE_HEADERS_FILENAME;
 
 	std::ifstream response_headers_config_file(full_path, std::ios::in);
 

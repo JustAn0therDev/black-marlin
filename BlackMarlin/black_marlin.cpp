@@ -3,21 +3,21 @@
 #include <iostream>
 #include <thread>
 
-BlackMarlin::BlackMarlin() 
+BlackMarlin::BlackMarlin() noexcept
 {
 	this->m_dict = std::unordered_map<std::string, std::string*>();
 }
 
-BlackMarlin::~BlackMarlin() 
+BlackMarlin::~BlackMarlin() noexcept
 {
 	this->Flush();
 }
 
-const std::string* BlackMarlin::Get(const std::string& p_key) const 
+const std::string* BlackMarlin::Get(const std::string& p_key) const throw(...)
 {
 	auto it = this->m_dict.find(p_key);
 
-	if (it != this->m_dict.end()) 
+	if (it != this->m_dict.end())
 	{
 		return it->second;
 	}
@@ -25,23 +25,23 @@ const std::string* BlackMarlin::Get(const std::string& p_key) const
 	return nullptr;
 }
 
-void BlackMarlin::Set(std::string p_key, std::string* p_value) 
+void BlackMarlin::Set(std::string p_key, std::string* p_value) throw(...)
 {
 	auto it = this->m_dict.find(p_key);
 
-	if (it == this->m_dict.end()) 
+	if (it == this->m_dict.end())
 	{
 		this->m_dict[p_key] = p_value;
 	}
 }
 
-void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, const uint16_t& p_seconds) 
+void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, const uint16_t& p_seconds) throw(...)
 {
 	auto& p_dict = this->m_dict;
 
 	auto it = this->m_dict.find(p_key);
 
-	if (it == this->m_dict.end()) 
+	if (it == this->m_dict.end())
 	{
 		this->m_dict[p_key] = p_value;
 
@@ -50,17 +50,17 @@ void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, cons
 	}
 }
 
-void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds) 
+void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds) throw(...)
 {
 	std::this_thread::sleep_for(std::chrono::seconds(p_seconds));
 	this->Delete(p_key);
 }
 
-void BlackMarlin::Overwrite(std::string p_key, std::string* p_value) 
+void BlackMarlin::Overwrite(std::string p_key, std::string* p_value) throw(...)
 {
 	auto it = this->m_dict.find(p_key);
 
-	if (it != this->m_dict.end()) 
+	if (it != this->m_dict.end())
 	{
 		auto& current = m_dict[p_key];
 
@@ -70,7 +70,7 @@ void BlackMarlin::Overwrite(std::string p_key, std::string* p_value)
 	}
 }
 
-void BlackMarlin::Delete(const std::string& p_key) 
+void BlackMarlin::Delete(const std::string& p_key) throw(...)
 {
 	auto it = this->m_dict.find(p_key);
 
@@ -83,11 +83,11 @@ void BlackMarlin::Delete(const std::string& p_key)
 	this->m_dict.erase(p_key);
 }
 
-const bool BlackMarlin::Exists(const std::string& p_key) const 
+const bool BlackMarlin::Exists(const std::string& p_key) const throw(...)
 {
 	auto it = this->m_dict.find(p_key);
 
-	if (it != this->m_dict.end()) 
+	if (it != this->m_dict.end())
 	{
 		return true;
 	}
@@ -95,14 +95,14 @@ const bool BlackMarlin::Exists(const std::string& p_key) const
 	return false;
 }
 
-const size_t BlackMarlin::Count() const 
+const size_t BlackMarlin::Count() const noexcept
 {
 	return this->m_dict.size();
 }
 
-void BlackMarlin::Flush() 
+void BlackMarlin::Flush() throw(...)
 {
-	for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it) 
+	for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it)
 	{
 		auto& current = this->m_dict[it->first];
 		delete current;
