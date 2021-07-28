@@ -8,11 +8,11 @@
 class ServerConfigs
 {
 public:
-	ServerConfigs();
+	ServerConfigs() noexcept;
 	// Loads the internal hashtable with the configs file's content.
 	void LoadHeadersFromConfigFile();
 	// Returns a const reference to the hashtable.
-	const std::unordered_map<std::string, std::string>& GetConfigs() const;
+	const std::unordered_map<std::string, std::string>& GetConfigs() const noexcept;
 private:
 	// This object's internal hashtable.
 	std::unordered_map<std::string, std::string> m_configs;
