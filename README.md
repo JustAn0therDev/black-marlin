@@ -1,4 +1,4 @@
-![](https://img.shields.io/github/repo-size/JustAn0therDev/black-marlin) ![](https://img.shields.io/github/license/JustAn0therDev/black-marlin) ![](https://img.shields.io/github/downloads/JustAn0therDev/black-marlin/total)
+![](https://img.shields.io/github/repo-size/JustAn0therDev/black-marlin) ![](https://img.shields.io/github/license/JustAn0therDev/black-marlin)
 
 # Black Marlin: A light in-memory database as an alternative to Redis with a REST API interface for easy development and integration.
 **Black Marlin** is an in-memory database for fast reading, writing and deleting cached data. Light, fast and easy to use with no need for third-party libraries.
