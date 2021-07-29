@@ -84,17 +84,17 @@ If there is no file with the name mentioned above, there will be no additional c
 	- Returns: `200 - OK` if everything went well.
 
 ---------------------------
-## Logs:
+### Logs:
 Everytime an error occurs (like an exception), it writes to a file called `bm_logs.txt` (it is created if it doesn't already exist in the same directory as the program). 
 `{Year}-{Month}-{Day} {Hour}:{Minute}:{Second} - Error Message`
 
 ---------------------------
-## Current roadmap:
+### Current roadmap:
 - Support for HTTPS and IPv6 (now natively supported by `cpphttplib`).
 
 ---------------------------
-## Sidenotes:
-- **The pre-release is available for testing!**;
+### Sidenotes:
+- **There is a pre-release available for testing!**
 
 ---------------------------
 ## Contributions:
