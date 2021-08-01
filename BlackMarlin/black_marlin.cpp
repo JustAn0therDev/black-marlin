@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <thread>
+#include <cassert>
 
 BlackMarlin::BlackMarlin() noexcept
 {
@@ -39,7 +40,7 @@ void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, cons
 {
 	auto& p_dict = this->m_dict;
 
-	auto it = this->m_dict.find(p_key);
+	auto& it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end())
 	{
@@ -58,29 +59,25 @@ void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds)
 
 void BlackMarlin::Overwrite(std::string p_key, std::string* p_value)
 {
-	auto it = this->m_dict.find(p_key);
+	auto& it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end())
 	{
-		auto& current = m_dict[p_key];
+		delete this->m_dict[p_key];
 
-		delete current;
-
-		current = p_value;
+		this->m_dict[p_key] = p_value;
 	}
 }
 
 void BlackMarlin::Delete(const std::string& p_key)
 {
-	auto it = this->m_dict.find(p_key);
+	auto& it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end()) return;
 
-	auto& current = this->m_dict[p_key];
+	delete this->m_dict[p_key];
 
-	delete current;
-
-	this->m_dict.erase(p_key);
+	this->m_dict.erase(it);
 }
 
 const bool BlackMarlin::Exists(const std::string& p_key) const
@@ -102,12 +99,11 @@ const size_t BlackMarlin::Count() const noexcept
 
 void BlackMarlin::Flush()
 {
-	for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it)
+	for (auto& it = this->m_dict.begin(); it != this->m_dict.end(); ++it)
 	{
-		auto& current = this->m_dict[it->first];
-		delete current;
-		current = nullptr;
+		delete it->second;
+		it->second = nullptr;
 	}
 
-	this->m_dict.clear();
+    this->m_dict.clear();
 }
