@@ -90,7 +90,7 @@ Everytime an error occurs (like an exception), it writes to a file called `bm_lo
 
 ---------------------------
 ### Current roadmap:
-- Support for HTTPS and IPv6 (now natively supported by `cpphttplib`).
+- Support for optional SSL and IPv6 (now natively supported by `cpphttplib`).
 
 ---------------------------
 ### Sidenotes:
