@@ -2,7 +2,6 @@
 #include <vector>
 #include <iostream>
 #include <thread>
-#include <cassert>
 
 BlackMarlin::BlackMarlin() noexcept
 {
@@ -16,7 +15,7 @@ BlackMarlin::~BlackMarlin() noexcept
 
 const std::string* BlackMarlin::Get(const std::string& p_key) const
 {
-	auto it = this->m_dict.find(p_key);
+	const auto& it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end())
 	{
@@ -28,7 +27,7 @@ const std::string* BlackMarlin::Get(const std::string& p_key) const
 
 void BlackMarlin::Set(std::string p_key, std::string* p_value)
 {
-	auto it = this->m_dict.find(p_key);
+    const auto& it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end())
 	{
@@ -38,9 +37,7 @@ void BlackMarlin::Set(std::string p_key, std::string* p_value)
 
 void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, const uint16_t& p_seconds)
 {
-	auto& p_dict = this->m_dict;
-
-	auto& it = this->m_dict.find(p_key);
+	const auto& it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end())
 	{
@@ -59,7 +56,7 @@ void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds)
 
 void BlackMarlin::Overwrite(std::string p_key, std::string* p_value)
 {
-	auto& it = this->m_dict.find(p_key);
+    const auto& it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end())
 	{
@@ -71,7 +68,7 @@ void BlackMarlin::Overwrite(std::string p_key, std::string* p_value)
 
 void BlackMarlin::Delete(const std::string& p_key)
 {
-	auto& it = this->m_dict.find(p_key);
+    const auto& it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end()) return;
 
@@ -82,7 +79,7 @@ void BlackMarlin::Delete(const std::string& p_key)
 
 const bool BlackMarlin::Exists(const std::string& p_key) const
 {
-	auto it = this->m_dict.find(p_key);
+	const auto& it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end())
 	{
