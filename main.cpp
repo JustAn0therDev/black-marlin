@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 
 	SetRoutes(server, black_marlin, http_request_handler);
 
-	std::cout << "Listening at port " << port;
+	std::cout << "Listening at port " << port << "\n"; 
 	server.listen("127.0.0.1", port);
 
 	return EXIT_SUCCESS;

@@ -1,5 +1,6 @@
 #include "arg_parser.hpp"
 #include <regex>
+#include <climits>
 #include "../Util/util.hpp"
 
 short ArgParser::GetPortFromArg(const char* arg_value) noexcept

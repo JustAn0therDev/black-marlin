@@ -1,7 +1,6 @@
 #include <string>
 #include "path_handler.hpp"
 #include <sstream>
-#include <cassert>
 #include <cstring>
 
 #if _WIN32 || _WIN64
@@ -12,29 +11,26 @@
 #else
 
 #include <unistd.h>
-#include <linux/limits.h>
+#include <climits>
 #define PATH_DELIMETER '/'
 
 #endif
 
 const std::string PathHandler::GetThisExecutingBinaryFullPath()
 {
-	constexpr unsigned long long SAFE_MAX_PATH = 4096;
 	bool found_binary = false;
 
     std::string full_path = "", path_part, filename_part_to_look_for;
 
 #if _WIN32 || _WIN64
 	char path_buffer[MAX_PATH] = { '\0' };
-    filename_part_to_look_for = "black_marlin.exe";
+    filename_part_to_look_for = "black-marlin.exe";
 	GetModuleFileName(NULL, path_buffer, MAX_PATH);
 #else
 	char path_buffer[PATH_MAX] = { '\0' };
-    filename_part_to_look_for = "black_marlin.file";
+    filename_part_to_look_for = "black-marlin";
 	readlink("/proc/self/exe", path_buffer, PATH_MAX);
 #endif
-
-	assert(("This binary's path should have been copied to the buffer.", strlen(path_buffer) > 0));
 
 	while (!found_binary)
 	{
