@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <vector>
+
 class BlackMarlin {
 public:
 	BlackMarlin() noexcept;

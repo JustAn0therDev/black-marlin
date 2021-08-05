@@ -1,13 +1,13 @@
+#ifndef HTTPREQUESTHANDLERCPP
+#define HTTPREQUESTHANDLERCPP
+
 #include "../vendor/httplib.h"
 #include "../BlackMarlin/black_marlin.hpp"
 #include "../ServerConfigs/server_configs.hpp"
 
-#ifndef HTTPREQUESTHANDLERCPP
-#define HTTPREQUESTHANDLERCPP
 class HttpRequestHandler 
 {
 public:
-	// The object's constructor.
 	HttpRequestHandler() noexcept;
 	// Handles a Get request.
 	void HandleGet(const BlackMarlin& p_blackMarlin, const httplib::Request& p_req, httplib::Response& p_res) const noexcept;
@@ -33,4 +33,5 @@ private:
 	// Internal ServerConfigs object.
 	ServerConfigs m_server_configs;
 };
-#endif
+
+#endif /* HTTPREQUESTHANDLERCPP */
