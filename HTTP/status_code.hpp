@@ -1,5 +1,6 @@
 // Enum class with HTTP Status Codes.
-enum class StatusCode {
+enum class StatusCode 
+{
 	// Resource created in the server.
 	kCreated = 201,
 	// Nothing returned in the response body but the headers might be useful (or not).

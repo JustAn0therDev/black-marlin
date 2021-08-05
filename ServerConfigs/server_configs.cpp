@@ -8,7 +8,7 @@
 #include <utility>
 #include <stdlib.h>
 
-static constexpr char BM_RESPONSE_HEADERS_FILENAME[24] = "bm_response_headers.txt";
+static constexpr char BM_RESPONSE_HEADERS_FILENAME[] = "bm_response_headers.txt";
 
 ServerConfigs::ServerConfigs() noexcept
 {
@@ -31,7 +31,7 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 		{
 			std::istringstream iss(file_content);
 
-			auto& headers = this->GetHeaderPairFromConfigFile(iss, split_by);
+			const auto headers = this->GetHeaderPairFromConfigFile(iss, split_by);
 
 			this->m_configs[headers.first] = headers.second;
 		}
@@ -45,7 +45,7 @@ const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() 
 	return this->m_configs;
 }
 
-const std::pair<std::string, std::string> ServerConfigs::GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by)
+std::pair<std::string, std::string> ServerConfigs::GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by)
 {
 	std::string line_content, header_key, header_value = "";
 
