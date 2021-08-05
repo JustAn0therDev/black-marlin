@@ -3,7 +3,7 @@
 #include <string>
 #include <regex>
 #include <stdlib.h>
-#include "HTTP/httplib.h"
+#include "vendor/httplib.h"
 #include "BlackMarlin/black_marlin.hpp"
 #include "HTTP/http_request_handler.hpp"
 #include "Util/util.hpp"
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 
 	SetRoutes(server, black_marlin, http_request_handler);
 
-	std::cout << "Listening at port " << port << "\n"; 
+	std::cout << "Listening at port " << port << "\n";
 	server.listen("127.0.0.1", port);
 
 	return EXIT_SUCCESS;
@@ -41,49 +41,49 @@ short GetPortFromArgs(int& argc, char** argv) noexcept
 
 void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept
 {
-	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) 
+	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleGet(black_marlin, req, res);
 	});
 
-	server.Post("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) 
+	server.Post("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandlePost(black_marlin, req, res);
 	});
 
-	server.Put("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) 
+	server.Put("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandlePutAndPatch(black_marlin, req, res);
 	});
 
-	server.Patch("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) 
+	server.Patch("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandlePutAndPatch(black_marlin, req, res);
 	});
 
-	server.Delete("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) 
+	server.Delete("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleDelete(black_marlin, req, res);
 	});
 
-	server.Delete("/flush", [&black_marlin, &http_request_handler](const httplib::Request&, httplib::Response& res) 
+	server.Delete("/flush", [&black_marlin, &http_request_handler](const httplib::Request&, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleDeleteFlush(black_marlin, res);
 	});
 
-	server.Get("/exists", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res) 
+	server.Get("/exists", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleGetExists(black_marlin, req, res);
 	});
 
-	server.Get("/count", [&black_marlin, &http_request_handler](const httplib::Request&, httplib::Response& res) 
+	server.Get("/count", [&black_marlin, &http_request_handler](const httplib::Request&, httplib::Response& res)
 	{
 		http_request_handler.SetResponseHeadersFromConfig(res);
 		http_request_handler.HandleGetCount(black_marlin, res);

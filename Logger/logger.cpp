@@ -7,6 +7,7 @@
 
 void Logger::Log(std::string p_message) noexcept
 {
+
 	std::string full_path = Logger::GetLogFileFullPath();
 
 	std::ofstream log_file_writer(full_path, std::ios::app);
@@ -21,10 +22,11 @@ void Logger::Log(std::string p_message) noexcept
 
 	log_file_writer << time_string_buffer << " - " << p_message << "\n";
 
-	free(current_local_time);
 }
 
 const std::string Logger::GetLogFileFullPath() noexcept
 {
+
 	return PathHandler::GetThisExecutingBinaryFullPath() + LOG_FILENAME;
+
 }

@@ -1,13 +1,11 @@
-#include <unordered_map>
-#include <vector>
-
 #ifndef BLACKMARLINCPP
 #define BLACKMARLINCPP
+
+#include <unordered_map>
+#include <vector>
 class BlackMarlin {
 public:
-	// BlackMarlin's default constructor.
 	BlackMarlin() noexcept;
-	// BlackMarlin's destructor.
 	~BlackMarlin() noexcept;
 	// Returns the value of a key if it exists. If it does not exist, returns a nullptr.
 	const std::string* Get(const std::string& p_key) const;
@@ -20,9 +18,9 @@ public:
 	// Deletes the pointer to the string and the "bucket" in the map.
 	void Delete(const std::string& p_key);
 	// Returns true if the key exists in the map; false otherwise.
-	const bool Exists(const std::string& p_key) const;
+	bool Exists(const std::string& p_key) const;
 	// Returns the number of items in the map.
-	const size_t Count() const noexcept;
+	size_t Count() const noexcept;
 	// Frees all pointers and buckets in the map.
 	void Flush();
 private:
@@ -31,4 +29,5 @@ private:
 	// Deletes the pointer in the specified time in seconds.
 	void DeleteIn(const std::string& p_key, const uint16_t& p_seconds);
 };
-#endif
+
+#endif /* BLACKMARLINCPP */
