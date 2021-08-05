@@ -24,13 +24,13 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 
 		const auto& value = p_black_marlin.Get(p_req.get_param_value("key"));
 
-		if (value == nullptr || *value == "")
+		if (value == "\0")
 		{
 			p_res.status = static_cast<int>(StatusCode::kNoContent);
 			return;
 		}
 
-		p_res.set_content(*value, this->m_content_type);
+		p_res.set_content(value, this->m_content_type);
 	}
 	catch (std::exception& e)
 	{
@@ -44,8 +44,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 {
 	try
 	{
-        // Thought that "p_req.body" was a char* but its not.
-		if (!p_req.has_param("key") || p_req.body == "")
+		if (!p_req.has_param("key") || p_req.body == "\0")
 		{
 			p_res.status = static_cast<int>(StatusCode::kBadRequest);
 			return;
@@ -59,8 +58,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 			return;
 		}
 
-        // Not sure if this works without a pointer when trying to delete the value in the hashtable.
-		std::string* req_body_ptr = new std::string(p_req.body);
+        const auto& req_body = p_req.body;
 
 		if (p_req.has_param("expiresin"))
 		{
@@ -69,17 +67,16 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 			if (!this->IsValidSecondsParam(expires_in_seconds))
 			{
 				p_res.status = static_cast<int>(StatusCode::kBadRequest);
-				delete req_body_ptr;
 				return;
 			}
 
 			const auto& seconds_to_expire = std::atoi(expires_in_seconds.c_str());
 
-			p_black_marlin.SetToDeleteLater(key, req_body_ptr, seconds_to_expire);
+			p_black_marlin.SetToDeleteLater(key, req_body, seconds_to_expire);
 		}
 		else
 		{
-			p_black_marlin.Set(key, req_body_ptr);
+			p_black_marlin.Set(key, req_body);
 		}
 
 		p_res.status = static_cast<int>(StatusCode::kCreated);
@@ -110,7 +107,7 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
 {
 	try
 	{
-		if (!p_req.has_param("key") || p_req.body == "")
+		if (!p_req.has_param("key") || p_req.body == "\0")
 		{
 			p_res.status = static_cast<int>(StatusCode::kBadRequest);
 			return;
@@ -124,8 +121,8 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
 			return;
 		}
 
-		std::string* req_body_ptr = new std::string(p_req.body);
-		p_black_marlin.Overwrite(key, req_body_ptr);
+		const auto& req_body = p_req.body;
+		p_black_marlin.Overwrite(key, req_body);
 	}
 	catch (std::exception& e)
 	{

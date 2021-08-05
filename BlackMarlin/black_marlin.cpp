@@ -1,11 +1,11 @@
 #include "black_marlin.hpp"
-#include <vector>
 #include <iostream>
 #include <thread>
+#include <vector>
 
 BlackMarlin::BlackMarlin() noexcept
 {
-	this->m_dict = std::unordered_map<std::string, std::string*>();
+	this->m_dict = std::unordered_map<std::string, std::string>();
 }
 
 BlackMarlin::~BlackMarlin() noexcept
@@ -13,7 +13,7 @@ BlackMarlin::~BlackMarlin() noexcept
 	this->Flush();
 }
 
-const std::string* BlackMarlin::Get(const std::string& p_key) const
+const std::string& BlackMarlin::Get(const std::string& p_key) const
 {
 	const auto it = this->m_dict.find(p_key);
 
@@ -22,10 +22,10 @@ const std::string* BlackMarlin::Get(const std::string& p_key) const
 		return it->second;
 	}
 
-	return nullptr;
+	return this->m_null_string_value;
 }
 
-void BlackMarlin::Set(std::string p_key, std::string* p_value)
+void BlackMarlin::Set(std::string p_key, const std::string& p_value)
 {
     const auto it = this->m_dict.find(p_key);
 
@@ -35,7 +35,7 @@ void BlackMarlin::Set(std::string p_key, std::string* p_value)
 	}
 }
 
-void BlackMarlin::SetToDeleteLater(std::string p_key, std::string* p_value, const uint16_t& p_seconds)
+void BlackMarlin::SetToDeleteLater(std::string p_key, const std::string& p_value, const uint16_t& p_seconds)
 {
 	const auto it = this->m_dict.find(p_key);
 
@@ -54,14 +54,12 @@ void BlackMarlin::DeleteIn(const std::string& p_key, const uint16_t& p_seconds)
 	this->Delete(p_key);
 }
 
-void BlackMarlin::Overwrite(std::string p_key, std::string* p_value)
+void BlackMarlin::Overwrite(std::string p_key, const std::string& p_value)
 {
     const auto it = this->m_dict.find(p_key);
 
 	if (it != this->m_dict.end())
 	{
-		delete this->m_dict[p_key];
-
 		this->m_dict[p_key] = p_value;
 	}
 }
@@ -71,8 +69,6 @@ void BlackMarlin::Delete(const std::string& p_key)
     const auto it = this->m_dict.find(p_key);
 
 	if (it == this->m_dict.end()) return;
-
-	delete this->m_dict[p_key];
 
 	this->m_dict.erase(it);
 }
@@ -96,11 +92,5 @@ size_t BlackMarlin::Count() const noexcept
 
 void BlackMarlin::Flush()
 {
-	for (auto it = this->m_dict.begin(); it != this->m_dict.end(); ++it)
-	{
-		delete it->second;
-		it->second = nullptr;
-	}
-
     this->m_dict.clear();
 }
