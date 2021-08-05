@@ -10,11 +10,6 @@
 
 static constexpr char BM_RESPONSE_HEADERS_FILENAME[] = "bm_response_headers.txt";
 
-ServerConfigs::ServerConfigs() noexcept
-{
-	this->m_configs = std::unordered_map<std::string, std::string>();
-}
-
 void ServerConfigs::LoadHeadersFromConfigFile()
 {
 	std::string file_content, line_content;

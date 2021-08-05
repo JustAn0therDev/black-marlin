@@ -9,7 +9,6 @@
 class ServerConfigs
 {
 public:
-	ServerConfigs() noexcept;
 	// Loads the internal hashtable with the configs file's content.
 	void LoadHeadersFromConfigFile();
 	// Returns a const reference to the hashtable.
