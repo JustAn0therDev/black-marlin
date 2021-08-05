@@ -1,11 +1,11 @@
-#include <string>
+#include "../BlackMarlin/black_marlin.hpp"
+#include "../Logger/logger.hpp"
+#include "../ServerConfigs/server_configs.hpp"
 #include "../Util/util.hpp"
 #include "../vendor/httplib.h"
-#include "status_code.hpp"
-#include "../BlackMarlin/black_marlin.hpp"
 #include "http_request_handler.hpp"
-#include "../ServerConfigs/server_configs.hpp"
-#include "../Logger/logger.hpp"
+#include "status_code.hpp"
+#include <string>
 
 HttpRequestHandler::HttpRequestHandler() noexcept
 {
@@ -44,6 +44,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 {
 	try
 	{
+        // Thought that "p_req.body" was a char* but its not.
 		if (!p_req.has_param("key") || p_req.body == "")
 		{
 			p_res.status = static_cast<int>(StatusCode::kBadRequest);
@@ -58,7 +59,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 			return;
 		}
 
-        // not sure if this works without a pointer when trying to delete the value in the hashtable.
+        // Not sure if this works without a pointer when trying to delete the value in the hashtable.
 		std::string* req_body_ptr = new std::string(p_req.body);
 
 		if (p_req.has_param("expiresin"))
@@ -95,22 +96,14 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 
 bool HttpRequestHandler::IsValidSecondsParam(std::string p_expires_in_seconds_param) noexcept
 {
-	try
-	{
-		const int& seconds = std::atoi(p_expires_in_seconds_param.c_str());
+    const int& seconds = std::atoi(p_expires_in_seconds_param.c_str());
 
-		if (seconds <= 0 || seconds > USHRT_MAX)
-		{
-			return false;
-		}
+    if (seconds <= 0 || seconds > USHRT_MAX)
+    {
+        return false;
+    }
 
-		return true;
-	}
-	catch (std::exception& e)
-	{
-		Logger::Log("Error while converting std::string to int. Error: " + std::string(e.what()));
-		return false;
-	}
+    return true;
 }
 
 void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) noexcept
@@ -226,6 +219,6 @@ void HttpRequestHandler::SetResponseHeadersFromConfig(httplib::Response& p_res) 
 	}
 	catch (std::exception& e)
 	{
-		Logger::Log("Error setting custom response headers." + std::string(e.what()));
+		Logger::Log("Error setting custom response headers: " + std::string(e.what()));
 	}
 }
