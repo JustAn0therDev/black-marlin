@@ -6,6 +6,7 @@
 unittests/unittests
 *.gch
 *.out
+*.o
 black_marlin
 black-marlin
 black_marlin.exe
@@ -15,10 +16,12 @@ out/
 /unittests/unittests.exe
 /unittests/unittests¨.exe
 bm_response_headers.txt
+todo.md
 
 ## Stuff that is generated per machine at compile time when using CMake.
 CMakeFiles/
 *.cmake
+CMakeCache.txt
 Makefile
 
 ## Ignore Visual Studio temporary files, build results, and

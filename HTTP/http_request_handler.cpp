@@ -1,6 +1,6 @@
 #include <string>
 #include "../Util/util.hpp"
-#include "httplib.h"
+#include "../vendor/httplib.h"
 #include "status_code.hpp"
 #include "../BlackMarlin/black_marlin.hpp"
 #include "http_request_handler.hpp"
@@ -9,8 +9,7 @@
 
 HttpRequestHandler::HttpRequestHandler() noexcept
 {
-	this->m_server_configs = ServerConfigs();
-	this->m_server_configs.LoadHeadersFromConfigFile();
+    this->m_server_configs.LoadHeadersFromConfigFile();
 }
 
 void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) const noexcept
@@ -59,6 +58,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 			return;
 		}
 
+        // not sure if this works without a pointer when trying to delete the value in the hashtable.
 		std::string* req_body_ptr = new std::string(p_req.body);
 
 		if (p_req.has_param("expiresin"))
@@ -72,7 +72,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 				return;
 			}
 
-			const auto& seconds_to_expire = Util::TryCastStringToUnsignedShortInt(expires_in_seconds);
+			const auto& seconds_to_expire = std::atoi(expires_in_seconds.c_str());
 
 			p_black_marlin.SetToDeleteLater(key, req_body_ptr, seconds_to_expire);
 		}
@@ -97,7 +97,7 @@ bool HttpRequestHandler::IsValidSecondsParam(std::string p_expires_in_seconds_pa
 {
 	try
 	{
-		const int& seconds = Util::TryCastStringToInt(p_expires_in_seconds_param);
+		const int& seconds = std::atoi(p_expires_in_seconds_param.c_str());
 
 		if (seconds <= 0 || seconds > USHRT_MAX)
 		{

@@ -77,7 +77,7 @@ void BlackMarlin::Delete(const std::string& p_key)
 	this->m_dict.erase(it);
 }
 
-const bool BlackMarlin::Exists(const std::string& p_key) const
+bool BlackMarlin::Exists(const std::string& p_key) const
 {
 	const auto it = this->m_dict.find(p_key);
 
@@ -89,7 +89,7 @@ const bool BlackMarlin::Exists(const std::string& p_key) const
 	return false;
 }
 
-const size_t BlackMarlin::Count() const noexcept
+size_t BlackMarlin::Count() const noexcept
 {
 	return this->m_dict.size();
 }

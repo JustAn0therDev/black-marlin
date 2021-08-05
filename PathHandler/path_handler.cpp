@@ -18,18 +18,23 @@
 
 const std::string PathHandler::GetThisExecutingBinaryFullPath()
 {
+
 	bool found_binary = false;
 
     std::string full_path = "", path_part, filename_part_to_look_for;
 
 #if _WIN32 || _WIN64
+
 	char path_buffer[MAX_PATH] = { '\0' };
     filename_part_to_look_for = "black-marlin.exe";
 	GetModuleFileName(NULL, path_buffer, MAX_PATH);
+
 #else
+
 	char path_buffer[PATH_MAX] = { '\0' };
     filename_part_to_look_for = "black-marlin";
 	readlink("/proc/self/exe", path_buffer, PATH_MAX);
+
 #endif
 
 	while (!found_binary)
