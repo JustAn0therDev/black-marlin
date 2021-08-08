@@ -87,7 +87,7 @@ If there is no file with the name mentioned above, there will be no additional c
 
 ---------------------------
 ### Logs:
-Everytime an error occurs (like an exception), it writes to a file called `bm_logs.txt` (it is created if it doesn't already exist in the same directory as the program). 
+Everytime an error occurs (like an exception), it writes to a file called `bm_logs.txt` (it is created if it doesn't already exist in the same directory as the program).
 `{Year}-{Month}-{Day} {Hour}:{Minute}:{Second} - Error Message`
 
 ---------------------------
@@ -96,6 +96,7 @@ Everytime an error occurs (like an exception), it writes to a file called `bm_lo
 
 ---------------------------
 ### Sidenotes:
+- This program does NOT support any other operating system except Windows and Linux;
 - **There is a pre-release available for testing!**
 
 ---------------------------
