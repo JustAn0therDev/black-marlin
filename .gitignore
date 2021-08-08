@@ -9,6 +9,7 @@ unittests/unittests
 *.o
 black_marlin
 black-marlin
+blackmarlin
 black_marlin.exe
 black_marlin.file
 out/
@@ -16,6 +17,7 @@ out/
 /unittests/unittests.exe
 /unittests/unittests¨.exe
 bm_response_headers.txt
+bm_logs.txt
 todo.md
 *.cbp
 

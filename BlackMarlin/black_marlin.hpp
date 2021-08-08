@@ -29,7 +29,8 @@ private:
 	std::unordered_map<std::string, std::string> m_dict;
 	// Deletes the pointer in the specified time in seconds.
 	void DeleteIn(const std::string& p_key, const uint16_t& p_seconds);
-	std::string m_default_empty_value = "";
+	// Default empty string value to return in cases where there is no reference to lvalues.
+	std::string m_default_empty_value;
 };
 
 #endif /* BLACKMARLINCPP */
