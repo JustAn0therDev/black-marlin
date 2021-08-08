@@ -44,6 +44,8 @@ This allows for some special types of configurations such as cache control, spec
 
 If there is no file with the name mentioned above, there will be no additional custom headers in the response and this step will be ignored.
 
+**Important: if the file exists and does not have the exact configurations as mentioned above, the program will not be able to run.**
+
 --------------------------
 ### For each route and method:
 **Any failed operation will return a `500 - Internal Server Error` HTTP status code**.
