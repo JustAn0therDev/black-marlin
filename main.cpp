@@ -1,8 +1,4 @@
 #include <iostream>
-#include <memory>
-#include <string>
-#include <regex>
-#include <stdlib.h>
 #include "vendor/httplib.h"
 #include "BlackMarlin/black_marlin.hpp"
 #include "HTTP/http_request_handler.hpp"
@@ -12,26 +8,28 @@
 
 constexpr short DEFAULT_PORT = 7000;
 
-short GetPortFromArgs(int& argc, char** argv) noexcept;
+long GetPortFromArgs(int& argc, char** argv) noexcept;
 void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
 
 int main(int argc, char** argv)
 {
 	httplib::Server server;
 	BlackMarlin black_marlin;
+    Logger logger;
+    Util util;
 	HttpRequestHandler http_request_handler;
 
-	short port = GetPortFromArgs(argc, argv);
+	long port = GetPortFromArgs(argc, argv);
 
 	SetRoutes(server, black_marlin, http_request_handler);
 
 	std::cout << "Listening at port " << port << "\n";
-	server.listen("127.0.0.1", port);
+	server.listen("127.0.0.1", (int)port);
 
 	return EXIT_SUCCESS;
 }
 
-short GetPortFromArgs(int& argc, char** argv) noexcept
+long GetPortFromArgs(int& argc, char** argv) noexcept
 {
 	if (argc != 2)
 		return DEFAULT_PORT;

@@ -17,7 +17,7 @@ private:
 	// This object's internal hashtable.
 	std::unordered_map<std::string, std::string> m_configs;
 	// Returns the header information (being it key and value) from the config file's current line.
-	std::pair<std::string, std::string> GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by);
+	static std::pair<std::string, std::string> GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by);
 };
 
 #endif /* SERVERCONFIGSCPP */

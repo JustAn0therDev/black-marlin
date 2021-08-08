@@ -1,7 +1,6 @@
 #include "../BlackMarlin/black_marlin.hpp"
 #include "../Logger/logger.hpp"
 #include "../ServerConfigs/server_configs.hpp"
-#include "../Util/util.hpp"
 #include "../vendor/httplib.h"
 #include "http_request_handler.hpp"
 #include "status_code.hpp"
@@ -10,9 +9,10 @@
 HttpRequestHandler::HttpRequestHandler() noexcept
 {
     this->m_server_configs.LoadHeadersFromConfigFile();
+    this->m_logger = Logger();
 }
 
-void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) const noexcept
+void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) noexcept
 {
 	try
 	{
@@ -24,7 +24,7 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 
 		const auto& value = p_black_marlin.Get(p_req.get_param_value("key"));
 
-		if (value == "\0")
+		if (std::empty(value))
 		{
 			p_res.status = static_cast<int>(StatusCode::kNoContent);
 			return;
@@ -35,7 +35,8 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 	catch (std::exception& e)
 	{
 		const auto& key = p_req.get_param_value("key");
-		Logger::Log("Get route. Key: " + key + " - Error: " + std::string(e.what()));
+        // TODO: Make this class have a Logger object as a dependency.
+		this->m_logger.Log("Get route. Key: " + key + " - Error: " + std::string(e.what()));
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
 }
@@ -44,7 +45,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 {
 	try
 	{
-		if (!p_req.has_param("key") || p_req.body == "\0")
+	    if (!p_req.has_param("key") || std::empty(p_req.body))
 		{
 			p_res.status = static_cast<int>(StatusCode::kBadRequest);
 			return;
@@ -64,13 +65,15 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 		{
 			std::string expires_in_seconds = p_req.get_param_value("expiresin");
 
-			if (!this->IsValidSecondsParam(expires_in_seconds))
+			if (!IsValidSecondsParam(expires_in_seconds))
 			{
 				p_res.status = static_cast<int>(StatusCode::kBadRequest);
 				return;
 			}
 
-			const auto& seconds_to_expire = std::atoi(expires_in_seconds.c_str());
+			char* buffer;
+
+			const auto& seconds_to_expire = std::strtol(expires_in_seconds.c_str(), &buffer, 10);
 
 			p_black_marlin.SetToDeleteLater(key, req_body, seconds_to_expire);
 		}
@@ -86,14 +89,15 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 		const auto& key = p_req.get_param_value("key");
 		const auto& value = p_req.get_param_value("value");
 
-		Logger::Log("Post route. Key: " + key + " - Value: " + value + " - Error: " + std::string(e.what()));
+		this->m_logger.Log("Post route. Key: " + key + " - Value: " + value + " - Error: " + std::string(e.what()));
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
 }
 
-bool HttpRequestHandler::IsValidSecondsParam(std::string p_expires_in_seconds_param) noexcept
+bool HttpRequestHandler::IsValidSecondsParam(const std::string& p_expires_in_seconds_param) noexcept
 {
-    const int& seconds = std::atoi(p_expires_in_seconds_param.c_str());
+    char* buf;
+    const auto seconds = std::strtol(p_expires_in_seconds_param.c_str(), &buf, 10);
 
     if (seconds <= 0 || seconds > USHRT_MAX)
     {
@@ -107,7 +111,7 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
 {
 	try
 	{
-		if (!p_req.has_param("key") || p_req.body == "\0")
+		if (!p_req.has_param("key") || std::empty(p_req.body))
 		{
 			p_res.status = static_cast<int>(StatusCode::kBadRequest);
 			return;
@@ -126,7 +130,7 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
 	}
 	catch (std::exception& e)
 	{
-		Logger::Log("Patch and Put route. Error: " + std::string(e.what()));
+		this->m_logger.Log("Patch and Put route. Error: " + std::string(e.what()));
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
 }
@@ -146,7 +150,7 @@ void HttpRequestHandler::HandleDelete(BlackMarlin& p_black_marlin, const httplib
 	catch (std::exception& e)
 	{
 		const auto& key = p_req.get_param_value("key");
-		Logger::Log("Delete route. Key: " + key +" - Error: " + e.what());
+		this->m_logger.Log("Delete route. Key: " + key +" - Error: " + e.what());
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
 }
@@ -159,12 +163,12 @@ void HttpRequestHandler::HandleDeleteFlush(BlackMarlin& p_black_marlin, httplib:
 	}
 	catch (std::exception& e)
 	{
-		Logger::Log("Flush route. Error: " + std::string(e.what()));
+		this->m_logger.Log("Flush route. Error: " + std::string(e.what()));
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
 }
 
-void HttpRequestHandler::HandleGetExists(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) const noexcept
+void HttpRequestHandler::HandleGetExists(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) noexcept
 {
 	try
 	{
@@ -182,12 +186,12 @@ void HttpRequestHandler::HandleGetExists(const BlackMarlin& p_black_marlin, cons
 	catch (std::exception& e)
 	{
 		const auto& key = p_req.get_param_value("key");
-		Logger::Log("Exists route. Key: " + key + " - Error: " + std::string(e.what()));
+		this->m_logger.Log("Exists route. Key: " + key + " - Error: " + std::string(e.what()));
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
 }
 
-void HttpRequestHandler::HandleGetCount(const BlackMarlin& p_black_marlin, httplib::Response& p_res) const noexcept
+void HttpRequestHandler::HandleGetCount(const BlackMarlin& p_black_marlin, httplib::Response& p_res) noexcept
 {
 	try
 	{
@@ -195,27 +199,24 @@ void HttpRequestHandler::HandleGetCount(const BlackMarlin& p_black_marlin, httpl
 	}
 	catch (std::exception& e)
 	{
-		Logger::Log("Count route. Error: " + std::string(e.what()));
+		this->m_logger.Log("Count route. Error: " + std::string(e.what()));
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
 }
 
-void HttpRequestHandler::SetResponseHeadersFromConfig(httplib::Response& p_res) const noexcept
+void HttpRequestHandler::SetResponseHeadersFromConfig(httplib::Response& p_res) noexcept
 {
 	try
 	{
 		const auto& configs = this->m_server_configs.GetConfigs();
 
-		auto it = configs.begin();
-
-		while (it != configs.end())
-		{
-			p_res.set_header(it->first.c_str(), it->second);
-			++it;
-		}
+        for (auto &[header_key, header_value] : configs)
+        {
+			p_res.set_header(header_key.c_str(), header_value);
+        }
 	}
 	catch (std::exception& e)
 	{
-		Logger::Log("Error setting custom response headers: " + std::string(e.what()));
+		this->m_logger.Log("Error setting custom response headers: " + std::string(e.what()));
 	}
 }

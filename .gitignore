@@ -17,6 +17,7 @@ out/
 /unittests/unittests¨.exe
 bm_response_headers.txt
 todo.md
+*.cbp
 
 ## Stuff that is generated per machine at compile time when using CMake.
 CMakeFiles/

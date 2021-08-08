@@ -3,10 +3,8 @@
 #include <unordered_map>
 #include <string>
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <utility>
-#include <stdlib.h>
 
 static constexpr char BM_RESPONSE_HEADERS_FILENAME[] = "bm_response_headers.txt";
 
@@ -26,13 +24,15 @@ void ServerConfigs::LoadHeadersFromConfigFile()
 		{
 			std::istringstream iss(file_content);
 
-			const auto headers = this->GetHeaderPairFromConfigFile(iss, split_by);
+			const auto headers = GetHeaderPairFromConfigFile(iss, split_by);
 
 			this->m_configs[headers.first] = headers.second;
 		}
 	}
 
-	response_headers_config_file.close();
+    // Testing NOT closing the file because of RAII. If this is based on object lifetime, so the
+    // resource should "handle itself".
+	// response_headers_config_file.close();
 }
 
 const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() const noexcept
@@ -42,11 +42,14 @@ const std::unordered_map<std::string, std::string>& ServerConfigs::GetConfigs() 
 
 std::pair<std::string, std::string> ServerConfigs::GetHeaderPairFromConfigFile(std::istringstream& p_iss, const char& p_split_by)
 {
-	std::string line_content, header_key, header_value = "";
+    // Should the things in this function be documented as "IF THIS IS NOT MADE LIKE X, IT WILL CRASH THE PROGRAM"?
+    // The problem with this approach is that this implementation could be made way better.
+
+	std::string line_content, header_key, header_value;
 
 	while (std::getline(p_iss, line_content, p_split_by))
 	{
-		if (header_key == "")
+		if (std::empty(header_key))
 		{
 			header_key = line_content;
 		}

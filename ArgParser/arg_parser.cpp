@@ -1,22 +1,24 @@
-#include "arg_parser.hpp"
-#include <regex>
-#include <climits>
 #include "../Util/util.hpp"
+#include "arg_parser.hpp"
+#include <climits>
+#include <regex>
 
-short ArgParser::GetPortFromArg(const char* arg_value) noexcept
+long ArgParser::GetPortFromArg(const char* arg_value) noexcept
 {
-	unsigned int port = 0;
+	long port = 0;
 	std::regex only_numbers_pattern("[0-9]+");
+	Util util;
+	char* buf;
 
-	if (regex_match(arg_value, only_numbers_pattern))
-	{
-		port = std::atoi(arg_value);
-	}
-	else
-		Util::Panic("Expected only numbers for port argument. Got: " + std::string(arg_value) + "\n");
+	// TODO: does this track negative integers conversion?
+	port = std::strtol(arg_value, &buf, 10);
 
-	if (port > USHRT_MAX)
-		Util::Panic("The port argument value exceeds the range of valid ports.");
+	if (port == 0)
+		util.Panic("Conversion of port number did not succeed. Got the following value as argument: "
+		+ std::string(arg_value) + "\n");
+
+	if (port > USHRT_MAX || port < 0)
+	    util.Panic("The port argument value exceeds the range of valid ports.");
 
 	return port;
 }

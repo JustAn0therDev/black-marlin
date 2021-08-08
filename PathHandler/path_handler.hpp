@@ -3,10 +3,10 @@
 
 #include <string>
 
-struct PathHandler
+namespace PathHandler
 {
-	// Gets the full path of the running binary.
-	static const std::string GetThisExecutingBinaryFullPath();
-};
+    // Gets the full path of the running binary.
+	std::string GetThisExecutingBinaryFullPath();
+}
 
 #endif
