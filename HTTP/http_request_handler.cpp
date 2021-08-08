@@ -93,7 +93,7 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 	}
 }
 
-bool HttpRequestHandler::IsValidSecondsParam(const std::string& p_expires_in_seconds_param)
+bool HttpRequestHandler::IsValidSecondsParam(const std::string& p_expires_in_seconds_param) noexcept
 {
     char* buf;
     const auto seconds = std::strtol(p_expires_in_seconds_param.c_str(), &buf, 10);
