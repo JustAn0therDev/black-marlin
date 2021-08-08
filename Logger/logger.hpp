@@ -14,7 +14,7 @@ public:
     // Logs the message to the log file.
     void Log(const std::string& p_message) noexcept;
 private:
-    // The "LOG_FILENAME" stream so writing is possible.
+    // The "LOG_FILENAME"'s full path to allow writing.
     std::string m_full_filepath;
 };
 

@@ -34,7 +34,7 @@ std::string PathHandler::GetThisExecutingBinaryFullPath()
 	auto bytes_read = readlink("/proc/self/exe", path_buffer, PATH_MAX);
 
 	if (bytes_read == -1) {
-	    std::cout << "Could not read the path to get to this binary. Please check the permissions for this user.\n";
+	    std::cout << "Could not read the path to get to this binary. Please check the permissions for the user logged in.\n";
         exit(1);
 	}
 
