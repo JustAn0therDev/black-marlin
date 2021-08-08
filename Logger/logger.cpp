@@ -3,15 +3,18 @@
 #include <ctime>
 #include <ostream>
 #include <string>
+#include <iostream>
 
 Logger::Logger()
 {
-   std::string full_path = Logger::GetLogFileFullPath();
-   this->m_log_file_writer = std::ofstream(Logger::GetLogFileFullPath(), std::ios::app);
+   this->m_full_filepath = PathHandler::GetThisExecutingBinaryFullPath() + LOG_FILENAME;
 }
 
 void Logger::Log(const std::string& p_message) noexcept
 {
+    // This "fstream" CANNOT be out of scope because of RAII (even when using pointers).
+    auto fstream = std::ofstream(this->m_full_filepath, std::ios::app);
+
 	time_t now = time(0);
 
 	tm* current_local_time = localtime(&now);
@@ -20,10 +23,5 @@ void Logger::Log(const std::string& p_message) noexcept
 
 	strftime(time_string_buffer, sizeof(time_string_buffer), "%Y-%m-%d %X", current_local_time);
 
-	this->m_log_file_writer << time_string_buffer << " - " << p_message << "\n";
-}
-
-std::string Logger::GetLogFileFullPath() noexcept
-{
-	return PathHandler::GetThisExecutingBinaryFullPath() + LOG_FILENAME;
+	fstream << time_string_buffer << " - " << p_message << "\n";
 }

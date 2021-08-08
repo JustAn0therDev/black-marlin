@@ -35,7 +35,6 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 	catch (std::exception& e)
 	{
 		const auto& key = p_req.get_param_value("key");
-        // TODO: Make this class have a Logger object as a dependency.
 		this->m_logger.Log("Get route. Key: " + key + " - Error: " + std::string(e.what()));
 		p_res.status = static_cast<int>(StatusCode::kInternalServerError);
 	}
@@ -94,8 +93,10 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
 	}
 }
 
-bool HttpRequestHandler::IsValidSecondsParam(const std::string& p_expires_in_seconds_param) noexcept
+bool HttpRequestHandler::IsValidSecondsParam(const std::string& p_expires_in_seconds_param)
 {
+    throw std::exception();
+
     char* buf;
     const auto seconds = std::strtol(p_expires_in_seconds_param.c_str(), &buf, 10);
 

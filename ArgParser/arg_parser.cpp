@@ -10,7 +10,6 @@ long ArgParser::GetPortFromArg(const char* arg_value) noexcept
 	Util util;
 	char* buf;
 
-	// TODO: does this track negative integers conversion?
 	port = std::strtol(arg_value, &buf, 10);
 
 	if (port == 0)
@@ -18,7 +17,7 @@ long ArgParser::GetPortFromArg(const char* arg_value) noexcept
 		+ std::string(arg_value) + "\n");
 
 	if (port > USHRT_MAX || port < 0)
-	    util.Panic("The port argument value exceeds the range of valid ports.");
+	    util.Panic("The port argument value exceeds the range of valid ports.\n");
 
 	return port;
 }
