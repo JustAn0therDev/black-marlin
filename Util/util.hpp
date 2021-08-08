@@ -3,11 +3,15 @@
 
 #include <cstdint>
 #include <string>
+#include "../Logger/logger.hpp"
 
-struct Util
+class Util
 {
+public:
     // Writes a message to STDOUT, logs and ends the program's execution.
-    static void Panic(const std::string& p_panic_message) noexcept;
+    void Panic(const std::string& p_panic_message) noexcept;
+private:
+    Logger m_logger;
 };
 
 #endif /* UTILCPP */
