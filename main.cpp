@@ -8,7 +8,7 @@
 
 constexpr short DEFAULT_PORT = 7000;
 
-long GetPortFromArgs(int& argc, char** argv) noexcept;
+long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept;
 void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
 
 int main(int argc, char** argv)
@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     Util util;
 	HttpRequestHandler http_request_handler;
 
-	long port = GetPortFromArgs(argc, argv);
+	long port = GetPortFromArgs(util, argc, argv);
 
 	SetRoutes(server, black_marlin, http_request_handler);
 
@@ -29,12 +29,18 @@ int main(int argc, char** argv)
 	return EXIT_SUCCESS;
 }
 
-long GetPortFromArgs(int& argc, char** argv) noexcept
+long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept
 {
 	if (argc != 2)
 		return DEFAULT_PORT;
 
-	return ArgParser::GetPortFromArg(argv[1]);
+	const auto port = ArgParser::GetPortFromArg(argv[1]);
+
+    if (port == 0 || port > USHRT_MAX) {
+        util.Panic("The port argument was given an invalid value. Expected a port number within valid range; got: " + std::string(argv[1]));
+    }
+
+    return port;
 }
 
 void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept
