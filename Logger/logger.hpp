@@ -15,7 +15,7 @@ public:
     void Log(const std::string& p_message) noexcept;
 private:
     // The "LOG_FILENAME"'s full path to allow writing.
-    std::string m_full_filepath;
+    std::string m_full_filepath{};
 };
 
 #endif /* LOGGERCPP */
