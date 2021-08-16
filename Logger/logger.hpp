@@ -9,13 +9,13 @@ constexpr char LOG_FILENAME[] = "bm_logs.txt";
 
 class Logger
 {
-public:
-    Logger();
-    // Logs the message to the log file.
-    void Log(const std::string& p_message) noexcept;
-private:
-    // The "LOG_FILENAME"'s full path to allow writing.
-    std::string m_full_filepath{};
+    public:
+        Logger();
+        // Logs the message to the log file.
+        void Log(const std::string& p_message) noexcept;
+    private:
+        // The "LOG_FILENAME"'s full path to allow writing.
+        std::string m_full_filepath{};
 };
 
 #endif /* LOGGERCPP */
