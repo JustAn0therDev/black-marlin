@@ -6,7 +6,7 @@
 namespace PathHandler
 {
     // Gets the full path of the running binary.
-	std::string GetThisExecutingBinaryFullPath();
+    std::string GetThisExecutingBinaryFullPath();
 }
 
 #endif
