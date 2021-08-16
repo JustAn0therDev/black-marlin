@@ -21,6 +21,10 @@ bm_logs.txt
 todo.md
 *.cbp
 
+## Ignoring certificates and private keys.
+*.crt
+*.key
+
 ## Stuff that is generated per machine at compile time when using CMake.
 CMakeFiles/
 *.cmake

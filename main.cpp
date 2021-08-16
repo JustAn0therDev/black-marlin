@@ -8,12 +8,13 @@
 
 constexpr short DEFAULT_PORT = 7000;
 
+void IgnoreSIGPIPEWritingToSTDOUT(int sig_number);
 long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept;
-void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
+void SetRoutes(httplib::SSLServer& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
 
 int main(int argc, char** argv)
 {
-	httplib::Server server;
+	httplib::SSLServer server("./localhost.crt", "./localhost.key");
 	BlackMarlin black_marlin;
     Logger logger;
     Util util;
@@ -22,11 +23,17 @@ int main(int argc, char** argv)
 	long port = GetPortFromArgs(util, argc, argv);
 
 	SetRoutes(server, black_marlin, http_request_handler);
+    signal(SIGPIPE, IgnoreSIGPIPEWritingToSTDOUT);
 
 	std::cout << "Listening at port " << port << "\n";
-	server.listen("127.0.0.1", (int)port);
+    server.listen("127.0.0.1", (int)port);
 
 	return EXIT_SUCCESS;
+}
+
+void IgnoreSIGPIPEWritingToSTDOUT(int sig_number) 
+{
+    std::cout << "Identified SIGPIPE error. Signal number:" << sig_number << "\n";
 }
 
 long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept
@@ -43,7 +50,7 @@ long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept
     return port;
 }
 
-void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept
+void SetRoutes(httplib::SSLServer& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept
 {
 	server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
 	{
