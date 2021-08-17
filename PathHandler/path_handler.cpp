@@ -33,7 +33,8 @@ std::string PathHandler::GetThisExecutingBinaryFullPath()
     filename_part_to_look_for = "blackmarlin";
     auto bytes_read = readlink("/proc/self/exe", path_buffer, PATH_MAX);
 
-    if (bytes_read == -1) {
+    if (bytes_read == -1) 
+    {
         std::cout << "Could not read the path to get to this binary. Please check the permissions for the user logged in.\n";
         exit(1);
     }
