@@ -18,6 +18,7 @@ out/
 /unittests/unittests¨.exe
 bm_response_headers.txt
 bm_logs.txt
+bm_cert_key_paths.txt
 todo.md
 *.cbp
 
