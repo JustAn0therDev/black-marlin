@@ -24,6 +24,7 @@ This also allows servers in an architecture that uses Load Balancing to share ke
 The program runs on port **7000** by default. You can test it by making a GET request to "http://127.0.0.1:7000/count" with your program running, for example. It should return `200 - OK` with `0` in the response body (assuming you didn't have any keys cached by Black Marlin prior to calling this route). The only thing you have to do to integrate it with your application is make HTTP requests and handle its responses.
 
 --------------------------
+
 ### Configuring a custom port:
 If you want Black Marlin to be available in a port of your choice, you can run the program from your favorite CLI and pass in a number as an argument, like so:
 
@@ -47,18 +48,27 @@ If there is no file with the name mentioned above, there will be no additional c
 
 --------------------------
 
-### How to set HTTPS with SSL certificate:
+### How to set HTTPS with an SSL certificate:
 
 1. Create a file in the same directory as the program called `bm_cert_key_paths.txt`;
 2. Inside the file, there should be two lines:
     1. The first line should contain the path to the certificate file (the path can be absolute or relative);
     2. The second line should contain the path to the private key.
 
+
+Inside your file there should be two lines like these:
+
+`
+path/to/cert/my_cert.crt
+path/to/cert/my_private_key.key
+`
+
 Thats all. When you run the program again, your calls to the URL should now contain `https`.
 
 To disable this behavior just delete/remove the file mentioned and the server will use `http`.
 
 --------------------------
+
 ### For each route and method:
 **Any failed operation will return a `500 - Internal Server Error` HTTP status code**.
 
@@ -98,20 +108,24 @@ To disable this behavior just delete/remove the file mentioned and the server wi
 	- Returns: `200 - OK` if everything went well.
 
 ---------------------------
+
 ### Logs:
 Everytime an error occurs it is written to a file called `bm_logs.txt` (it is created if it doesn't already exist in the same directory as the program).
 `{Year}-{Month}-{Day} {Hour}:{Minute}:{Second} - {ErrorMessage}`
 
 ---------------------------
+
 ### Current roadmap:
 - Support for HTTP/2 calls.
 
 ---------------------------
+
 ### Sidenotes:
 - This program does NOT support any other operating system except Windows and Linux; If you try to run it on MacOS for example, the program will write an error to STDOUT and terminate its execution.
 - **There is a pre-release available for testing!**
 
 ---------------------------
+
 ## Contributions:
 
 ### General:
