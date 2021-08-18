@@ -1,13 +1,15 @@
 #include <fstream>
+#include <iostream>
 #include "ssl_configs.hpp"
 #include "../PathHandler/path_handler.hpp"
 
-void SSLConfigs::SetSSLMacroValue() 
+bool SSLConfigs::HasSSLConfigFileInSameDir() 
 {
     const auto full_path_to_cert_files = PathHandler::GetThisExecutingBinaryFullPath() + BM_CERT_KEY_PATHS;
 
     std::fstream fstream(full_path_to_cert_files, std::ios::in);
-#define HAS_FILE_WITH_SSL_CERTIFICATE_PATHS 1
+
+    return fstream.good();
 }
 
 SSLCertificateFilePaths SSLConfigs::GetSSLCertificateFilePaths()
@@ -19,16 +21,24 @@ SSLCertificateFilePaths SSLConfigs::GetSSLCertificateFilePaths()
 
     std::fstream fstream(full_path_to_cert_files, std::ios::in);
 
-    while (std::getline(fstream, buffer))
+    if (fstream.good())
     {
-        if (std::empty(return_value.CertPath)) 
+        while (std::getline(fstream, buffer))
         {
-            return_value.CertPath = buffer;
+            if (std::empty(return_value.CertPath)) 
+            { 
+                return_value.CertPath = buffer;
+            }
+            else 
+            {
+                return_value.PrivateKeyPath = buffer; 
+            }
         }
-        else 
-        {
-            return_value.PrivateKeyPath = buffer;
-        }
+    }
+    else 
+    {
+        std::cout << "File found but could not be read. Please check the integrity of the file and make sure that the program has access to create and read files." << "\n";
+        exit(1);
     }
 
     return return_value;
