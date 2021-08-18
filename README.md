@@ -46,6 +46,19 @@ If there is no file with the name mentioned above, there will be no additional c
 **If the file exists and does not have the exact configurations as mentioned above (key and value separated by one whitespace character and then next line for every response header), the program will not be able to run.**
 
 --------------------------
+
+### How to set HTTPS with SSL certificate:
+
+1. Create a file in the same directory as the program called `bm_cert_key_paths.txt`;
+2. Inside the file, there should be two lines:
+    1. The first line should contain the path to the certificate file (the path can be absolute or relative);
+    2. The second line should contain the path to the private key.
+
+Thats all. When you run the program again, your calls to the URL should now contain `https`.
+
+To disable this behavior just delete/remove the file mentioned and the server will use `http`.
+
+--------------------------
 ### For each route and method:
 **Any failed operation will return a `500 - Internal Server Error` HTTP status code**.
 
@@ -91,7 +104,6 @@ Everytime an error occurs it is written to a file called `bm_logs.txt` (it is cr
 
 ---------------------------
 ### Current roadmap:
-- Support for optional SSL/TLS;
 - Support for HTTP/2 calls.
 
 ---------------------------
