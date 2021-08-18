@@ -12,9 +12,8 @@ struct SSLCertificateFilePaths
 
 namespace SSLConfigs 
 {
-    // Sets the HAS_FILE_WITH_SSL_CERTIFICATE_PATHS macro value. This function
-    // (and what it does altogether) will probably change in the future.
-    void SetSSLMacroValue();
+    // Returns true if the SSL config file with the paths in it exists in the same directory; false otherwise.
+    bool HasSSLConfigFileInSameDir();
     // Returns a struct with paths to the certificate files.
     SSLCertificateFilePaths GetSSLCertificateFilePaths();
 }

@@ -11,8 +11,8 @@ constexpr short DEFAULT_PORT = 7000;
 
 void IgnoreSIGPIPEWritingToSTDOUT(int sig_number);
 long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept;
-void SetRoutesThenListenWithHttps(httplib::SSLServer& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
-void SetRoutesThenListenWithHttp(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
+void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept;
+void WritePortToSTDOUTThenMakeServerListen();
 
 int main(int argc, char** argv)
 {
@@ -20,33 +20,30 @@ int main(int argc, char** argv)
     Logger logger;
     Util util;
     HttpRequestHandler http_request_handler;
-    std::string ssl_flag_message;
 
-    // TODO: Change this API
-    // Sets the macro below
-    SSLConfigs::SetSSLMacroValue();
-
-#if defined(HAS_FILE_WITH_SSL_CERTIFICATE_PATHS)
-    SSLCertificateFilePaths ssl_certificate_file_paths = SSLConfigs::GetSSLCertificateFilePaths();
-    httplib::SSLServer server(ssl_certificate_file_paths.CertPath, ssl_certificate_file_paths.PrivateKeyPath);
-    SetRoutesThenListenWithHttps(server, black_marlin, http_request_handler);
-
-    // Calls to set callback ignoring SIGPIPE because of a known issue with openssl not handling SIGPIPE errors.
-    signal(SIGPIPE, IgnoreSIGPIPEWritingToSTDOUT);
-    ssl_flag_message = "With SSL";
-#else
-    httplib::Server server;
-    SetRoutesThenListenWithHttp(server, black_marlin, http_request_handler);
-    ssl_flag_message = "Without SSL";
-#endif
-
-    long port = GetPortFromArgs(util, argc, argv);
-
-    signal(SIGPIPE, IgnoreSIGPIPEWritingToSTDOUT);
+    const long port = GetPortFromArgs(util, argc, argv);
 
     std::cout << "Listening at port " << port << "\n";
-    std::cout << ssl_flag_message << "\n";
-    server.listen("127.0.0.1", (int)port);
+
+    if (SSLConfigs::HasSSLConfigFileInSameDir()) 
+    {
+        SSLCertificateFilePaths ssl_certificate_file_paths = SSLConfigs::GetSSLCertificateFilePaths();
+
+        httplib::SSLServer server(ssl_certificate_file_paths.CertPath.c_str(), ssl_certificate_file_paths.PrivateKeyPath.c_str());
+        SetRoutes(server, black_marlin, http_request_handler);
+
+        // Calls to set callback ignoring SIGPIPE because of a known issue with openssl not handling SIGPIPE errors by itself.
+        signal(SIGPIPE, IgnoreSIGPIPEWritingToSTDOUT);
+
+        server.listen("127.0.0.1", (int)port);
+    }
+    else 
+    {
+        httplib::Server server;
+        SetRoutes(server, black_marlin, http_request_handler);
+
+        server.listen("127.0.0.1", (int)port);
+    }
 
     return EXIT_SUCCESS;
 }
@@ -70,7 +67,7 @@ long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept
     return port;
 }
 
-void SetRoutesThenListenWithHttps(httplib::SSLServer& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept
+void SetRoutes(httplib::Server& server, BlackMarlin& black_marlin, HttpRequestHandler& http_request_handler) noexcept
 {
     server.Get("/", [&black_marlin, &http_request_handler](const httplib::Request& req, httplib::Response& res)
             {
