@@ -58,11 +58,9 @@ If there is no file with the name mentioned above, there will be no additional c
 
 Inside your file there should be two lines like these:
 
-`
-path/to/cert/my_cert.crt
+`path/to/cert/my_cert.crt`
 
-path/to/cert/my_private_key.key
-`
+`path/to/cert/my_private_key.key`
 
 Thats all. When you run the program again, your calls to the URL should now contain `https`.
 
