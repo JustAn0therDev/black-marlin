@@ -60,6 +60,7 @@ Inside your file there should be two lines like these:
 
 `
 path/to/cert/my_cert.crt
+
 path/to/cert/my_private_key.key
 `
 
