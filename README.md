@@ -80,10 +80,10 @@ To disable this behavior just delete/remove the file mentioned and the server wi
 
 `"/"`:
 - `GET` accepts a `key` query parameter: http://127.0.0.1:7000/?key=
-	- Call this to get the value of an existing key. Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key was found and `204 - No Content` if a key was provided but not found.
+	- **Call this to get the value of an existing key**. Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key was found and `204 - No Content` if a key was provided but not found.
 
 - `POST` accepts a `key` query parameter (http://127.0.0.1:7000/?key=) and a **body**. The body can be sent in any format.
-	- Call this to create a new key value pair. Returns `201 - Created` if the key value pair was created successfully.
+	- **Call this to create a new key value pair**. Returns `201 - Created` if the key value pair was created successfully.
 	- It accepts another query parameter called `expiresin`. This parameter should be an integer representing an amount of seconds: http://127.0.0.1:7000/?key=key&expiresin=900.
 	- **The `expiresin` parameter is optional**, meaning that if you want a key that does not expire unless manually deleted, all you have to do is omit the parameter.
 	- Even if a key has been set to expire, **it can be deleted by calling the default route `/` with the `DELETE` method (or `/flush`) or have its value overwritten by the default route's `PUT` or `PATCH`**.
@@ -95,22 +95,22 @@ To disable this behavior just delete/remove the file mentioned and the server wi
 		- The `expiresin` parameter was sent with an invalid value.
 
 - `PUT and PATCH`: accepts a `key` query parameter (http://127.0.0.1:7000/?key=) and a **body**. The body can be sent in any format.
-	- Call this to update an existing key's value. Returns: `400 - Bad Request` if no key or body was sent in the request and `200 - OK` if the key value pair was updated successfully.
+	- **Call this to update an existing key's value**. Returns: `400 - Bad Request` if no key or body was sent in the request and `200 - OK` if the key value pair was updated successfully.
 
 - `DELETE` accepts a `key` query parameter: http://127.0.0.1:7000/?key=
-	- Call this to delete a key value pair. Returns: `400 - Bad Request` if no key is sent and `200 - OK` if a key was provided. **Even if the hash table does not have the provided key, no specific HTTP Status Code will return**.
+	- **Call this to delete a key value pair**. Returns: `400 - Bad Request` if no key is sent and `200 - OK` if a key was provided. **Even if the hash table does not have the provided key, no specific HTTP Status Code will return**.
 
 `"/count"`:
 - `GET` takes no parameters: http://127.0.0.1:7000/count
-	- Call this to get the number of key value pairs in memory. Returns: `200 - OK` if everthing went well. This number is a `size_t` value, so it can get as big as the max value of an `unsigned long long`.
+	- **Call this to get the number of key value pairs in memory**. Returns: `200 - OK` if everthing went well. This number is a `size_t` value, so it can get as big as the max value of an `unsigned long long`.
 
 `"/exists"`:
 - `GET` accepts a `key` query parameter: http://127.0.0.1:7000/exists?key=
-	- Call this to check if a key exists. Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key is found and `204 - No Content` if a key provided wasn't found.
+	- **Call this to check if a key exists**. Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key is found and `204 - No Content` if a key provided wasn't found.
 
 `"/flush"`:
 - `DELETE` takes no parameters: http://127.0.0.1:7000/flush
-	- Call this to erase all items in memory. Returns: `200 - OK` if everything went well.
+	- **Call this to erase all items in memory**. Returns: `200 - OK` if everything went well.
 
 ---------------------------
 
