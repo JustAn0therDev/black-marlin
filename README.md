@@ -18,7 +18,7 @@ This also allows servers in an architecture that uses Load Balancing to share ke
 - Integration tests are made to insure that every route is working (the integration tests will be in the version control of this repository in the near future);
 - Performance profiling and memory leak checks;
 - Allows custom response headers;
-- Compatible with Windows and Linux servers.
+- Compatible with Windows and Linux servers (check below in the "how to compile" and in the "releases" tab for more information on Windows releases).
 
 ## Usage:
 The program runs on port **7000** by default. You can test it by making a GET request to "http://127.0.0.1:7000/count" with your program running, for example. It should return `200 - OK` with `0` in the response body (assuming you didn't have any keys cached by Black Marlin prior to calling this route). The only thing you have to do to integrate it with your application is make HTTP requests and handle its responses.
@@ -26,11 +26,17 @@ The program runs on port **7000** by default. You can test it by making a GET re
 --------------------------
 
 ### Configuring a custom port:
-If you want Black Marlin to be available in a port of your choice, you can run the program from your favorite CLI and pass in a number as an argument, like so:
+If you want Black Marlin to be available via a port of your choice, you can run the program from a CLI and pass in a number as an argument, like so:
 
-`./black_marlin.exe 8534`
+`./blackmarlin 8534`
 
-Note that if the port argument is an invalid value the program will not run and a message with the error will be printed to STDOUT.
+or 
+
+`./blackmarlin.exe 8534`
+
+depending on the release you're using.
+
+Note that if the port argument is an invalid value the program will not run and an error message will be printed to STDOUT.
 
 --------------------------
 
@@ -74,42 +80,42 @@ To disable this behavior just delete/remove the file mentioned and the server wi
 
 `"/"`:
 - `GET` accepts a `key` query parameter: http://127.0.0.1:7000/?key=
-	- Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key is found and `204 - No Content` if a key is provided but wasn't found.
+	- **Call this to get the value of an existing key**. Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key was found and `204 - No Content` if a key was provided but not found.
 
 - `POST` accepts a `key` query parameter (http://127.0.0.1:7000/?key=) and a **body**. The body can be sent in any format.
+	- **Call this to create a new key value pair**. Returns `201 - Created` if the key value pair was created successfully.
 	- It accepts another query parameter called `expiresin`. This parameter should be an integer representing an amount of seconds: http://127.0.0.1:7000/?key=key&expiresin=900.
-	- **The `expiresin` parameter is optional**, meaning that if you want a key that does not expire unless manually deleted, all you have to do is omit it.
-	- Even if a key has been set to expire, **it can be deleted by calling the default route's `DELETE` method (or `/flush`) or have its value overwritten by the default route's `PUT` or `PATCH`**.
+	- **The `expiresin` parameter is optional**, meaning that if you want a key that does not expire unless manually deleted, all you have to do is omit the parameter.
+	- Even if a key has been set to expire, **it can be deleted by calling the default route `/` with the `DELETE` method (or `/flush`) or have its value overwritten by the default route's `PUT` or `PATCH`**.
 	- An already existing key cannot be set to expire.
-	- The `expiresin` parameter must be a value bigger than 0 (zero) and less than or equal to `USHRT_MAX` (65535) and cannot be an invalid string such as `"abcd"`, otherwise a `400 - Bad Request` will return.
+	- The `expiresin` parameter must be a value bigger than 0 (zero) and less than or equal to `USHRT_MAX` (65535) and cannot be an invalid string such as `"abcd"`, otherwise it will return `400 - Bad Request`.
 	- In summary, returns `400 - Bad Request` if:
 		- No `key` parameter was sent;
 		- No body was sent; or
 		- The `expiresin` parameter was sent with an invalid value.
-	- Returns `201 - Created` if the key-value pair was created successfully.
 
 - `PUT and PATCH`: accepts a `key` query parameter (http://127.0.0.1:7000/?key=) and a **body**. The body can be sent in any format.
-	- Returns: `400 - Bad Request` if no key or body was sent in the request and `200 - OK` if the key-value pair was updated successfully.
+	- **Call this to update an existing key's value**. Returns: `400 - Bad Request` if no key or body was sent in the request and `200 - OK` if the key value pair was updated successfully.
 
 - `DELETE` accepts a `key` query parameter: http://127.0.0.1:7000/?key=
-	- Returns: `400 - Bad Request` if no key is sent and `200 - OK` if a key was provided. **Even if the hash table does not have the provided key, no specific HTTP Status Code will return**.
+	- **Call this to delete a key value pair**. Returns: `400 - Bad Request` if no key is sent and `200 - OK` if a key was provided. **Even if the hash table does not have the provided key, no specific HTTP Status Code will return**.
 
 `"/count"`:
 - `GET` takes no parameters: http://127.0.0.1:7000/count
-	- Returns: `200 - OK` with a body containing a single number. This number is a `size_t` value, so it can get as big as the max value of an `unsigned long long`.
+	- **Call this to get the number of key value pairs in memory**. Returns: `200 - OK` if everthing went well. This number is a `size_t` value, so it can get as big as the max value of an `unsigned long long`.
 
 `"/exists"`:
 - `GET` accepts a `key` query parameter: http://127.0.0.1:7000/exists?key=
-	- Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key is found and `204 - No Content` if a key provided wasn't found.
+	- **Call this to check if a key exists**. Returns: `400 - Bad Request` if no key is sent, `200 - OK` if a key is found and `204 - No Content` if a key provided wasn't found.
 
 `"/flush"`:
 - `DELETE` takes no parameters: http://127.0.0.1:7000/flush
-	- Returns: `200 - OK` if everything went well.
+	- **Call this to erase all items in memory**. Returns: `200 - OK` if everything went well.
 
 ---------------------------
 
 ### Logs:
-Everytime an error occurs it is written to a file called `bm_logs.txt` (it is created if it doesn't already exist in the same directory as the program).
+Everytime an error occurs it is written to a file called `bm_logs.txt` (its created if it doesn't already exist in the same directory as the program).
 `{Year}-{Month}-{Day} {Hour}:{Minute}:{Second} - {ErrorMessage}`
 
 ---------------------------
@@ -120,7 +126,7 @@ Everytime an error occurs it is written to a file called `bm_logs.txt` (it is cr
 ---------------------------
 
 ### Sidenotes:
-- This program does NOT support any other operating system except Windows and Linux; If you try to run it on MacOS for example, the program will write an error to STDOUT and terminate its execution.
+- This program does NOT support any other operating system except for Windows (last release) and Linux (current and past releases); If you try to run it on MacOS for example, the program will not run.
 - **There is a pre-release available for testing!**
 
 ---------------------------
@@ -132,6 +138,9 @@ Feel free to open issues and fork as you feel like it. I'll be happy to help in 
 
 ### How to compile:
 The program can be compiled in any way as long as it supports threads (expiring keys in the main library and `cpphttplib`) and the C++17 standard. The recommended way to compile the program is by using CMake. It is already configured in the repo and can be done both on Windows and Linux.
+
+As of now, the current Windows version does not support the OpenSSL library and therefore is not available in the current release.
+After giving it some thought, maybe there is no need for Windows support at all given the current state of the Web and the amount of servers using only Linux. **This is still being reviewed and should not be consired true for all subsequent releases**.
 
 ### How to test:
 `cd` to `unittests` directory and run the `run_unittests.sh` bash file. **Any other modules to be tested have to be added to the file mentioned**.
