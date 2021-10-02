@@ -9,7 +9,6 @@
 HttpRequestHandler::HttpRequestHandler() noexcept
 {
     this->m_server_configs.LoadHeadersFromConfigFile();
-    this->m_logger = Logger();
 }
 
 void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const httplib::Request& p_req, httplib::Response& p_res) noexcept
