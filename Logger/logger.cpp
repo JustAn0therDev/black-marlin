@@ -23,7 +23,7 @@ void Logger::Log(const std::string& p_message) noexcept
 
     tm* current_local_time = localtime(&now);
 
-    char time_string_buffer[30];
+    char time_string_buffer[TIME_BUFFER_SIZE];
 
     strftime(time_string_buffer, sizeof(time_string_buffer), "%Y-%m-%d %X", current_local_time);
 
