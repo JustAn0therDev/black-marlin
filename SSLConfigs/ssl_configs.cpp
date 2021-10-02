@@ -1,4 +1,3 @@
-#include <fstream>
 #include <iostream>
 #include "ssl_configs.hpp"
 #include "../PathHandler/path_handler.hpp"
@@ -7,9 +6,9 @@ bool SSLConfigs::HasSSLConfigFileInSameDir()
 {
     const auto full_path_to_cert_files = PathHandler::GetThisExecutingBinaryFullPath() + BM_CERT_KEY_PATHS;
 
-    std::fstream fstream(full_path_to_cert_files, std::ios::in);
+    std::fstream file_stream(full_path_to_cert_files, std::ios::in);
 
-    return fstream.good();
+    return file_stream.good();
 }
 
 SSLCertificateFilePaths SSLConfigs::GetSSLCertificateFilePaths()
@@ -19,11 +18,11 @@ SSLCertificateFilePaths SSLConfigs::GetSSLCertificateFilePaths()
 
     const auto full_path_to_cert_files = PathHandler::GetThisExecutingBinaryFullPath() + BM_CERT_KEY_PATHS;
 
-    std::fstream fstream(full_path_to_cert_files, std::ios::in);
+    std::fstream file_stream(full_path_to_cert_files, std::ios::in);
 
-    if (fstream.good())
+    if (file_stream.good())
     {
-        while (std::getline(fstream, buffer))
+        while (std::getline(file_stream, buffer))
         {
             if (std::empty(return_value.CertPath)) 
             { 
