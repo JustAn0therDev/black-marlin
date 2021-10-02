@@ -30,6 +30,4 @@ void Logger::Log(const std::string& p_message) noexcept
     const auto& message = strcat(time_string_buffer, LOG_MESSAGE_DELIMETER) + p_message + "\n";
 
     fputs(message.c_str(), this->m_file);
-
-    fclose(this->m_file);
 }
