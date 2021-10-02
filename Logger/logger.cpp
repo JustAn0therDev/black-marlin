@@ -27,7 +27,7 @@ void Logger::Log(const std::string& p_message) noexcept
 
     strftime(time_string_buffer, sizeof(time_string_buffer), "%Y-%m-%d %X", current_local_time);
 
-    const auto& message = strcat(time_string_buffer, LOG_MESSAGE_DELIMETER) + p_message + "\n";
+    const auto& final_log_message = strcat(time_string_buffer, LOG_MESSAGE_DELIMETER) + p_message + "\n";
 
-    fputs(message.c_str(), this->m_file);
+    fputs(final_log_message.c_str(), this->m_file);
 }
