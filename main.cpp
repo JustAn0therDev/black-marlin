@@ -61,10 +61,7 @@ long GetPortFromArgs(Util& util, int& argc, char** argv) noexcept
     const auto port = ArgParser::GetPortFromArg(argv[1]);
 
     if (port == 0 || port > USHRT_MAX) {
-        char* error_message = static_cast<char*>(malloc(sizeof(char) * 200));
-        error_message = strcpy(error_message, "The port argument was given an invalid value. Expected a port number within valid range; got: ");
-        error_message = strcat(error_message, argv[1]);
-        util.Panic(error_message);
+        util.Panic("The port argument was given an invalid value. Expected a port number within valid range; got: " + std::string(argv[1]) + "\n");
     }
 
     return port;
