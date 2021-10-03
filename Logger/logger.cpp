@@ -17,17 +17,25 @@ Logger::~Logger()
     fclose(this->m_file);
 }
 
-void Logger::Log(const std::string& p_message) noexcept
+void Logger::Log(const char* p_message) noexcept
 {
     time_t now = time(0);
 
-    tm* current_local_time = localtime(&now);
+    const auto& current_local_time = localtime(&now);
 
-    char time_string_buffer[TIME_BUFFER_SIZE];
+    char* time_string_buffer = static_cast<char *>(malloc(sizeof(char) * TIME_STRING_SIZE));
 
-    strftime(time_string_buffer, sizeof(time_string_buffer), "%Y-%m-%d %X", current_local_time);
+    strftime(time_string_buffer, TIME_STRING_SIZE, "%Y-%m-%d %X", current_local_time);
 
-    const auto& final_log_message = strcat(time_string_buffer, LOG_MESSAGE_DELIMETER) + p_message + "\n";
+    time_string_buffer = strcat(time_string_buffer, LOG_MESSAGE_DELIMETER);
 
-    fputs(final_log_message.c_str(), this->m_file);
+    time_string_buffer = strcat(time_string_buffer, p_message);
+
+    time_string_buffer = strcat(time_string_buffer, "\n");
+
+    fputs(time_string_buffer, this->m_file);
+
+    fflush(this->m_file);
+
+    free(time_string_buffer);
 }

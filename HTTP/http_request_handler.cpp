@@ -23,6 +23,20 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 
         const auto& value = p_black_marlin.Get(p_req.get_param_value("key"));
 
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * 200));
+
+        log_message = strcpy(log_message, "Get route. Key: ");
+
+        log_message = strcat(log_message, p_req.get_param_value("key").c_str());
+
+        log_message = strcat(log_message, " - Error: ");
+
+        log_message = strcat(log_message, "New testing OK.");
+
+        this->m_logger.Log(log_message);
+
+        free(log_message);
+
         if (std::empty(value))
         {
             p_res.status = static_cast<int>(StatusCode::kNoContent);
@@ -34,8 +48,22 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
     catch (std::exception& e)
     {
         const auto& key = p_req.get_param_value("key");
-        this->m_logger.Log("Get route. Key: " + key + " - Error: " + std::string(e.what()));
+
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Get route. Key: ");
+
+        log_message = strcat(log_message, key.c_str());
+
+        log_message = strcat(log_message, " - Error: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
+
         p_res.status = static_cast<int>(StatusCode::kInternalServerError);
+
+        free(log_message);
     }
 }
 
@@ -85,10 +113,21 @@ void HttpRequestHandler::HandlePost(BlackMarlin& p_black_marlin, const httplib::
     catch (std::exception& e)
     {
         const auto& key = p_req.get_param_value("key");
-        const auto& value = p_req.get_param_value("value");
 
-        this->m_logger.Log("Post route. Key: " + key + " - Value: " + value + " - Error: " + std::string(e.what()));
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Post route. Key: ");
+
+        log_message = strcat(log_message, key.c_str());
+
+        log_message = strcat(log_message, " - Error: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
         p_res.status = static_cast<int>(StatusCode::kInternalServerError);
+
+        free(log_message);
     }
 }
 
@@ -128,8 +167,22 @@ void HttpRequestHandler::HandlePutAndPatch(BlackMarlin& p_black_marlin, const ht
     }
     catch (std::exception& e)
     {
-        this->m_logger.Log("Patch and Put route. Error: " + std::string(e.what()));
+        const auto& key = p_req.get_param_value("key");
+
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Patch and Put route. Key: ");
+
+        log_message = strcat(log_message, key.c_str());
+
+        log_message = strcat(log_message, " - Error: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
         p_res.status = static_cast<int>(StatusCode::kInternalServerError);
+
+        free(log_message);
     }
 }
 
@@ -148,8 +201,21 @@ void HttpRequestHandler::HandleDelete(BlackMarlin& p_black_marlin, const httplib
     catch (std::exception& e)
     {
         const auto& key = p_req.get_param_value("key");
-        this->m_logger.Log("Delete route. Key: " + key +" - Error: " + e.what());
+
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Delete route. Key: ");
+
+        log_message = strcat(log_message, key.c_str());
+
+        log_message = strcat(log_message, " - Error: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
         p_res.status = static_cast<int>(StatusCode::kInternalServerError);
+
+        free(log_message);
     }
 }
 
@@ -161,8 +227,16 @@ void HttpRequestHandler::HandleDeleteFlush(BlackMarlin& p_black_marlin, httplib:
     }
     catch (std::exception& e)
     {
-        this->m_logger.Log("Flush route. Error: " + std::string(e.what()));
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Flush route. Error: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
         p_res.status = static_cast<int>(StatusCode::kInternalServerError);
+
+        free(log_message);
     }
 }
 
@@ -184,8 +258,21 @@ void HttpRequestHandler::HandleGetExists(const BlackMarlin& p_black_marlin, cons
     catch (std::exception& e)
     {
         const auto& key = p_req.get_param_value("key");
-        this->m_logger.Log("Exists route. Key: " + key + " - Error: " + std::string(e.what()));
+
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Exists route. Key: ");
+
+        log_message = strcat(log_message, key.c_str());
+
+        log_message = strcat(log_message, " - Error: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
         p_res.status = static_cast<int>(StatusCode::kInternalServerError);
+
+        free(log_message);
     }
 }
 
@@ -197,8 +284,17 @@ void HttpRequestHandler::HandleGetCount(const BlackMarlin& p_black_marlin, httpl
     }
     catch (std::exception& e)
     {
-        this->m_logger.Log("Count route. Error: " + std::string(e.what()));
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Count route. Error: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
+
         p_res.status = static_cast<int>(StatusCode::kInternalServerError);
+
+        free(log_message);
     }
 }
 
@@ -215,6 +311,14 @@ void HttpRequestHandler::SetResponseHeadersFromConfig(httplib::Response& p_res) 
     }
     catch (std::exception& e)
     {
-        this->m_logger.Log("Error setting custom response headers: " + std::string(e.what()));
+        char* log_message = static_cast<char *>(malloc(sizeof(char) * LOG_MESSAGE_SIZE));
+
+        log_message = strcpy(log_message, "Error setting custom response headers: ");
+
+        log_message = strcat(log_message, e.what());
+
+        this->m_logger.Log(log_message);
+
+        free(log_message);
     }
 }

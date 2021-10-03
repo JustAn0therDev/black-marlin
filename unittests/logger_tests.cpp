@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include "../vendor/catch2.hpp"
 #include "../Logger/logger.hpp"
 #include "../PathHandler/path_handler.hpp"
