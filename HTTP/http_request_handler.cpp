@@ -23,20 +23,6 @@ void HttpRequestHandler::HandleGet(const BlackMarlin& p_black_marlin, const http
 
         const auto& value = p_black_marlin.Get(p_req.get_param_value("key"));
 
-        char* log_message = static_cast<char *>(malloc(sizeof(char) * 200));
-
-        log_message = strcpy(log_message, "Get route. Key: ");
-
-        log_message = strcat(log_message, p_req.get_param_value("key").c_str());
-
-        log_message = strcat(log_message, " - Error: ");
-
-        log_message = strcat(log_message, "New testing OK.");
-
-        this->m_logger.Log(log_message);
-
-        free(log_message);
-
         if (std::empty(value))
         {
             p_res.status = static_cast<int>(StatusCode::kNoContent);

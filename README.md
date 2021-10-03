@@ -12,13 +12,10 @@ This also allows servers in an architecture that uses Load Balancing to share ke
 
 
 ## Features:
-- It is currently using an `std::unordered_map` to store the keys and values;
 - The main library is covered by unit tests with [catchv2](https://github.com/catchorg/Catch2);
 - REST API interface for HTTP methods written on top of the main library with [cpp-httplib](https://github.com/yhirose/cpp-httplib);
-- Integration tests are made to insure that every route is working (the integration tests will be in the version control of this repository in the near future);
-- Performance profiling and memory leak checks;
-- Allows custom response headers;
-- Compatible with Windows and Linux servers (check below in the "how to compile" and in the "releases" tab for more information on Windows releases).
+- Integration tests are made to insure that every route is working as intended. This repository has a Postman collection with a really big JSON file you can use to test its performance;
+- Allows custom response headers and port.
 
 ## Usage:
 The program runs on port **7000** by default. You can test it by making a GET request to "http://127.0.0.1:7000/count" with your program running, for example. It should return `200 - OK` with `0` in the response body (assuming you didn't have any keys cached by Black Marlin prior to calling this route). The only thing you have to do to integrate it with your application is make HTTP requests and handle its responses.
@@ -30,13 +27,7 @@ If you want Black Marlin to be available via a port of your choice, you can run 
 
 `./blackmarlin 8534`
 
-or 
-
-`./blackmarlin.exe 8534`
-
-depending on the release you're using.
-
-Note that if the port argument is an invalid value the program will not run and an error message will be printed to STDOUT.
+Note that if the port argument is an invalid value the program will not run and an error message will be written to STDOUT.
 
 --------------------------
 
@@ -115,7 +106,8 @@ To disable this behavior just delete/remove the file mentioned and the server wi
 ---------------------------
 
 ### Logs:
-Everytime an error occurs it is written to a file called `bm_logs.txt` (its created if it doesn't already exist in the same directory as the program).
+Everytime an error occurs it is written to a file called `bm_logs.txt` (it is created if it doesn't already exist in the same directory). Every log message will have the following format:
+
 `{Year}-{Month}-{Day} {Hour}:{Minute}:{Second} - {ErrorMessage}`
 
 ---------------------------
@@ -126,8 +118,8 @@ Everytime an error occurs it is written to a file called `bm_logs.txt` (its crea
 ---------------------------
 
 ### Sidenotes:
-- This program does NOT support any other operating system except for Windows (last release) and Linux (current and past releases); If you try to run it on MacOS for example, the program will not run.
-- **There is a pre-release available for testing!**
+- This program does NOT officially support any other operating system except for Linux. If you try to run it on a Mac OS for example, the program will not run.
+- **The first official release is available!**
 
 ---------------------------
 
@@ -137,13 +129,10 @@ Everytime an error occurs it is written to a file called `bm_logs.txt` (its crea
 Feel free to open issues and fork as you feel like it. I'll be happy to help in any case.
 
 ### How to compile:
-The program can be compiled in any way as long as it supports threads (expiring keys in the main library and `cpphttplib`) and the C++17 standard. The recommended way to compile the program is by using CMake. It is already configured in the repo and can be done both on Windows and Linux.
-
-As of now, the current Windows version does not support the OpenSSL library and therefore is not available in the current release.
-After giving it some thought, maybe there is no need for Windows support at all given the current state of the Web and the amount of servers using only Linux. **This is still being reviewed and should not be consired true for all subsequent releases**.
+The program can be compiled in any way as long as it supports threads (expiring keys in the main library and `cpphttplib`), is targeting the C++17 standard and includes OpenSSL. The recommended way to compile the program is using CMake. It is already configured in the repo and can be done both on Windows and Linux.
 
 ### How to test:
-`cd` to `unittests` directory and run the `run_unittests.sh` bash file. **Any other modules to be tested have to be added to the file mentioned**.
+`cd` to `unittests` directory and run the `run_unittests.sh` bash file. **Any other modules to be tested have to be added to the mentioned file**.
 
 ### Guidelines:
 - Please follow the code's pattern; keeping the code looking the same everywhere in the program makes it easier to change stuff.
