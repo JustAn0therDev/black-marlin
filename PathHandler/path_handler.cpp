@@ -3,31 +3,16 @@
 #include <sstream>
 #include <iostream>
 
-#if _WIN32 || _WIN64
-
-#include <Windows.h>
-#define PATH_DELIMETER '\\'
-
-#else
-
 #include <unistd.h>
 #include <climits>
 #define PATH_DELIMETER '/'
-
-#endif
 
 std::string PathHandler::GetThisExecutingBinaryFullPath()
 {
     bool found_binary = false;
     std::string full_path, path_part, filename_part_to_look_for;
 
-#if defined(WIN32) || defined(__WIN32__) || defined(_WIN32) || defined(_MSC_VER) || defined(__MINGW32__) || defined(WIN64)
-
-    char path_buffer[MAX_PATH] = { '\0' };
-    filename_part_to_look_for = "blackmarlin.exe";
-    GetModuleFileName(NULL, path_buffer, MAX_PATH);
-
-#elif defined(linux) || defined(__linux) || defined(__linux__)
+#if defined(linux) || defined(__linux) || defined(__linux__)
 
     char path_buffer[PATH_MAX] = { '\0' };
     filename_part_to_look_for = "blackmarlin";
