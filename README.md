@@ -118,7 +118,7 @@ Everytime an error occurs it is written to a file called `bm_logs.txt` (it is cr
 ---------------------------
 
 ### Sidenotes:
-- This program does NOT officially support any other operating system except for Linux. If you try to run it on a Mac OS for example, the program will not run.
+- This program does NOT officially support any other operating system except for GNU/Linux;
 - **The first official release is available!**
 
 ---------------------------
@@ -129,7 +129,7 @@ Everytime an error occurs it is written to a file called `bm_logs.txt` (it is cr
 Feel free to open issues and fork as you feel like it. I'll be happy to help in any case.
 
 ### How to compile:
-The program can be compiled in any way as long as it supports threads (expiring keys in the main library and `cpphttplib`), is targeting the C++17 standard and includes OpenSSL. The recommended way to compile the program is using CMake. It is already configured in the repo and can be done both on Windows and Linux.
+The program can be compiled in any way as long as it supports threads (expiring keys in the main library and `cpphttplib`), is targeting the C++17 standard and includes OpenSSL. The recommended way to compile the program is using CMake.
 
 ### How to test:
 `cd` to `unittests` directory and run the `run_unittests.sh` bash file. **Any other modules to be tested have to be added to the mentioned file**.
